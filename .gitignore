@@ -1,0 +1,5 @@
+config.json
+config.xml
+scratch/*
+test-pester.xml
+hsdp-iam.*.nupkg
