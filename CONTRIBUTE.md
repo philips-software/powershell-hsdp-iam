@@ -1,6 +1,6 @@
 # Contributing to powershell-hsdp-iam
 
-We'd love for you to contribute to our source code and to make the cf-api even better than it is today!
+We'd love for you to contribute to our source code and to make this project even better than it is today!
  Here are the guidelines we'd like you to follow:
 
  - [Question or Problem?](#question)
@@ -116,7 +116,11 @@ from the main (upstream) repository:
     git pull --ff upstream master
     ```
 
-## <a name="info"></a> Info
+## Other Considerations for changes
+
+1. All changes MUST ensure that the coverage.md file is updated when appropriate in pull requests.
+2. All changes MUST include updates or additions to comment based documentation
+3. All changes SHOULD include pester unit tests.
 
 [contribute]: CONTRIBUTING.md
-[github]: https://github.com/philips-software/powershell-cf-api/issues 
+[github]: https://github.com/philips-software/powershell-hsdp-iam/issues
