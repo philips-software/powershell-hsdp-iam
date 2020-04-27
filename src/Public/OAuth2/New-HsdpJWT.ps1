@@ -1,4 +1,5 @@
-Install-Module powershell-jwt
+Install-Module PowerShell-JWT
+
 <#
     .SYNOPSIS
     Create a JWT for a service
