@@ -19,7 +19,7 @@ if ($osEnv -and $osEnv.Value -eq "Windows_NT" ) {
     & nuget pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 } else {
     Write-Verbose "Using mono for nuget"
-    & mono $NUGET_EXE pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
+    & mono '`$NUGET_EXE' pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 }
 
 Pop-Location
