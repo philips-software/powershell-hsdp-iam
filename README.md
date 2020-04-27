@@ -9,6 +9,12 @@
   - **Key concepts** powershell  (technical, philosophical, or both) important to the user’s understanding.
   - **Status**:  Alpha. See ToDos. [CHANGELOG](CHANGELOG.md).
 
+## Status
+
+The intent of this module is to cover all API functionality available in the HSDP IAM APIs.
+
+The coverage is tracked in [coverage.md](coverage.md)
+
 ## Dependencies
 
 * Powershell 7/Core recommend
@@ -178,7 +184,8 @@ mark.lindell@philips.com
 
 ## License
 
-Link to LICENSE.md
+Link to [LICENSE.md](LICENSE.md)
+
 
 ## Credits and references
 
