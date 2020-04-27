@@ -11,7 +11,7 @@
     RootModule = 'hsdp-iam.psm1'
     
     # Version number of this module.
-    ModuleVersion = '99.99.99'
+    ModuleVersion = '${NUGET_VERSION}'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -50,7 +50,7 @@
     # ProcessorArchitecture = ''
     
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules = @("BAMCIS.ByteArrays", "ASN.1")
+    #RequiredModules = @("BAMCIS.ByteArrays", "ASN.1")
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()
@@ -119,6 +119,10 @@
     # DefaultCommandPrefix = ''
     
 }
+
+
+
+
 
 
 

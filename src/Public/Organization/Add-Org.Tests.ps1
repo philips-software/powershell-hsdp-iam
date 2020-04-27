@@ -1,3 +1,5 @@
+Install-Module Functional -Force
+
 $source = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$source\Add-Org.ps1"
 . "$source\..\Utility\Invoke-ApiRequest.ps1"
