@@ -22,6 +22,11 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
     # setup nuget
     - name: Download latest NuGet (cross-platform)
       uses: olegtarasov/download-nuget@v1
@@ -31,5 +36,5 @@ jobs:
       shell: pwsh
       
     - name: build
-      run: .\build.ps1
-      shell: pwsh
+      run: .\build.ps1 
+      shell: pwsh ${{ steps.extract_branch.outputs.branch }}

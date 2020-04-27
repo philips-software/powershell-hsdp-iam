@@ -1,3 +1,7 @@
+params($branchName)
+
+Write-Verbose "Branch Name: $($branchName)"
+
 $VerbosePreference = "continue"
 Push-Location $PSScriptRoot/src
 
@@ -10,7 +14,6 @@ Write-Verbose "Setting version to $VERSION"
 ((Get-Content -path hsdp-iam-template.psd1 -Raw) -replace '\${NUGET_VERSION}',$VERSION) | Set-Content -Path hsdp-iam.psd1
 
 $osEnv = (Get-ChildItem -Path ENV: | Where-Object { $_.name -eq 'OS'})
-Write-Verbose $osEnv
 if ($osEnv -and $osEnv.Value -eq "Windows_NT" ) {
     & nuget pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 } else {
