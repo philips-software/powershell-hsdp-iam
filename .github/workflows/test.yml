@@ -48,7 +48,7 @@ jobs:
       shell: pwsh
 
     - name: Make Nuget package (Non-Windows)
-      run: mono $NUGET_EXE pack target/hsdp-iam.${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}.nupkg
+      run: mono $NUGET_EXE pack hsdp-iam.nuspec -OutputDirectory target
 
     - name: push to nuget
       if: github.event_name != 'pull_request'
