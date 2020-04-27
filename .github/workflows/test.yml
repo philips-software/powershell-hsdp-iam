@@ -27,14 +27,14 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
 
+    - name: unit tests
+      run: .\hsdp-iam.tests.ps1
+      shell: pwsh
+
     # setup nuget
     - name: Download latest NuGet (cross-platform)
       uses: olegtarasov/download-nuget@v1
-  
-    - name: tests
-      run: .\hsdp-iam.tests.ps1
-      shell: pwsh
       
-    - name: build
+    - name: build/package
       run: .\build.ps1 "${{ steps.extract_branch.outputs.branch }}"
       shell: pwsh
