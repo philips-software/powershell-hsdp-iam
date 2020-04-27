@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>hsdp-iam</id>
-    <version>99.99.99</version>
+    <version>${NUGET_VERSION}</version>
     <authors>Mark Lindell</authors>
     <owners>Mark Lindell</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,6 +13,10 @@
     </dependencies>
   </metadata>
 </package>
+
+
+
+
 
 
 
