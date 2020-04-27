@@ -44,8 +44,8 @@ jobs:
       uses: olegtarasov/download-nuget@v1
       
     - name: build/package
-      run: .\build.ps1 ${GITHUB_REF##*/} ${{ steps.gitversion.outputs.semVer }}
+      run: .\build.ps1 ${{ steps.gitversion.outputs.semVer }}
       shell: pwsh
 
     - name: Make Nuget package (Non-Windows)
-      run: mono $NUGET_EXE pack target/hsdp-iam.${{ steps.extract_branch.outputs.semver }}.nupkg
+      run: mono $NUGET_EXE pack target/hsdp-iam.${{ steps.gitversion.outputs.semVer }}.nupkg

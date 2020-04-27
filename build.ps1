@@ -1,10 +1,14 @@
-param($branchName, $semver)
+param($semver = "PullRequest")
 
 $VerbosePreference = "continue"
 
 Push-Location $PSScriptRoot/src
 
-Write-Verbose "branch: $($branchName)"
+if ($semver -contains "PullRequest") {
+    Write-Verbose "Pull request"
+    $semver = "99.99.99"
+}
+
 Write-Verbose "semver: $($semver)"
 
 # ensure the module imports
