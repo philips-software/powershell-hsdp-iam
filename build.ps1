@@ -9,10 +9,11 @@ Write-Verbose "Setting version to $VERSION"
 ((Get-Content -path hsdp-iam-template.nuspec -Raw) -replace '\${NUGET_VERSION}',$VERSION) | Set-Content -Path hsdp-iam.nuspec
 ((Get-Content -path hsdp-iam-template.psd1 -Raw) -replace '\${NUGET_VERSION}',$VERSION) | Set-Content -Path hsdp-iam.psd1
 
-if ((Get-ChildItem -Path Env:OS).Value -eq "Windows_NT" ) {
-    & nuget pack -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
+$osEnv = (Get-ChildItem -Path Env:OS)
+if ($osEnv -and $osEnv.Value -eq "Windows_NT" ) {
+    & nuget pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 } else {
-    & mono $NUGET_EXE pack -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
+    & mono $NUGET_EXE pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 }
 
 Pop-Location

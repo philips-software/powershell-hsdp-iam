@@ -1,4 +1,4 @@
-Install-Module PowerShell-JWT
+Install-Module PowerShell-JWT -Force
 
 <#
     .SYNOPSIS
