@@ -110,10 +110,10 @@ function New-Config {
             $config = Read-Config
         } else {
             $config = (New-Object PSObject -Property @{
-                Credentials         = [PSCredential]@($CredentialsUserName, (ConvertTo-SecureString -String $CredentialsPassword -AsPlainText -Force))
-                ClientCredentials   = [PSCredential]@($ClientCredentialsUserName, (ConvertTo-SecureString -String $ClientCredentialsPassword -AsPlainText -Force))
-                AppCredentials      = [PSCredential]@($AppCredentialsUserName, (ConvertTo-SecureString -String $AppCredentialsPassword -AsPlainText -Force))
-                OAuth2Credentials   = [PSCredential]@($OAuth2CredentialsUserName, (ConvertTo-SecureString -String $OAuth2CredentialsPassword -AsPlainText -Force))
+                Credentials         = New-Object System.Management.Automation.PSCredential ($CredentialsUserName, (ConvertTo-SecureString -String $CredentialsPassword -AsPlainText -Force))
+                ClientCredentials   = New-Object System.Management.Automation.PSCredential ($ClientCredentialsUserName, (ConvertTo-SecureString -String $ClientCredentialsPassword -AsPlainText -Force))
+                AppCredentials      = New-Object System.Management.Automation.PSCredential ($AppCredentialsUserName, (ConvertTo-SecureString -String $AppCredentialsPassword -AsPlainText -Force))
+                OAuth2Credentials   = New-Object System.Management.Automation.PSCredential ($OAuth2CredentialsUserName, (ConvertTo-SecureString -String $OAuth2CredentialsPassword -AsPlainText -Force))
                 IamUrl              = $IamUrl
                 IdmUrl              = $IdmUrl
             })            
