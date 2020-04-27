@@ -15,9 +15,11 @@ Write-Verbose "Setting version to $VERSION"
 
 $osEnv = (Get-ChildItem -Path ENV: | Where-Object { $_.name -eq 'OS'})
 if ($osEnv -and $osEnv.Value -eq "Windows_NT" ) {
+    Write-Verbose "Using windows nuget"
     & nuget pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 } else {
-    & mono nuget pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
+    Write-Verbose "Using mono for nuget"
+    & mono $NUGET_EXE pack hsdp-iam.nuspec -NoPackageAnalysis -OutputDirectory $PSScriptRoot/target
 }
 
 Pop-Location
