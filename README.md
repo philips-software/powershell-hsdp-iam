@@ -192,4 +192,3 @@ Link to [LICENSE.md](LICENSE.md)
 1. Inspiration for powershell approach taken from from [JiraPS](https://github.com/AtlassianPS/JiraPS)
 
 [![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
-
