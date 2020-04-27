@@ -4,14 +4,12 @@ $VerbosePreference = "continue"
 
 Push-Location $PSScriptRoot/src
 
-Write-Verbose "semver: $($semver)"
-
 # ensure the module imports
 Import-Module -Name ./hsdp-iam -Force
 
 $semver = "$($major).$($minor).$($patch)"
+Write-Verbose "Setting version to $($semver)"
 
-Write-Verbose "Setting version"
 ((Get-Content -path hsdp-iam-template.nuspec -Raw) -replace '\${NUGET_VERSION}',$semver) | Set-Content -Path hsdp-iam.nuspec
 ((Get-Content -path hsdp-iam-template.psd1 -Raw) -replace '\${NUGET_VERSION}',$semver) | Set-Content -Path hsdp-iam.psd1
 
