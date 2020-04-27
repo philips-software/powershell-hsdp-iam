@@ -36,5 +36,5 @@ jobs:
       shell: pwsh
       
     - name: build
-      run: .\build.ps1 
-      shell: pwsh ${{ steps.extract_branch.outputs.branch }}
+      run: .\build.ps1 "${{ steps.extract_branch.outputs.branch }}"
+      shell: pwsh
