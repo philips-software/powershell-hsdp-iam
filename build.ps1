@@ -1,18 +1,15 @@
-param($semver = "PullRequest")
+param($major = "0", $minor = "1", $patch = "0")
 
 $VerbosePreference = "continue"
 
 Push-Location $PSScriptRoot/src
 
-if ($semver -contains "PullRequest") {
-    Write-Verbose "Pull request"
-    $semver = "99.99.99"
-}
-
 Write-Verbose "semver: $($semver)"
 
 # ensure the module imports
 Import-Module -Name ./hsdp-iam -Force
+
+$semver = "$($major).$($minor).$($patch)"
 
 Write-Verbose "Setting version"
 ((Get-Content -path hsdp-iam-template.nuspec -Raw) -replace '\${NUGET_VERSION}',$semver) | Set-Content -Path hsdp-iam.nuspec
