@@ -38,3 +38,6 @@ jobs:
     - name: build/package
       run: .\build.ps1 "${{ steps.extract_branch.outputs.branch }}"
       shell: pwsh
+
+    - name: Make Nuget package (Non-Windows)
+      run: mono $NUGET_EXE pack target/hsdp-iam.99.99.99.nupkg
