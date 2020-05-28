@@ -5,17 +5,26 @@
     .DESCRIPTION
     Retrieves multiple users for either an org or a group
 
+    .INPUTS
+    The org or group to retrieve users
+    
     .OUTPUTS
     An array of user ids
 
     .PARAMETER Org
-    The organization PSObject 
+    The organization PSObject. Use either this parameter or the Group parameter but not both.
 
     .PARAMETER Group
-    The group PSObject
+    The group PSObject. Use either this parameter or the Org parameter but not both.
 
     .EXAMPLE
-    $userIds = Get-User "b41b992a-fb96-475e-90dd-ee3234362ca7"
+    $org = Get-Org "e69d1807-6376-4f03-be84-8373acd27e24"
+    $userIds = Get-Users -Org org
+
+    .EXAMPLE
+    $org = $org = Get-Org "e69d1807-6376-4f03-be84-8373acd27e24"
+    $group = $org | Get-Groups | select -First
+    $userIds = Get-Users -Group $group
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/legacy-api#/User%20Management/get_security_users
@@ -42,17 +51,19 @@ function Get-Users {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $path = "/security/users"
-
+        $p = @{ Page = 1; Size = 100}
         if ($PSCmdlet.ParameterSetName -eq "Org") {
-            $path += "?organizationId=$($Org.id)&pageSize=99999"
+            $p.Org = $Org
         }
-
         if ($PSCmdlet.ParameterSetName -eq "Group") {
-            $path += "?groupID=$($Group._id)&pageSize=99999"
+            $p.Group = $Group
         }
-
-        Write-Output @(((Invoke-GetRequest -Path $path -Version 1 -ValidStatusCodes @(200)).exchange.users) | Select-Object -ExpandProperty userUUID)
+        do {
+            Write-Verbose "Page # $($p.Page)"
+            $response = (Get-UsersByPage @p)
+            Write-Output ($response.exchange.users | Select-Object -ExpandProperty userUUID)            
+            $p.Page += 1
+        } while (($response.exchange.nextPageExists -eq "false"))
     }
 
     end {

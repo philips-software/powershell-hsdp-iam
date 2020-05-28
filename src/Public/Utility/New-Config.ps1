@@ -5,6 +5,12 @@
     .DESCRIPTION
     Collects all configuration options for the module and returns a new PSObject
 
+    .INPUTS
+    All the configuration values to create a configuration object
+
+    .OUTPUTS
+    The new configuration object.
+
     .PARAMETER Prompt
     Should the user be prompted for all values. If no then all the additional parameters must be provided
 

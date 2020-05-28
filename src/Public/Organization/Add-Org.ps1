@@ -118,23 +118,24 @@ function Add-Org {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $Org = @{
             "schemas"= @("urn:ietf:params:scim:schemas:core:philips:hsdp:2.0:Organization");
-            "displayName" = $DisplayName
             "name" = $Name;
-            "description" = $Description;
             "parent" = @{
                 "value" = $ParentOrg.id;
              };
-             "externalId" = $ExternalId;
-             "type"= $Type;
-             "address" = @{
-                "formatted" = $AddressFormated;
-                "streetAddress" = $StreetAddress;
-                "locality" = $Locality;
-                "region" = $Region;
-                "postalCode" = $PostalCode;
-                "country" = $Country;
-             }
         }
+        if ($DisplayName) { $Org.DisplayName = $DisplayName }
+        if ($Description) { $Org.Description = $Description }
+        if ($ExternalId) { $Org.ExternalId = $ExternalId }
+        if ($Type) { $Org.type = $Type }
+        if ($AddressFormated -or $StreetAddress -or $Locality -or $Region -or $PostalCode -or $Country) {
+            $Org.address = @{}
+            if ($AddressFormated) { $Org.address.formatted = $AddressFormated }
+            if ($StreetAddress) { $Org.address.streetAddress = $StreetAddress }
+            if ($Locality) { $Org.address.locality = $Locality }
+            if ($Region) { $Org.address.region = $Region }
+            if ($PostalCode) { $Org.address.postalCode = $PostalCode }
+            if ($Country) { $Org.address.country = $Country }
+         }
         (Invoke-ApiRequest -Path "/authorize/scim/v2/Organizations" -Version 2 -Method Post -Body $Org -ValidStatusCodes @(201) )
     }
 

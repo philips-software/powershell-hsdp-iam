@@ -1,7 +1,6 @@
 $source = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$source\Set-Org.ps1"
 . "$source\..\Utility\Invoke-ApiRequest.ps1"
-
 Describe "Set-Org" {
     $response = [PSCustomObject]@{}
     $Org = @{ "id" = "2"; }

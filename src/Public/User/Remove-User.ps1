@@ -10,11 +10,14 @@
     .INPUTS
     An user PSObject
 
-    .OUTPUTS
-    A OperationOutcome PSObject
+    .PARAMETER User
+    The user object to remove
+
+    .EXAMPLE    
+    Remove-User -User $user
 
     .EXAMPLE
-    Remove-User $user
+    Get-Users -Org $org | Get-User | Where-Object {$_.loginId.StartsWith('test')} | Remove-User
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api-v2#/User%20Identity/delete_authorize_identity_User__id_

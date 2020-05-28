@@ -1,27 +1,34 @@
 <#
     .SYNOPSIS
-    Validates user identifiers
+    Validates user identifiers (either id or name)
 
     .DESCRIPTION
-    Validates that all user identifiers are valid
+    Validates that all the user identifiers are valid
 
     .INPUTS
     An array of either usernames or unique identifiers
 
     .OUTPUTS
-    A OperationOutcome PSObject
+    An array of invalid user ids
+
+    .PARAMETER Ids
+    The array of user identifiers to test
 
     .EXAMPLE
-    Test-UserIds @("user1", "user2")
+    $invalidUserIds = Test-UserIds @("user1", "user2")
+
+    .EXAMPLE
+    $invalidUserIds = Test-UserIds @("92d6dd54-ceb3-4689-8833-d8577d4cd8fb")
+
 #>
 function Test-UserIds  {
 
     [CmdletBinding()]
-    [OutputType([boolean])]
+    [OutputType([string[]])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [array]$userIds
+        [array]$Ids
     )
 
     begin {
@@ -30,15 +37,15 @@ function Test-UserIds  {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
-        $valid = $true        
-        $userIds | ForEach-Object {
-            $user = Get-User $_
+        [string[]] $invalidUsers = @()
+        $Ids | ForEach-Object {            
+            $user = Get-User -Id $_
             if ($null -eq $user) {
-                $valid = $false
-                Write-Warning "user '$($_)' is not a valid username"
+                $invalidUsers += $_
+                Write-Warning "user '$($_)' is not found"
             }
         }        
-        return $valid
+        return $invalidUsers
     }
 
     end {

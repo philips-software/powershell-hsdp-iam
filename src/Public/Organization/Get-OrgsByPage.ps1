@@ -7,6 +7,10 @@
     If no filter is passed, this API will return all child organizations under the requester's organization. A OAuth2.0 Bearer token of 
     a subject with HSDP_IAM_ORGANIZATION.READ permission is required to perform only this operation.
 
+    A maximum of 100 organizations will be returned if pagination options are not set in the request. A partial representation of
+    the resource can be requested by specifying either of the mutually exclusive query parameters attributes or excludedAttributes. 
+    Search response will not contain policies and $ref for any of the references.
+
     .OUTPUTS
     Array of organization PSObjects
 
@@ -21,6 +25,12 @@
 
     .PARAMETER Inactive
     Specifies to only return inactive orgs
+
+    .PARAMETER Index
+    The index number to start. Defaults to 1
+
+    .PARAMETER Size
+    The the number of records in a page. Defaults to 100
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Organization/get_Organizations
@@ -38,7 +48,7 @@
     GET: /Organizations v2
     Only the first 10000 organizations will be returned.
 #>
-function Get-Orgs {
+function Get-OrgsByPage {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -54,7 +64,13 @@ function Get-Orgs {
         [PSObject]$ParentOrg,
 
         [Parameter(Mandatory=$false)]        
-        [Switch]$Inactive        
+        [Switch]$Inactive,
+        
+        [Parameter(Mandatory=$false)]
+        [int]$Index = 1,
+
+        [Parameter(Mandatory=$false)]
+        [int]$Size = 100 
     )
      
     begin {
@@ -64,25 +80,30 @@ function Get-Orgs {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $p = @{ Index = 1; Size = 100}
+        $url = "/authorize/scim/v2/Organizations?"
         if ($MyOrgOnly) {
-            $p.MyOrgOnly = $MyOrgOnly
+            $url += "myOrganizationOnly=true"
         }
-        if ($Name) {
-            $p.Name = $Name
+        if ($Inactive -or $ParentOrg -or $Name) {
+            if ($MyOrgOnly) { $url += "&" }
+            $url += "filter="
+            if ($Inactive) {
+                $url += "(active eq `"false`")"
+            }
+            if ($ParentOrg) {
+                if ($Inactive) { $url += " and "}
+                $url += "(parent.value eq `"$($ParentOrg.Id)`")"
+            }
+            if ($Name) {
+                if ($Inactive -or $ParentOrg) { $url += " and "}
+                $url += "(name eq `"$($Name)`")"
+            }    
         }
-        if ($ParentOrg) {
-            $p.ParentOrg = $ParentOrg
+        if ($MyOrgOnly -or $Inactive -or $ParentOrg -or $Name) {
+            $url += "&"
         }
-        if ($Inactive) {
-            $p.Inactive = $Inactive
-        }
-        do {
-            Write-Verbose "Page # $($p.Page)"
-            $response = (Get-OrgsByPage @p)
-            Write-Output ($response.Resources)            
-            $p.Index += $p.Size
-        } while (($response.itemsPerPage -eq $p.Size))
+        $url += "startIndex=$($Index)&count=$($Size)"
+        Write-Output @(Invoke-GetRequest $url -Version 2 -ValidStatusCodes @(200))
     }
 
     end {

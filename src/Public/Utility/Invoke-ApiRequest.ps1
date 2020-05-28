@@ -40,6 +40,10 @@
 
     .PARAMETER ReturnResponseHeader
     Indicates the response header should be returned and not the body    
+
+    .PARAMETER ProcessHeader
+    A script block that will accept the headers and the API response and process it returning a new response object
+
 #>
 function Invoke-ApiRequest {
 
@@ -87,8 +91,11 @@ function Invoke-ApiRequest {
 
         [Switch]
         [Parameter(Mandatory=$false)]
-        $ReturnResponseHeader
+        $ReturnResponseHeader,
 
+        [scriptblock]
+        [Parameter(Mandatory=$false)]
+        $ProcessHeader
     )
 
     begin {
@@ -123,12 +130,13 @@ function Invoke-ApiRequest {
         }
         $HeaderCopy = $HeaderCopy + $AdditionalHeaders
 
-        Write-Debug "Headers: $($HeaderCopy | ConvertTo-Json)"
+        Write-Debug "HEADERS: $($HeaderCopy | ConvertTo-Json)"
 
         $outcome = try {
             if ($Body) {                    
                 if ($HeaderCopy."Content-Type" -eq "application/json") {
-                    Write-Debug "BODY: $($Body | ConvertTo-Json -Depth 99)"
+                    Write-Debug "REQUEST BODY: $($Body | ConvertTo-Json -Depth 99)"
+                    Write-Debug "INVOKING REQUEST..."
                     $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -Body ($Body | ConvertTo-Json -Depth 99) -ErrorAction Stop
                 } else {
                     $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -Body $Body -ErrorAction Stop
@@ -136,27 +144,37 @@ function Invoke-ApiRequest {
             } else {
                 $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -ErrorAction Stop
             }
-            Write-Debug $response.StatusCode            
+            Write-Debug "HTTP STATUS: $($response.StatusCode)"
             @{ status = $response.StatusCode; response = $response; headers = [System.Collections.Hashtable]::new($response.Headers) }
         } catch {
-            Write-Debug "Status: $($_.Exception.Response.StatusCode.value__)"
+            Write-Debug "HTTP STATUS: $($_.Exception.Response.StatusCode.value__)"
             Write-Debug $_
             @{ status = $_.Exception.Response.StatusCode.value__; response = $null; detail = $_ }
         }
         if (($outcome.status -in $ValidStatusCodes)) {
             if ($null -ne $outcome.response) {
-                Write-Debug ($outcome.headers | ConvertTo-Json)
-                $content = $outcome.response.content
+                $content = $outcome.response.content                
                 $objContent = $outcome.response.content | ConvertFrom-Json                
+                Write-Debug "RESPONSE: $($content)"
                 # copy the eTag to the meta element on the resource
-                if ($null -eq $objContent.meta -and $outcome.headers.ETag) {                                        
+                if ($null -eq $objContent.meta -and $null -eq $objContent.meta.version -and $outcome.headers.ETag) {
+                    Write-Debug "Adding meta.version tag from etag header $($outcome.headers.ETag)"
                     $objContent | Add-Member NoteProperty meta (New-Object PSObject -Property @{ version = $outcome.headers.ETag } )
                     $content = ($objContent | ConvertTo-Json)
                 }                
                 if ($ReturnResponseHeader) {
                     Write-Output ($outcome.headers | ConvertTo-Json)
                 } else {
-                    Write-Output ($content | ConvertFrom-Json)
+                    if ($ProcessHeader) {
+                        Write-Debug "Processing Header Callback"
+                        $PreviousPreference = $ErrorActionPreference
+                        $ErrorActionPreference = 'Stop'
+                        $objContent = Invoke-Command -ScriptBlock $ProcessHeader -ArgumentList $outcome.headers,$objContent
+                        $ErrorActionPreference = $PreviousPreference
+                        Write-Output $objContent
+                    } else {
+                        Write-Output ($content | ConvertFrom-Json)
+                    }
                 }
             }
         } else {

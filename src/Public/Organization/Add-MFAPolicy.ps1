@@ -67,10 +67,10 @@ function Add-MFAPolicy {
         [String]$Type,
 
         [Parameter(Mandatory = $false, Position = 3)]
-        [String]$Description,
+        [String]$Description = "",
 
         [Parameter(Mandatory = $false, Position = 4)]
-        [String]$ExternalId,
+        [String]$ExternalId = "",
 
         [Parameter(Mandatory = $false, Position = 5)]
         [Boolean]$Active = $true

@@ -49,20 +49,20 @@
     Unique login ID for the user. 
     pattern: ^((?![~`!#%^&*()+={}[\]|/\\<>,;:"'?])[\S])*$
 
-    .PARAMETER MobilePhone
-    Mobile number
-    pattern: ^([0-9]{10,20})$
-    Allowed 0-9 with a minimum length of 10, max of 20.
-    Ex: 1234512345
-
     .PARAMETER GivenName
     Given names (not always 'first'). Includes middle names. pattern: ^((?![0-9,#<>~&^%?*|/\\{}[\]!@$():;+=''"])[\S])*$
 
     .PARAMETER FamilyName    
     Family name (often called 'Surname'). pattern: ^((?![0-9,#<>~&^%?*|/\\{}[\]/!@$():;+=''"])[\S])*$
 
+    .PARAMETER MobilePhone
+    Mobile number
+    pattern: ^([0-9]{10,20})$
+    Allowed 0-9 with a minimum length of 10, max of 20.
+    Ex: 1234512345
+
     .EXAMPLE
-    $user = Add-User -LoginId "test01" -Email "asdfasdf@mailinator.com" -MobilePhone "1234512345" -FamilyName "FAMILY" -GivenName "GIVEN" -ManagingOrgId "e5550a19-b6d9-4a9b-ac3c-10ba817776d4"
+    $user = Add-User -Org $org -LoginId "test01" -Email "asdfasdf@mailinator.com" -MobilePhone "1234512345" -FamilyName "FAMILY" -GivenName "GIVEN"
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api-v2#/User%20Identity/post_authorize_identity_User
@@ -76,8 +76,8 @@ function Add-User {
     [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
-        [ValidateNotNullOrEmpty()]
-        [String]$Org,
+        [ValidateNotNull()]
+        [PSObject]$Org,
 
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
@@ -89,15 +89,73 @@ function Add-User {
 
         [Parameter(Mandatory, Position = 3)]
         [ValidateNotNullOrEmpty()]
-        [String]$MobilePhone,
+        [String]$GivenName,
 
         [Parameter(Mandatory, Position = 4)]
         [ValidateNotNullOrEmpty()]
-        [String]$GivenName,
+        [String]$FamilyName,
 
-        [Parameter(Mandatory, Position = 5)]
+        [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
-        [String]$FamilyName
+        [String]$MobilePhone,
+
+        # These are accepted by API but there is no way to retrieve the fields so they are excluded until fixed
+        # [Parameter()]
+        # [String]$FaxPhone,
+
+        # [Parameter()]
+        # [String]$ContactUrl,
+
+        # [Parameter()]
+        # [String]$HomeAddress,
+
+        # [Parameter()]
+        # [String]$HomeCity,
+
+        # [Parameter()]
+        # [String]$HomeState,
+
+        # [Parameter()]
+        # [String]$HomeCountry,
+
+        # [Parameter()]
+        # [String]$HomePostalCode,
+
+        # [Parameter()]
+        # [String]$WorkAddress,
+
+        # [Parameter()]
+        # [String]$WorkCity,
+
+        # [Parameter()]
+        # [String]$WorkState,
+
+        # [Parameter()]
+        # [String]$WorkCountry,
+
+        # [Parameter()]
+        # [String]$WorkPostalCode,
+
+        # [Parameter()]
+        # [String]$TempAddress,
+
+        # [Parameter()]
+        # [String]$TempCity,
+
+        # [Parameter()]
+        # [String]$TempState,
+
+        # [Parameter()]
+        # [String]$TempCountry,
+
+        # [Parameter()]
+        # [String]$TempPostalCode,
+
+        # [Parameter()]
+        # [String]$PreferredLanguage,
+
+        [Parameter()]
+        [Bool]$AgeValidated = $true
     )
      
     begin {
@@ -107,7 +165,17 @@ function Add-User {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-
+        $telcom = @()
+        $telcom +=  @{"system"="email";"value"=$Email;}
+        if ($MobilePhone) {
+            $telcom +=  @{"system"="mobile";"value"=$MobilePhone;}
+        }
+        # if ($FaxPhone) {
+        #     $telcom +=  @{"system"="fax";"value"=$FaxPhone;}
+        # }
+        # if ($ContactUrl) {
+        #     $telcom +=  @{"system"="url";"value"=$ContactUrl;}
+        # }
         $body = @{
             "resourceType"= "Person";
             "loginId"= $LoginId;
@@ -116,20 +184,34 @@ function Add-User {
                 "family"= $FamilyName;
                 "given"= $GivenName;
             };
-            "telecom" = @(
-                @{
-                    "system"="mobile";
-                    "value"=$MobilePhone;
-                },
-                @{
-                    "system"="email";
-                    "value"=$Email;
-                }
-            );
+            "telecom" = $telcom;            
+            "isAgeValidated" = $AgeValidated
         }
-
-        $response  = (Invoke-ApiRequest -Path "/authorize/identity/User" -Version 2 -Method Post -Body $body `
-            -AddHsdpApiSignature -ValidStatusCodes @(200,201))
+        # $address = @()
+        # if ($HomeAddress) {
+        #     $address += @{"use"="home";"text"=$HomeAddress;"city"=$HomeCity;"state"=$HomeState;"postalCode"=$HomePostalCode;"country"=$HomeCountry}
+        # }
+        # if ($WorkAddress) {
+        #     $address += @{"use"="work";"text"=$WorkAddress;"city"=$WorkCity;"state"=$WorkState;"postalCode"=$WorkPostalCode;"country"=$WorkCountry}
+        # }
+        # if ($TempAddress) {
+        #     $address += @{"use"="temp";"text"=$TempAddress;"city"=$TempCity;"state"=$TempState;"postalCode"=$TempPostalCode;"country"=$TempCountry}
+        # }
+        # if ($Address) {
+        #     $body.address = $address;
+        # }
+        if ($PreferredLanguage) {
+            $body.preferredLanguage = $PreferredLanguage
+        }
+        
+        $response = (Invoke-ApiRequest -Path "/authorize/identity/User" -Version 2 -Method Post -Body $body `
+            -AddHsdpApiSignature `
+            -ValidStatusCodes @(200,201) `
+            -ProcessHeader { # Used to parse the user id from the end of the location header
+                $segments = ([System.Uri]"http://localhost$($args[0].Location[0])").segments
+                $body.id = $segments[$segments.Count-1]
+                Write-Output $body
+            })
         Write-Output @($response)
     }
 
