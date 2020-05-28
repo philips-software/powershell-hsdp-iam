@@ -15,7 +15,7 @@
     .OUTPUTS
     An updated MFA Policy PSObject
 
-    .PARAMETER MFAPolicy
+    .PARAMETER Policy
     The MFA Policy PSObject
 
     .LINK
@@ -36,7 +36,7 @@ function Set-MFAPolicy {
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [PSObject]$MFAPolicy
+        [PSObject]$Policy
     )
      
     begin {
@@ -45,7 +45,7 @@ function Set-MFAPolicy {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/MFAPolicies/$($MFAPolicy.id)" -Method Put -AddIfMatch -Body $MFAPolicy -Version 2 -ValidStatusCodes @(200)))
+        Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/MFAPolicies/$($Policy.id)" -Method Put -AddIfMatch -Body $Policy -Version 2 -ValidStatusCodes @(200)))
     }
 
     end {

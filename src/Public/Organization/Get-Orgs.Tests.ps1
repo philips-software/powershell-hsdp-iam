@@ -1,56 +1,34 @@
 $source = Split-Path -Parent $MyInvocation.MyCommand.Path
 . "$source\Get-Orgs.ps1"
-. "$source\..\Utility\Invoke-GetRequest.ps1"
+. "$source\Get-OrgsByPage.ps1"
 
-Describe "Get-Orgs" {
-    $response = @()
-    $rootPath = "/authorize/scim/v2/Organizations"
-    Context "Invoke-GetRequest" {
-        It "calls for all orgs" {
-            Mock Invoke-GetRequest { $response }
-            $orgs = Get-Orgs
-            Assert-MockCalled Invoke-GetRequest -ParameterFilter {
-                $Path -eq "$($rootPath)?count=10000" -and `
-                $Version -eq 2 -and `
-                (Compare-Object $ValidStatusCodes @(200)) -eq $null
+Describe "Get-Orgs" {    
+    Context "get" {
+        It "returns 1 page" {
+            Mock Get-OrgsByPage
+            Get-Orgs
+            Assert-MockCalled Get-OrgsByPage -Exactly 1 -ParameterFilter {
+                $Index -eq 1 -and $Size -eq 100
             }
-            $orgs | Should -Be $response
         }
-    }
-    Context "parameter MyOrgOnly" {
-        It "uses correct path" {
-            Mock Invoke-GetRequest { $response }
-            $orgs = Get-Orgs -MyOrgOnly
-            Assert-MockCalled Invoke-GetRequest -ParameterFilter {
-                $Path -eq "$($rootPath)?myOrganizationOnly=true&count=10000" -and `
-                $Version -eq 2 -and `
-                (Compare-Object $ValidStatusCodes @(200)) -eq $null
+        It "supports paging" {
+            $page1 = @{
+                "Resources" = @("1")
+                "startIndex" = 1
+                "itemsPerPage" = 100
             }
-            $orgs | Should -Be $response
-        }
-    }
-    Context "parameter Filter" {
-        It "uses correct path" {
-            Mock Invoke-GetRequest { $response }
-            $orgs = Get-Orgs -Filter  "name eq ""DevPDSOrg"""
-            Assert-MockCalled Invoke-GetRequest -ParameterFilter {
-                $Path -eq "$($rootPath)?filter=name eq ""DevPDSOrg""&count=10000" -and `
-                $Version -eq 2 -and `
-                (Compare-Object $ValidStatusCodes @(200)) -eq $null
+            $page1 = @{
+                "Resources" = @("1")
+                "startIndex" = 101
+                "itemsPerPage" = 1
             }
-            $orgs | Should -Be $response
-        }
-    }
-    Context "parameter Filter and MyOrgOnly" {
-        It "uses correct path" {
-            Mock Invoke-GetRequest { $response }
-            $orgs = Get-Orgs -Filter "name eq ""DevPDSOrg""" -MyOrgOnly
-            Assert-MockCalled Invoke-GetRequest -ParameterFilter {
-                $Path -eq "$($rootPath)?myOrganizationOnly=true&filter=name eq ""DevPDSOrg""&count=10000" -and `
-                $Version -eq 2 -and `
-                (Compare-Object $ValidStatusCodes @(200)) -eq $null
+            Mock Get-OrgsByPage {
+                if ($Page -eq 1) { $page1 }
+                if ($Page -eq 2) { $page2 }
             }
-            $orgs | Should -Be $response
+            Get-Orgs
+            Assert-MockCalled Get-OrgsByPage -Exactly 2
         }
+
     }
 }

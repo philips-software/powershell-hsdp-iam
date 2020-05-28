@@ -9,22 +9,22 @@
     An array of organization ids
 
     .OUTPUTS
-    A boolean indicating if all the ids are valid.
+    An array of invalid org ids ids
 
-    .PARAMETER OrgIds
+    .PARAMETER Ids
     An array of organization ids
 
     .EXAMPLE
-    Test-OrgIds @("02bdfa45-db4b-4450-a77e-b59ab9df9472", "ccc5ddd3-5355-4a81-81a6-7188ce150401")
+    $invalidOrgs = Test-OrgIds @("02bdfa45-db4b-4450-a77e-b59ab9df9472", "ccc5ddd3-5355-4a81-81a6-7188ce150401")
 #>
 function Test-OrgIds  {
 
     [CmdletBinding()]
-    [OutputType([boolean])]
+    [OutputType([string[]])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [array]$OrgIds
+        [string[]]$Ids
     )
 
     begin {
@@ -34,15 +34,15 @@ function Test-OrgIds  {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
         $orgs = Get-Orgs
-        $valid = $true
-        $OrgIds | ForEach-Object {
-            $orgId = $_
-            if (-not ($orgs | Where-Object { $_.id -eq $orgId })) {
-                $valid = $false
-                Write-Warning "org '$($orgId)' is not a valid id"
+        [string[]]$invalid = @()
+        $Ids | ForEach-Object {
+            $id = $_
+            if (-not ($orgs | Where-Object { $_.id -eq $id })) {
+                $invalid += $id
+                Write-Warning "org '$($id)' is not a valid id"
             }
-        }
-        Write-Output $valid    
+        }        
+        Write-Output @($invalid)
     }
 
     end {

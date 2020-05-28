@@ -38,6 +38,8 @@
 
     .NOTES
     GET: GET: /authorize/identity/Group v1
+    The API does does not support searching for group names that contain a space or special characters
+    This API returns a different object than the POST/GET methods. e.g. _id instead of id, "groupName" instead of "name"
 #>
 function Get-Groups {
 

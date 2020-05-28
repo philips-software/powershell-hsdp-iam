@@ -5,6 +5,9 @@
     .DESCRIPTION
     This cmdlet is a utility to support checking if a a particular group by name exists in a set of organizations
 
+    .OUTPUTS
+    An array of orgs that do not contain the group
+
     .PARAMETER OrgIds
     An array of the organization identifiers
 
@@ -12,14 +15,12 @@
     The group name to check in each organization
 
     .EXAMPLE
-    if (Test-GroupInOrgs -OrgIds @(...) -GroupName "My Group") {
-        Write-Information "all orgs contain a 'My Group' group"
-    }    
+    $orgsWithOutGroup = Test-GroupInOrgs -OrgIds @(...) -GroupName "My Group")
 #>
 function Test-GroupInOrgs  {
 
     [CmdletBinding()]
-    [OutputType([boolean])]
+    [OutputType([string[]])]
     param(
         [ValidateNotNullOrEmpty()]
         [array]$OrgIds,
@@ -34,18 +35,18 @@ function Test-GroupInOrgs  {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        $valid = $true
+        $orgsWithOutGroup = @()
         
         $orgs = Get-Orgs | Where-Object { $OrgIds.Contains( $_.id) }
 
         $orgs | ForEach-Object {
             $group = (Get-Groups -OrgId $_.id) | Where-Object { $_.groupName -eq $GroupName }
             if (-not $group) {
+                $orgsWithOutGroup.Add($_.id)
                 Write-Warning "'$($_.id)' ($($_.name)) org does not have a group named '$($GroupName)'"
-                $valid = $false
             }
         }        
-        Write-Output $valid    
+        Write-Output $orgsWithOutGroup
     }
 
     end {

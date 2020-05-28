@@ -33,6 +33,7 @@ function Get-User {
     [OutputType([PSObject])]
     param(        
         [Parameter(Position = 0, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
         [String]$Id,
         
         [ValidateSet("membership","accountStatus","passwordStatus", "consentedApps", "all")]

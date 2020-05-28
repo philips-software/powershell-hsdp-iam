@@ -13,7 +13,7 @@
     The new group object
 
     .PARAMETER Org
-    The managing organization that the group will be created 
+    The managing organization where the group will be created 
 
     .PARAMETER Name
     The name of the group
@@ -55,10 +55,20 @@ function Add-Group {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $Group = @{
             "name"                 = $Name;
-            "description"          = $Description;
             "managingOrganization" = $Org.id
+            "description"          = $Description
         }
         $response = (Invoke-ApiRequest -Path "/authorize/identity/Group" -Version 1 -Method Post -Body $Group)
+        
+        Write-Debug ($response | ConvertTo-Json)
+        
+        $response | Add-Member -MemberType ScriptMethod -Name "AssignA" -Value { param($Ids) $this | Set-GroupIdentity -Ids $Ids }
+        $response | Add-Member -MemberType ScriptMethod -Name "RemoveB" -Value { param($Ids) $this | Remove-GroupIdentity -Ids $Ids }
+        $response | Add-Member -MemberType ScriptMethod -Name "SetRole" -Value { param($Role) $this | Set-GroupRole -Role $Role }
+        $response | Add-Member -MemberType ScriptMethod -Name "RemoveRole" -Value { param($Role) $this | Remove-GroupRole -Role $Role }
+        $response | Add-Member -MemberType ScriptMethod -Name "SetMember" -Value { param($User) $this | Set-GroupMember -User $User }
+        $response | Add-Member -MemberType ScriptMethod -Name "RemoveMember" -Value { param($User) $this | Remove-GroupMember -User $User }
+
         Write-Output @($response)
     }
 
