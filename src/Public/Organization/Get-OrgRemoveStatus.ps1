@@ -1,7 +1,7 @@
 <#
     .SYNOPSIS
     Getst the status of the organization removal status.
-    
+
     .DESCRIPTION
     Returns the delete status of a specified organization resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.DELETE permission is required to perform only this operation.
 
@@ -31,7 +31,7 @@ function Get-OrgRemoveStatus {
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [PSObject]$Org
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -43,5 +43,5 @@ function Get-OrgRemoveStatus {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

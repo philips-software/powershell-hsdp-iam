@@ -26,7 +26,7 @@ function Test-GroupInOrgs  {
         [array]$OrgIds,
 
         [ValidateNotNullOrEmpty()]
-        [string]$GroupName        
+        [string]$GroupName
     )
 
     begin {
@@ -36,7 +36,7 @@ function Test-GroupInOrgs  {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $orgsWithOutGroup = @()
-        
+
         $orgs = Get-Orgs | Where-Object { $OrgIds.Contains( $_.id) }
 
         $orgs | ForEach-Object {
@@ -45,7 +45,7 @@ function Test-GroupInOrgs  {
                 $orgsWithOutGroup.Add($_.id)
                 Write-Warning "'$($_.id)' ($($_.name)) org does not have a group named '$($GroupName)'"
             }
-        }        
+        }
         Write-Output $orgsWithOutGroup
     }
 

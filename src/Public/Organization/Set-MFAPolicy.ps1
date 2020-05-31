@@ -20,7 +20,7 @@
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Authentication%20Policy/put_MFAPolicies__id_
-    
+
     .EXAMPLE
     $p = Get-MFAPolicy (Get-Org "d578177f-f3db-4919-805a-b382c6fa0032" -IncludePolicies).policies[0].value
     $p.description = "new description"
@@ -31,21 +31,38 @@
 #>
 function Set-MFAPolicy {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [PSObject]$Policy
+        [PSObject]$Policy,
+
+        [Parameter()]
+        [switch]
+        $Force
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/MFAPolicies/$($Policy.id)" -Method Put -AddIfMatch -Body $Policy -Version 2 -ValidStatusCodes @(200)))
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/MFAPolicies/$($Policy.id)" -Method Put -AddIfMatch -Body $Policy -Version 2 -ValidStatusCodes @(200)))
+        }
     }
 
     end {

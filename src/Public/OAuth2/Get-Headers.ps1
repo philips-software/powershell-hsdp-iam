@@ -5,7 +5,7 @@
     .DESCRIPTION
     This API returns a header that will contain the OAuth2.0 access token and an optional refresh token
 
-    .OUTPUTS    
+    .OUTPUTS
     Returns a hashtable containing the headers and values
 
     .PARAMETER IamUrl
@@ -25,9 +25,9 @@
 
     .NOTES
     POST: /authorize/oauth2/token v2
-#> 
+#>
 function Get-Headers {
-   
+
     [CmdletBinding()]
     [OutputType([hashtable])]
     param(
@@ -36,17 +36,17 @@ function Get-Headers {
 
         [Parameter(Position = 1, Mandatory = $false)]
         [PSCredential]$Credentials = $null,
-        
+
         [Parameter(Position = 2, Mandatory = $false)]
         [PSCredential]$ClientCredentials = $null
     )
-    
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
         $config = Get-Config
 
@@ -55,7 +55,7 @@ function Get-Headers {
             $authForToken = [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($config.ClientCredentials.GetNetworkCredential().username):$($config.ClientCredentials.GetNetworkCredential().password)"))
         }
         else {
-            $authForToken = [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($ClientCredentials.GetNetworkCredential().username):$($ClientCredentials.GetNetworkCredential().password)"))            
+            $authForToken = [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($ClientCredentials.GetNetworkCredential().username):$($ClientCredentials.GetNetworkCredential().password)"))
         }
 
         $Headers = @{
@@ -64,7 +64,7 @@ function Get-Headers {
             "Accept"        = "application/json"
             "Authorization" = "Basic $($authForToken)"
         }
-        
+
         $Form = $null
         if ($Credentials -eq $null) {
             $Form = @{
@@ -90,7 +90,7 @@ function Get-Headers {
         else {
             $Uri = "$($IamUrl)/authorize/oauth2/token"
         }
-        
+
         $auth = Invoke-RestMethod -Uri $Uri -Method Post -Body $Form -Headers $Headers
         Write-Debug ($auth | ConvertTo-Json)
 
@@ -108,5 +108,5 @@ function Get-Headers {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }       
+    }
 }

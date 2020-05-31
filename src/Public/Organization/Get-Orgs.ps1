@@ -3,8 +3,8 @@
     Search organizations based on filter criteria.
 
     .DESCRIPTION
-    Retrieves all organizations registered under a specific parent organization. The parent organization can be passed as filter parameter. 
-    If no filter is passed, this API will return all child organizations under the requester's organization. A OAuth2.0 Bearer token of 
+    Retrieves all organizations registered under a specific parent organization. The parent organization can be passed as filter parameter.
+    If no filter is passed, this API will return all child organizations under the requester's organization. A OAuth2.0 Bearer token of
     a subject with HSDP_IAM_ORGANIZATION.READ permission is required to perform only this operation.
 
     .OUTPUTS
@@ -53,10 +53,10 @@ function Get-Orgs {
         [Parameter(Mandatory=$false)]
         [PSObject]$ParentOrg,
 
-        [Parameter(Mandatory=$false)]        
-        [Switch]$Inactive        
+        [Parameter(Mandatory=$false)]
+        [Switch]$Inactive
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }

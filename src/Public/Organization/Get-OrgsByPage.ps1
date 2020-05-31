@@ -3,12 +3,12 @@
     Search organizations based on filter criteria.
 
     .DESCRIPTION
-    Retrieves all organizations registered under a specific parent organization. The parent organization can be passed as filter parameter. 
-    If no filter is passed, this API will return all child organizations under the requester's organization. A OAuth2.0 Bearer token of 
+    Retrieves all organizations registered under a specific parent organization. The parent organization can be passed as filter parameter.
+    If no filter is passed, this API will return all child organizations under the requester's organization. A OAuth2.0 Bearer token of
     a subject with HSDP_IAM_ORGANIZATION.READ permission is required to perform only this operation.
 
     A maximum of 100 organizations will be returned if pagination options are not set in the request. A partial representation of
-    the resource can be requested by specifying either of the mutually exclusive query parameters attributes or excludedAttributes. 
+    the resource can be requested by specifying either of the mutually exclusive query parameters attributes or excludedAttributes.
     Search response will not contain policies and $ref for any of the references.
 
     .OUTPUTS
@@ -63,16 +63,16 @@ function Get-OrgsByPage {
         [Parameter(Mandatory=$false)]
         [PSObject]$ParentOrg,
 
-        [Parameter(Mandatory=$false)]        
+        [Parameter(Mandatory=$false)]
         [Switch]$Inactive,
-        
+
         [Parameter(Mandatory=$false)]
         [int]$Index = 1,
 
         [Parameter(Mandatory=$false)]
-        [int]$Size = 100 
+        [int]$Size = 100
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -97,7 +97,7 @@ function Get-OrgsByPage {
             if ($Name) {
                 if ($Inactive -or $ParentOrg) { $url += " and "}
                 $url += "(name eq `"$($Name)`")"
-            }    
+            }
         }
         if ($MyOrgOnly -or $Inactive -or $ParentOrg -or $Name) {
             $url += "&"

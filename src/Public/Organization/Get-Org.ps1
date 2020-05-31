@@ -1,20 +1,20 @@
 <#
     .SYNOPSIS
     Retrieve an existing organization.
-    
+
     .DESCRIPTION
-    Returns the specified organization resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.READ permission 
-    is required to perform only this operation. Response will not contain policies unless explicitly requested using includePolicies 
+    Returns the specified organization resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.READ permission
+    is required to perform only this operation. Response will not contain policies unless explicitly requested using includePolicies
     query parameter.
 
-    A partial representation of the resource can be requested by specifying either of the mutually exclusive query parameters 
+    A partial representation of the resource can be requested by specifying either of the mutually exclusive query parameters
     attributes or excludedAttributes.
 
     .INPUTS
     The organization identifier
 
     .OUTPUTS
-    The organization as a PSObject    
+    The organization as a PSObject
 
     .PARAMETER Id
     The organization identifier
@@ -46,7 +46,7 @@ function Get-Org {
         [Parameter(Mandatory=$false)]
         $IncludePolicies
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -58,5 +58,5 @@ function Get-Org {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

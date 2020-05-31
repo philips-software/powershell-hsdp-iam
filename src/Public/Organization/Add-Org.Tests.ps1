@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Add-Org.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -9,7 +9,9 @@ Describe "Add-Org" {
     BeforeAll {
         $response = [PSCustomObject]@{ }
         $parentOrgId = "1"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $parentOrgObject = ([PSCustomObject]@{id = $parentOrgId })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $MinBody = @{
             "schemas" = @("urn:ietf:params:scim:schemas:core:philips:hsdp:2.0:Organization");
             "name"    = "foo";
@@ -17,6 +19,7 @@ Describe "Add-Org" {
                 "value" = $parentOrgId;
             };
         }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $FullBody = @{
             "schemas"     = @("urn:ietf:params:scim:schemas:core:philips:hsdp:2.0:Organization");
             "displayName" = "";
@@ -36,13 +39,14 @@ Describe "Add-Org" {
                 "country"       = ""
             }
         }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/scim/v2/Organizations"
         Mock Invoke-ApiRequest { $response }
     }
     Context "api" {
         It "invokes request" {
-            $added = Add-Org -ParentOrg $parentOrgObject -Name "foo"        
-            $added | Should -Be $response  
+            $added = Add-Org -ParentOrg $parentOrgObject -Name "foo"
+            $added | Should -Be $response
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Path -eq $rootPath -and `
                     $Version -eq 2 -and `
@@ -53,10 +57,10 @@ Describe "Add-Org" {
     }
     Context "param" {
         It "value from pipeline " {
-            $added = $parentOrgObject | Add-Org -Name "foo"        
+            $added = $parentOrgObject | Add-Org -Name "foo"
             Should -Invoke Invoke-ApiRequest
             $added | Should -Be $response
-        }        
+        }
         It "ensures -ParentOrg not null" {
             { Add-Org -ParentOrg $null } | Should -Throw "*'ParentOrg'. The argument is null or empty*"
         }
@@ -76,7 +80,7 @@ Describe "Add-Org" {
             $FullBody.address.locality = "address.locality"
             $FullBody.address.region = "address.region"
             $FullBody.address.postalCode = "address.postalCode"
-            $FullBody.address.country = "address.country"    
+            $FullBody.address.country = "address.country"
             Mock Invoke-ApiRequest -ParameterFilter { $Body.displayName -eq "x" }
             Add-Org -ParentOrg $parentOrgObject -Name "a" -DisplayName "x"
             Should -Invoke Invoke-ApiRequest
@@ -136,7 +140,7 @@ Describe "Add-Org" {
                     -and $Body.address.postalCode -eq "address.postalCode"  `
                     -and $Body.address.country -eq "address.country"  `
                     -and $Body.externalId -eq "externalId"  `
-                    -and $Body.type -eq "type" 
+                    -and $Body.type -eq "type"
             }
             Add-Org $parentOrgObject "name" "displayName" "description" `
                 "address.formatted" "address.streetAddress" `

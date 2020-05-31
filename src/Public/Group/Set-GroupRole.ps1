@@ -16,10 +16,10 @@
     The updated group object. Must use this object for subsequent requests to meta.version is correct.
 
     .PARAMETER Group
-    The group object 
+    The group object
 
     .PARAMETER Role
-    The role object 
+    The role object
 
     .EXAMPLE
     $group = $group | Set-GroupRole $role
@@ -32,9 +32,9 @@
 #>
 function Set-GroupRole {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
-    param(   
+    param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]
@@ -43,23 +43,40 @@ function Set-GroupRole {
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [PSObject]
-        $Role
+        $Role,
+
+        [Parameter()]
+        [switch]
+        $Force
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        # API documents show that it can support multiple roles assigned but only one is supported.
-        $body = @{ "roles" = @($Role.id) }
-        $path = "/authorize/identity/Group/$($Group.id)/`$assign-role"
-        Write-Output @(Invoke-ApiRequest -Path $path -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            # API documents show that it can support multiple roles assigned but only one is supported.
+            $body = @{ "roles" = @($Role.id) }
+            $path = "/authorize/identity/Group/$($Group.id)/`$assign-role"
+            Write-Output @(Invoke-ApiRequest -Path $path -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
+        }
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

@@ -31,15 +31,15 @@ function Get-User {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
-    param(        
+    param(
         [Parameter(Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [String]$Id,
-        
+
         [ValidateSet("membership","accountStatus","passwordStatus", "consentedApps", "all")]
         [String]$ProfileType = "all"
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -51,5 +51,5 @@ function Get-User {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-Group.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
@@ -9,7 +9,7 @@ Describe "Get-Group" {
     BeforeAll {
         function Test-HasMethod ($result, $name) {
             $result.PSObject.Methods | where-object { $_.name -eq $name } | Should -HaveCount 1
-        }        
+        }
     }
     Context "api" {
         It "invokes request" {
@@ -41,7 +41,7 @@ Describe "Get-Group" {
             Mock Invoke-GetRequest { $response }
         }
         It "supports by position" {
-            Get-Group "1"            
+            Get-Group "1"
             Should -Invoke Invoke-GetRequest
         }
         It "accepts value from pipeline" {

@@ -6,20 +6,22 @@
     Collects module configuration from the Host and returns in the form of a PSObject
 
     .EXAMPLE
-    Read-Config    
+    Read-Config
 #>
+
 function Read-Config {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='needed to collect')]
     param()
-    
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
         $IamUrl = Read-Host -Prompt "HSDP IAM URL (example: https://iam-integration.us-east.philips-healthsuite.com)"
         $IdmUrl = Read-Host -Prompt "HSDP IDM URL (example: https://idm-integration.us-east.philips-healthsuite.com)"
@@ -48,7 +50,7 @@ function Read-Config {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }       
+    }
 }
 
 

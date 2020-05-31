@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Test-OrgIds.ps1"
     . "$PSScriptRoot\Get-Orgs.ps1"
 }

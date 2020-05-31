@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-Org.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
@@ -8,6 +8,7 @@ BeforeAll {
 Describe "Get-Org" {
     BeforeAll {
         $response = [PSCustomObject]@{ }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/scim/v2/Organizations"
         Mock Invoke-GetRequest { $response }
     }
@@ -28,12 +29,12 @@ Describe "Get-Org" {
         }
     }
     Context "param" {
-        It "supports positional" {                        
-            $org = Get-Org "1" -IncludePolicies
+        It "supports positional" {
+            Get-Org "1" -IncludePolicies
             Should -Invoke Invoke-GetRequest -ParameterFilter { Write-Debug $Path; $Path -eq "$($rootPath)/1?includePolicies=true" }
         }
         It "accepts value from pipeline" {
-            $org = "1" | Get-Org
+            "1" | Get-Org
             Should -Invoke Invoke-GetRequest -ParameterFilter { Write-Debug $Path; $Path -eq "$($rootPath)/1?includePolicies=false" }
         }
     }

@@ -19,7 +19,6 @@
 
     .EXAMPLE
     $invalidUserIds = Test-UserIds @("92d6dd54-ceb3-4689-8833-d8577d4cd8fb")
-
 #>
 function Test-UserIds  {
 
@@ -36,15 +35,15 @@ function Test-UserIds  {
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         [string[]]$invalidUsers = @()
-        $Ids | ForEach-Object {            
+        $Ids | ForEach-Object {
             if (-not (Get-User -Id $_)) {
                 $invalidUsers += $_
                 Write-Warning "user '$($_)' is not found"
             }
-        }   
-        Write-Output $invalidUsers     
+        }
+        Write-Output $invalidUsers
     }
 
     end {

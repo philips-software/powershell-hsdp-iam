@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-UsersByPage.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
@@ -8,8 +8,11 @@ BeforeAll {
 Describe "Get-UserByPage" {
     BeforeAll {
         Mock Invoke-GetRequest { $response }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $org = [PSCustomObject]@{ Id="1" }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $group = [PSCustomObject]@{ }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/security/users"
         $response = @{
             "exchange" = @{
@@ -17,10 +20,10 @@ Describe "Get-UserByPage" {
                     @{ "userUUID"= "06695589-af39-4928-b6db-33e52d28067f" }
                 )
                 "nextPageExists" = $false
-            }        
+            }
         }
     }
-    Context "api" {        
+    Context "api" {
         It "invokes request" {
             $result = Get-UsersByPage -Org $org -Page 2 -Size 2
             Should -Invoke Invoke-GetRequest -ParameterFilter {
@@ -31,7 +34,7 @@ Describe "Get-UserByPage" {
             $result | Should -Be $response
         }
     }
-    Context "param" {       
+    Context "param" {
         It "accept value from pipeline " {
             $result = $org | Get-UsersByPage
             Should -Invoke Invoke-GetRequest

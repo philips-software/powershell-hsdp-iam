@@ -1,14 +1,16 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-Groups.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
 
 Describe "Get-Groups" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/Group?"
-        $org = [PSCustomObject]@{ "Id" = "1" }        
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
+        $org = [PSCustomObject]@{ "Id" = "1" }
         $resource = @{
             "resourceType"="Group";
             "groupDescription"="HSDP Foundation Audit query access";
@@ -26,9 +28,9 @@ Describe "Get-Groups" {
                 $Path -eq $Path -eq "$($rootPath)organizationId=$($Org.id)" -and $Version -eq 1
             }
             $expectedResult = [PSCustomObject]@{
-                name="AuditorsGroup"; 
-                description="HSDP Foundation Audit query access"; 
-                managingOrganization="e5550a19-b6d9-4a9b-ac3c-10ba817776d4"; 
+                name="AuditorsGroup";
+                description="HSDP Foundation Audit query access";
+                managingOrganization="e5550a19-b6d9-4a9b-ac3c-10ba817776d4";
                 id="4770b86c-cc56-4487-8005-0b33f0899158"
             }
             ($result, $expectedResult | Test-Equality) | Should -BeTrue
@@ -47,7 +49,7 @@ Describe "Get-Groups" {
         }
     }
     Context "param" {
-        It "supports positional" {            
+        It "supports positional" {
             Get-Groups $org "foo"
             Should -Invoke Invoke-GetRequest -ParameterFilter {
                 $Path -eq $Path -eq "$($rootPath)organizationId=$($Org.id)"

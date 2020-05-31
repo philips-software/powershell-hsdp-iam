@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Set-UsersToOrgGroups.ps1"
     . "$PSScriptRoot\..\Organization\Test-OrgIds.ps1"
     . "$PSScriptRoot\..\User\Test-UserIds.ps1"
@@ -15,12 +15,15 @@ function getArray() {
 function foo() {
     getArray
 }
-Describe "Set-UsersToOrgGroups" {    
+Describe "Set-UsersToOrgGroups" {
     BeforeAll {
-        Mock Test-GroupInOrgs    
+        Mock Test-GroupInOrgs
         Mock Get-Orgs
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $orgIds = @("1")
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $userIds = @("2")
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $eGroup = "group1"
     }
     Context "checks" {
@@ -28,11 +31,11 @@ Describe "Set-UsersToOrgGroups" {
             Mock Test-OrgIds { ,@() }
             Mock Test-UserIds { ,@() }
         }
-        It "tests orgs" {                    
+        It "tests orgs" {
             Set-UsersToOrgGroups -OrgIds $orgIds -UserIds $userIds -GroupName $eGroup
             Should -Invoke Test-OrgIds -ParameterFilter { $Ids -eq $orgIds }
         }
-        It "tests users" {            
+        It "tests users" {
             Set-UsersToOrgGroups -OrgIds $orgIds -UserIds $userIds -GroupName $eGroup
             Should -Invoke Test-UserIds -ParameterFilter { $Ids -eq $userIds }
         }
@@ -47,7 +50,7 @@ Describe "Set-UsersToOrgGroups" {
         It "throws when invalid users ids" {
             Mock Test-UserIds { ,@("2") }
             { Set-UsersToOrgGroups -OrgIds $orgIds -UserIds $userIds -GroupName $eGroup } | Should -Throw "Unable to continue -- Check warnings"
-        }    
+        }
     }
     context "process" {
         It "processes org and users" {

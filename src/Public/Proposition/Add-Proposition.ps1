@@ -3,9 +3,9 @@
     Creates a new Proposition.
 
     .DESCRIPTION
-    Create a new proposition. A user with PROPOSITION.WRITE permissions assigned to the organization role 
+    Create a new proposition. A user with PROPOSITION.WRITE permissions assigned to the organization role
     can create the proposition under the organization.
-    
+
     .INPUTS
     An organization PSObject
 
@@ -52,7 +52,7 @@ function Add-Proposition {
         [Parameter(Mandatory = $false, Position = 3)]
         [String]$Description = ""
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -61,7 +61,7 @@ function Add-Proposition {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $prop = @{
             "organizationId"    = $org.id;
-            "name"              = $Name;        
+            "name"              = $Name;
             "globalReferenceId" = $GlobalReferenceId;
             "description"       = $Description;
         }
@@ -70,11 +70,11 @@ function Add-Proposition {
         # The create proposition does not return a response so use the location header to determine the new object id
         $location = ($headers | ConvertFrom-Json -Depth 20).Location[0]
         if ($location -match "([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})") {
-            Write-Output (Get-Proposition -Id $matches[0]) 
+            Write-Output (Get-Proposition -Id $matches[0])
         }
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

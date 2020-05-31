@@ -3,11 +3,11 @@
     Create token from a JWT
 
     .DESCRIPTION
-    Allows clients to request an access token in exchange for a JWT token. 
-    NOTE: For this grant type, the Authorization header is EXCLUSIVE. 
+    Allows clients to request an access token in exchange for a JWT token.
+    NOTE: For this grant type, the Authorization header is EXCLUSIVE.
     This grant type is supported only for service identity. For more details, please refer RFC7523 ().
 
-    .OUTPUTS    
+    .OUTPUTS
         Returns a TokenResponse PSObject
 
     .PARAMETER JWT
@@ -19,8 +19,8 @@
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/oauth2-api-v2#/OAuth%202.0%20Authorization/getAccessTokenUsingPOST
 
-    .NOTES    
-    ​/authorize​/oauth2​/token v2
+    .NOTES
+    POST: /authorize/oauth2/token v2
 #>
 function Get-TokenFromJWT {
 
@@ -29,8 +29,8 @@ function Get-TokenFromJWT {
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [string]$JWT
-    ) 
-     
+    )
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -49,7 +49,7 @@ function Get-TokenFromJWT {
         $Form = @{
             "grant_type"    = "urn:ietf:params:oauth:grant-type:jwt-bearer"
             "assertion"     = $JWT
-        }   
+        }
 
         $Uri = "$($config.IamUrl)/authorize/oauth2/token"
 
@@ -58,5 +58,5 @@ function Get-TokenFromJWT {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

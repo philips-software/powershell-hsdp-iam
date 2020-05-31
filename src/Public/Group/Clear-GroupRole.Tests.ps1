@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Clear-GroupRole.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -9,8 +9,11 @@ Describe "Clear-GroupRole" {
     BeforeAll {
         $group = ([PSCustomObject]@{id = "1" })
         $role = ([PSCustomObject]@{id = "2" })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/Group/$($Group.id)/`$remove-role"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $response = @{ }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $MatchBody = @{ "roles" = @($role.id) }
     }
     Context "api" {
@@ -28,12 +31,12 @@ Describe "Clear-GroupRole" {
     }
     Context "param" {
         BeforeAll {
-            Mock Invoke-ApiRequest { $response }       
-        }        
+            Mock Invoke-ApiRequest { $response }
+        }
         It "accepts value from pipeline" {
             $group | Clear-GroupRole -Role $role
             Should -Invoke Invoke-ApiRequest
-        }        
+        }
         It "ensures -Group not null" {
             { Clear-GroupRole -Group $null -Role $role } | Should -Throw "*'Group'. The argument is null or empty*"
         }

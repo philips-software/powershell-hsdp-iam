@@ -1,14 +1,16 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Remove-MFAPolicy.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
 Describe "Remove-MFAPolicy" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $policy = ([PSCustomObject]@{id = "1"})
         $response = [PSCustomObject]@{}
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/scim/v2/MFAPolicies"
         Mock Invoke-ApiRequest { $response }
     }
@@ -24,9 +26,9 @@ Describe "Remove-MFAPolicy" {
             $result | Should -Be $response
         }
     }
-    Context "param" {       
+    Context "param" {
         It "accepts value from pipeline" {
-            $result = $policy | Remove-MFAPolicy 
+            $policy | Remove-MFAPolicy
             Should -Invoke Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($policy.id)" }
         }
         It "ensures -Policy not null" {

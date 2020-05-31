@@ -4,7 +4,7 @@
 
     .DESCRIPTION
     This cmdlet returns a set of registered permission definitions based on query filters.
-    
+
     .INPUTS
     A role PSObject
 
@@ -19,12 +19,12 @@
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/role-api#/Role%20Management/List%20Permissions
-    
+
     .NOTES
-    GET: ​/authorize​/identity​/Permission v1
+    GET: /authorize/identity/Permission v1
 #>
 function Get-Permissions {
- 
+
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(
@@ -32,7 +32,7 @@ function Get-Permissions {
         [ValidateNotNullOrEmpty()]
         [PSObject]$Role
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -44,5 +44,5 @@ function Get-Permissions {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

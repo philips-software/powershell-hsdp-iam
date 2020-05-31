@@ -1,38 +1,38 @@
 <#
     .SYNOPSIS
-    Delete a user account
+    Deletes a app Service
 
     .DESCRIPTION
-    Removes a user account from an organization. Any user with USER.DELETE or USER.WRITE permission
-    can do this operation. Users can also delete their own accounts without these permissions.
-    For this operation to be successful, the user should not have any memberships attached to it.
+    This operation is only allowed when no related Service versions exist. Removes a service identity
+    from an organization. The is usually done by a organization administrator.
+    Any user with SERVICE.DELETE permission within the organization can also delete a service from an organization.
 
     .INPUTS
-    An user PSObject
+    A service PSObject
 
-    .PARAMETER User
-    The user object to remove
+    .OUTPUTS
+    An OperationOutcome PSObject
+
+    .PARAMETER Service
+    A service PSObject
 
     .EXAMPLE
-    Remove-User -User $user
-
-    .EXAMPLE
-    Get-Users -Org $org | Get-User | Where-Object {$_.loginId.StartsWith('test')} | Remove-User
+    Remove-Service $service
 
     .LINK
-    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api-v2#/User%20Identity/delete_authorize_identity_User__id_
+    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/service-api#/Delete%20Service/delete_authorize_identity_Service__id_
 
     .NOTES
-    DELETE: /authorize/identity/User v2
+    DELETE: /authorize/identity/Service v1
 #>
-function Remove-User {
+function Remove-AppService {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [PSObject]$User,
+        [PSObject]$Service,
 
         [Parameter()]
         [switch]
@@ -57,7 +57,7 @@ function Remove-User {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
-            Write-Output @(Invoke-ApiRequest -Path "/authorize/identity/User/$($User.id)" -Version 2 -Method Delete -ValidStatusCodes @(204))
+            Write-Output @(Invoke-ApiRequest -Path "/authorize/identity/Service/$($Service.id)" -Version 1 -Method Delete -ValidStatusCodes @(204))
         }
     }
 

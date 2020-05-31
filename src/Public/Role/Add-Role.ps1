@@ -3,8 +3,8 @@
     Create a new role definition.
 
     .DESCRIPTION
-    This API registers a new role for an organization. Organization roles are unique within the organization, 
-    and can be created by administrators. We recommend creating and managing roles at the top organization 
+    This API registers a new role for an organization. Organization roles are unique within the organization,
+    and can be created by administrators. We recommend creating and managing roles at the top organization
     level instead of in a sub-organization.
 
     .INPUTS
@@ -48,7 +48,7 @@ function Add-Role {
         [ValidateNotNullOrEmpty()]
         [String]$Description
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -68,5 +68,5 @@ function Add-Role {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

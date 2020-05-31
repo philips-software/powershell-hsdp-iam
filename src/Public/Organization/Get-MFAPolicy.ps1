@@ -3,7 +3,7 @@
     Retrieve an existing MFA policy.
 
     .DESCRIPTION
-    Returns the specified MFA policy resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_MFA_POLICY.READ permission 
+    Returns the specified MFA policy resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_MFA_POLICY.READ permission
     is required to perform only this operation.
 
     .INPUTS
@@ -17,7 +17,7 @@
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Authentication%20Policy/get_MFAPolicies__id_
-        
+
     .EXAMPLE
     $p = Get-MFAPolicy "02bdfa45-db4b-4450-a77e-b59ab9df9472"
 
@@ -32,7 +32,7 @@ function Get-MFAPolicy {
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [String]$Id
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -44,5 +44,5 @@ function Get-MFAPolicy {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

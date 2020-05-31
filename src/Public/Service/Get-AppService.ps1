@@ -1,21 +1,21 @@
 <#
     .SYNOPSIS
-    List services
+    List app services
 
     .DESCRIPTION
-    Retrieves services based on various query parameters supported.
+    Retrieves app services based on various query parameters supported.
 
     .INPUTS
-    A service identifier
+    An app service identifier
 
     .OUTPUTS
-    An service PSobject
+    An app service PSobject
 
     .PARAMETER Id
-    A service identifier
+    A app service identifier
 
     .PARAMETER Name
-    The name of the service
+    The name of the app service
 
     .PARAMETER Application
     The application PSObject that is paried with the service
@@ -35,7 +35,7 @@
     .NOTES
     GET: /authorize/identity/Service v1
 #>
-function Get-Service {
+function Get-AppService {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -56,7 +56,7 @@ function Get-Service {
         [ValidateNotNullOrEmpty()]
         [String]$PrivateKeyPath = ""
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -93,5 +93,5 @@ function Get-Service {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

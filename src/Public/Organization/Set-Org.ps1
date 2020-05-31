@@ -3,7 +3,7 @@
     Modify an organization resource properties.
 
     .DESCRIPTION
-    Updates an existing organization resource attributes. It is advised to pass the entire resource object 
+    Updates an existing organization resource attributes. It is advised to pass the entire resource object
     while performing an update. The readOnly attributes will be ignored even if it is not matching with the
     actual resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.UPDATE permission is
     required to perform only this operation.
@@ -35,7 +35,7 @@
 #>
 function Set-Org {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
@@ -44,25 +44,42 @@ function Set-Org {
 
         [Switch]
         [Parameter(Mandatory=$false)]
-        $Deactivate
+        $Deactivate,
+
+        [Parameter()]
+        [switch]
+        $Force
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        if ($Deactivate) {
-            $TempOrg = @{
-                "schemas"= @("urn:ietf:params:scim:api:messages:philips:hsdp:2.0:StatusOp");
-                "active" = "false";
-                "meta" = @{ "version" = $Org.meta.version; };
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            if ($Deactivate) {
+                $TempOrg = @{
+                    "schemas"= @("urn:ietf:params:scim:api:messages:philips:hsdp:2.0:StatusOp");
+                    "active" = "false";
+                    "meta" = @{ "version" = $Org.meta.version; };
+                }
+                Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/Organizations/$($Org.id)/status" -Method Post -AddIfMatch -Body $TempOrg -Version 2 -ValidStatusCodes @(200)))
+            } else {
+                Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/Organizations/$($Org.id)" -Method Put -AddIfMatch -Body $Org -Version 2 -ValidStatusCodes @(200)))
             }
-            Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/Organizations/$($Org.id)/status" -Method Post -AddIfMatch -Body $TempOrg -Version 2 -ValidStatusCodes @(200))) 
-        } else {
-            Write-Output @((Invoke-ApiRequest "/authorize/scim/v2/Organizations/$($Org.id)" -Method Put -AddIfMatch -Body $Org -Version 2 -ValidStatusCodes @(200)))
         }
     }
 

@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Add-MFAPolicy.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -9,6 +9,7 @@ Describe "Add-MFAPolicy" {
     BeforeAll {
         $response = [PSCustomObject]@{ }
         $orgId = "1"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $org = ([PSCustomObject]@{id = $orgId })
         $MatchBody = @{
             "schemas"     = @("urn:ietf:params:scim:schemas:core:philips:hsdp:2.0:MFAPolicy");
@@ -21,7 +22,7 @@ Describe "Add-MFAPolicy" {
                 "type"  = "Organization";
                 "value" = $orgId;
             }
-        }        
+        }
         $rootPath = "/authorize/scim/v2/MFAPolicies"
         Mock Invoke-ApiRequest { $response } -ParameterFilter {
             $Path -eq $rootPath -and `
@@ -29,13 +30,13 @@ Describe "Add-MFAPolicy" {
                 $Method -eq "Post" -and `
                 $ValidStatusCodes -eq 201 -and `
             ($MatchBody, $Body | Test-Equality)
-        }    
+        }
     }
     Context "api" {
         It "invokes request" {
-            
+
             $result = Add-MFAPolicy -Org $org -Name "foo" -Type "SOFT_OTP"
-            Should -Invoke Invoke-ApiRequest 
+            Should -Invoke Invoke-ApiRequest
             $result | Should -Be $response
         }
     }
@@ -69,6 +70,6 @@ Describe "Add-MFAPolicy" {
             $result = Add-MFAPolicy $org "foo" "SOFT_OTP" $MatchBody.description $MatchBody.externalId $MatchBody.active
             Assert-MockCalled Invoke-ApiRequest -ParameterFilter { ($MatchBody, $Body | Test-Equality) }
             $result | Should -Be $response
-        }               
+        }
     }
 }

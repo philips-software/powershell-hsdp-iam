@@ -32,7 +32,7 @@ function Get-Role {
         [ValidateNotNullOrEmpty()]
         [String]$Id
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -44,5 +44,5 @@ function Get-Role {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

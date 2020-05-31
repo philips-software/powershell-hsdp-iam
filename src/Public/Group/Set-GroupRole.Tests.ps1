@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Set-GroupRole.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -13,20 +13,22 @@ Describe "Set-GroupRole" {
                 version = @("3")
             }
         })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedPath = "/authorize/identity/Group/$($group.id)/`$assign-role"
         $role = [PSCustomObject]@{id="2"}
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedBody = @{ "roles" = @($role.id) }
         Mock Invoke-ApiRequest
     }
-    Context "api" {        
-        It "invoke request" {            
+    Context "api" {
+        It "invoke request" {
             Set-GroupRole -Group $group -Role $role
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 ($Path -eq $expectedPath) -and `
                     ($Method -eq "Post") -and `
                     ($Version -eq 1) -and `
                     ((Compare-Object $expectedBody $Body) -eq $null) -and `
-                    ((Compare-Object $ValidStatusCodes @(200)) -eq $null)                    
+                    ((Compare-Object $ValidStatusCodes @(200)) -eq $null)
             }
         }
     }

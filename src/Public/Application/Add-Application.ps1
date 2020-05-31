@@ -27,7 +27,7 @@
     .PARAMETER Description
     The description of the application
 
-    .EXAMPLE 
+    .EXAMPLE
     $app = $proposition | Add-Application -Name "My Application" -GlobalReferenceId "38145648-e41b-4f79-9b54-524e85349b0e"
 
     .LINK
@@ -55,7 +55,7 @@ function Add-Application {
         [Parameter(Mandatory = $false, Position = 3)]
         [String]$Description = ""
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -64,7 +64,7 @@ function Add-Application {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $body = @{
             "propositionId"     = $Proposition.id;
-            "name"              = $Name;        
+            "name"              = $Name;
             "globalReferenceId" = $GlobalReferenceId;
             "description"       = $Description;
         }

@@ -3,12 +3,12 @@
     Returns the metadata associated with a token
 
     .DESCRIPTION
-    Returns the metadata associated with a token. Valid client credentials are required to call this API and the client must have been 
+    Returns the metadata associated with a token. Valid client credentials are required to call this API and the client must have been
     granted the scope: auth_iam_introspect. This client scoped token can return user,client, service or device details based on the type
     of the token. Additionally, if the client requires either managing org or permission information, they must be granted an additional
     scope of: auth_iam_organization.
-    
-    .OUTPUTS    
+
+    .OUTPUTS
     Returns an IntrospectResponse as a PSObject
 
     .PARAMETER Token
@@ -31,7 +31,7 @@ function Get-Introspect {
         [Parameter(Position = 0, ValueFromPipeline)]
         [String]$Token
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -48,5 +48,5 @@ function Get-Introspect {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

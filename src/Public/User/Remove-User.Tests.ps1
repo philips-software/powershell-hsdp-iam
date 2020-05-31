@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Remove-User.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -9,9 +9,11 @@ Describe "Add-User" {
     BeforeAll {
         $response = [PSCustomObject]@{ }
         $userId = "1"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $user = ([PSCustomObject]@{id = $userId })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/User"
-        Mock Invoke-ApiRequest { $response } 
+        Mock Invoke-ApiRequest { $response }
     }
     Context "api" {
         It "invokes request" {
@@ -24,7 +26,7 @@ Describe "Add-User" {
             $result | Should -Be $response
         }
     }
-    Context "parameters" {       
+    Context "parameters" {
         It "accept value from pipeline " {
             $result = $user | Remove-User
             Should -Invoke Invoke-ApiRequest

@@ -4,7 +4,7 @@
 
     .DESCRIPTION
     This module stores configuration in a script level varaible to accessing configuration
-    across multiple cmdlets easier. 
+    across multiple cmdlets easier.
 
     This cmdlet returns the HSDP-IAM powershell module configuration hastable
 
@@ -22,7 +22,7 @@ function Get-Config  {
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         Get-Variable -Name _Config -Scope Script -ValueOnly
     }
 

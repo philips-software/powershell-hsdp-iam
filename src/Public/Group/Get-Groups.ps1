@@ -3,7 +3,7 @@
     Retrieves Group(s) based on a set of parameters.
 
     .DESCRIPTION
-    Retrieves one or more Group resources found under a given parent Organization and matches given search parameters. 
+    Retrieves one or more Group resources found under a given parent Organization and matches given search parameters.
     A user with GROUP.READ will be allowed to retrieve groups from an organization. For query by memberId of an identity
     that is assigned across organizations (such as SERVICE), this API retrieves all groups assigned to the identity irrespective of organization.
     Note:
@@ -21,7 +21,7 @@
     The organization object
 
     .PARAMETER Name
-    An optional group name to use as filter 
+    An optional group name to use as filter
 
     .PARAMETER MemberType
     Filter by memeber type of either 'USER', 'DEVICE' or 'SERVICE'
@@ -32,15 +32,15 @@
     If this parameter is specified then the MemberType must be specified
 
     .EXAMPLE
-    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" } 
+    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" }
     $myGroups = Get-Groups -Org $myOrg
 
     .EXAMPLE
-    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" } 
+    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" }
     $myNamedGroup = Get-Groups -Org $myOrg -Name "MyNamedGroup"
 
     .EXAMPLE
-    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" } 
+    $myorg = Get-Orgs | where { $_.Name -eq "MyOrg" }
     $myDeviceGroupForMember1 = Get-Groups -Org $myOrg -MemberType "DEVICE" -MemberId "1"
 
     .LINK
@@ -49,8 +49,8 @@
     .NOTES
     GET: GET: /authorize/identity/Group v1
     The API does does not support searching for group names that contain a space or special characters
-    Because this API does not use a consistient resource format, the resource is transofrmed to match the Get-Group cmdlet 
-    format as close a possible for the available fields. Form example, it does not contain the meta element as this 
+    Because this API does not use a consistient resource format, the resource is transofrmed to match the Get-Group cmdlet
+    format as close a possible for the available fields. Form example, it does not contain the meta element as this
     is not available on the response.
 #>
 function Get-Groups {
@@ -66,13 +66,13 @@ function Get-Groups {
         [String]$Name,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet('USER', 'DEVICE', 'SERVICE')]        
+        [ValidateSet('USER', 'DEVICE', 'SERVICE')]
         [String]$MemberType,
 
-        [Parameter(Mandatory = $false)]        
+        [Parameter(Mandatory = $false)]
         [String]$MemberId
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -99,5 +99,5 @@ function Get-Groups {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

@@ -1,14 +1,17 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Set-MFAPolicy.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
 Describe "Set-MFAPolicy" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $policy = ([PSCustomObject]@{id = "1"})
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $response = [PSCustomObject]@{}
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/scim/v2/MFAPolicies"
         Mock Invoke-ApiRequest { $response }
     }
@@ -18,7 +21,7 @@ Describe "Set-MFAPolicy" {
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Path -eq "$($rootPath)/$($policy.id)" -and `
                 $Method -eq "Put" -and `
-                $AddIfMatch -eq $true -and 
+                $AddIfMatch -eq $true -and
                 ($Body, $policy | Test-Equality) -and
                 $Version -eq 2 -and `
                 $ValidStatusCodes -eq 200
@@ -26,9 +29,9 @@ Describe "Set-MFAPolicy" {
             $result | Should -Be $response
         }
     }
-    Context "param" {       
+    Context "param" {
         It "accepts value from pipeline " {
-            $result = $policy | Set-MFAPolicy 
+            $policy | Set-MFAPolicy
             Should -Invoke Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($policy.id)" }
         }
         It "ensures -Policy not null" {

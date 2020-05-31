@@ -1,14 +1,15 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-OrgsByPage.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
 
 Describe "Get-OrgsByPage" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/scim/v2/Organizations"
-    }    
+    }
     Context "api" {
         BeforeEach {
             Mock Invoke-GetRequest
@@ -31,6 +32,7 @@ Describe "Get-OrgsByPage" {
             @{Path = "filter=(active eq `"false`") and (parent.value eq `"1`") and (name eq `"foo`")&startIndex=1&count=100"; Action = { Get-OrgsByPage -Inactive -ParentOrg ([PSCustomObject]@{id = "1" }) -Name "foo" } }
             @{Path = "myOrganizationOnly=true&filter=(active eq `"false`") and (parent.value eq `"1`") and (name eq `"foo`")&startIndex=1&count=100"; Action = { Get-OrgsByPage -MyOrgOnly -Inactive -ParentOrg ([PSCustomObject]@{id = "1" }) -Name "foo" } }
         ) {
+            [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
             $expectedPath = $Path
             &$Action
         }
