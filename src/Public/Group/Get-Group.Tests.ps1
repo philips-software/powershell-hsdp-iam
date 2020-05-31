@@ -5,11 +5,12 @@ BeforeAll {
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
 
-function Test-HasMethod ($result, $name) {
-    $result.PSObject.Methods | where-object { $_.name -eq $name } | Should -HaveCount 1
-}
-
-Describe "Get-Group" {        
+Describe "Get-Group" {
+    BeforeAll {
+        function Test-HasMethod ($result, $name) {
+            $result.PSObject.Methods | where-object { $_.name -eq $name } | Should -HaveCount 1
+        }        
+    }
     Context "api" {
         It "invokes request" {
             $rootPath = "/authorize/identity/Group"
