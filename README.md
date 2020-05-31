@@ -173,7 +173,11 @@ get-orgs | get-users | get-user | Where-Object { $_.accountStatus.emailVerified 
 ```
 ## How to test the software
 
-Pester tests are a WIP. Use ./iam-api.tests.ps1 to execute tests.
+Unit tests are written using Pester Version 5
+
+The ```hsdp-iam.tests.ps1``` will execute all unit tests. This is used as part of the CD/CD verification pipeline as well.
+
+Integration tests are a WIP and will be eventually added to the verification pipeline.
 
 ## Known issues
 

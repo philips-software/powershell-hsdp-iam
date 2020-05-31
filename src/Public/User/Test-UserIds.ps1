@@ -28,7 +28,7 @@ function Test-UserIds  {
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [array]$Ids
+        [string[]]$Ids
     )
 
     begin {
@@ -37,15 +37,14 @@ function Test-UserIds  {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
-        [string[]] $invalidUsers = @()
+        [string[]]$invalidUsers = @()
         $Ids | ForEach-Object {            
-            $user = Get-User -Id $_
-            if ($null -eq $user) {
+            if (-not (Get-User -Id $_)) {
                 $invalidUsers += $_
                 Write-Warning "user '$($_)' is not found"
             }
-        }        
-        return $invalidUsers
+        }   
+        Write-Output $invalidUsers     
     }
 
     end {

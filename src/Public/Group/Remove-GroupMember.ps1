@@ -1,15 +1,9 @@
 <#
     .SYNOPSIS
-    Add one or more HSDP resource to a given group.
+    Remove user from a group
 
     .DESCRIPTION
-    Given HSDP resource(s) shall be made members of the Group resource. An HSDP resource shall be identified by the relative 
-    reference in the system. In this release, the following behavior are denied (overview):
-
-    1. Any duplicate entries in the input shall be considered only once.
-    2. If the resource is already part of the destination group, then that resource shall be skipped.
-    3. Resource reference (non-existing resources) shall be skipped and the output shall contain the list of such skipped resources.
-    4. Add members operation doesn't support transaction.
+    Given HSDP resource(s) shall be removed as members of the Group.    
 
     .INPUTS
     Accepts the group object
@@ -21,19 +15,19 @@
     The group object 
 
     .PARAMETER User
-    The user object 
+    The user object
 
     .EXAMPLE
-    Set-GroupMember -Group $group -User $user
+    $group = Remove-GroupMember -Group $group -User $user
 
     .LINK
-    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api/group-api#/Group%20Management/post_authorize_identity_Group__id___add_members
+    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api/group-api#/Group%20Management/post_authorize_identity_Group__id___remove_members
 
     .NOTES
-    POST: /authorize/identity/Group/{id}/$add-members v1
-#>   
-function Set-GroupMember {
- 
+    POST: ​/authorize​/identity​/Group​/{id}​/$remove-members v1
+#>
+function Remove-GroupMember {
+
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(   
@@ -47,7 +41,7 @@ function Set-GroupMember {
         [PSObject]
         $User
     )
-     
+ 
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -66,7 +60,14 @@ function Set-GroupMember {
 
                 })
         }
-        Write-Output (Invoke-ApiRequest -Path "/authorize/identity/Group/$($Group.Id)/`$add-members" -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
+
+        $path = "/authorize/identity/Group/$($Group.id)/`$remove-members"
+        $response = (Invoke-ApiRequest -Path $path -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
+
+        # update the group version
+        $group.meta.version = $response.meta.version
+
+        Write-Output $response
     }
 
     end {

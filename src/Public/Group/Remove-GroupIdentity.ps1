@@ -67,8 +67,11 @@ function Remove-GroupIdentity {
             "memberType" = $MemberType;
             "value"      = $Ids;
         }
+        if ($Group.meta -eq $null || $Group.meta.version -eq $null || $Group.meta.version[0] -eq $null) {
+            throw "the meta.version[0] must be specified"
+        }
         $path = "/authorize/identity/Group/$($Group.id)/`$remove"
-        $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
+        $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Version 1 -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
     
         # update the group version
         $group.meta.version = $response.meta.version

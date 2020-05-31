@@ -78,9 +78,9 @@ function Get-Orgs {
             $p.Inactive = $Inactive
         }
         do {
-            Write-Verbose "Page # $($p.Page)"
+            Write-Verbose "Index # $($p.Index)"
             $response = (Get-OrgsByPage @p)
-            Write-Output ($response.Resources)            
+            Write-Output ($response.Resources)
             $p.Index += $p.Size
         } while (($response.itemsPerPage -eq $p.Size))
     }

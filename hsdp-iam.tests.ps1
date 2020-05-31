@@ -1,14 +1,17 @@
 $VerbosePreference = "silentlycontinue"
 Push-Location $PSScriptRoot/src
 
-if ((Get-Module -list -Name Pester) -notcontains 'pester') {
-    Install-Module -Name Pester -SkipPublisherCheck -RequiredVersion 4.9.0 -Force
+function Install-ModuleVersion($Name, $Version) {
+    if ((Get-Module -list -Name $Name | where { $_.version -eq $Version }) -notcontains $Name) {
+        Install-Module -Name $Name -SkipPublisherCheck -RequiredVersion $Version -Force
+    }    
 }
 
-if ((Get-Module -list -Name Functional) -notcontains 'Functional') {
-    Install-Module -Name Functional -SkipPublisherCheck -Force
-}
+Install-ModuleVersion -Name "Pester" -Version "5.0.1"
+Install-ModuleVersion -Name "Functional" -Version "0.0.4"
+Install-ModuleVersion -Name "PesterMatchHashTable" -Version "0.3.0"
+Install-ModuleVersion -Name "PesterMatchArray" -Version "0.3.1"
 
-Invoke-Pester -ExcludeTag 'Disabled' -Script @{ Path = 'Public/*' } -OutputFile "./test-pester.xml" -OutputFormat 'NUnitXML'
+Invoke-Pester -ExcludeTag 'Disabled' -Path "Public/*" -OutputFile "./test-pester.xml" -OutputFormat NUnitXml
 
 Pop-Location

@@ -19,7 +19,7 @@
     The group object 
 
     .PARAMETER Ids
-    An array of identifiers to remove from the group
+    An array of identifiers to add to the group
 
     .PARAMETER MemberType
     The member type of either "SERVICE" or "DEVICE". Defaults to "SERVICE"
@@ -68,7 +68,7 @@ function Set-GroupIdentity {
         }
         $path = "/authorize/identity/Group/$($Group.id)/`$assign"
 
-        $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
+        $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Path $path -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
         
         # update the group version
         $group.meta.version = $response.meta.version

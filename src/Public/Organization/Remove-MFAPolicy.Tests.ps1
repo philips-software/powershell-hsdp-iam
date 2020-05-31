@@ -1,28 +1,35 @@
-$source = Split-Path -Parent $MyInvocation.MyCommand.Path
-. "$source\Remove-MFAPolicy.ps1"
-. "$source\..\Utility\Invoke-ApiRequest.ps1"
+Set-StrictMode -Version Latest
+
+BeforeAll {        
+    . "$PSScriptRoot\Remove-MFAPolicy.ps1"
+    . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
+}
 
 Describe "Remove-MFAPolicy" {
-    $policy = ([PSCustomObject]@{id = "1"})
-    $response = [PSCustomObject]@{}
-    Mock Invoke-ApiRequest { $response }
-    $rootPath = "/authorize/scim/v2/MFAPolicies"
-    Context "remove a policy" {
-        $result = Remove-MFAPolicy -Policy $policy
-        Assert-MockCalled Invoke-ApiRequest -ParameterFilter {
-            $Path -eq "$($rootPath)/$($policy.id)" -and `
-            $Version -eq 2 -and `
-            $Method -eq "Delete" -and `
-            $ValidStatusCodes -eq 204
-        }
-        $result | Should -Be $response
+    BeforeAll {
+        $policy = ([PSCustomObject]@{id = "1"})
+        $response = [PSCustomObject]@{}
+        $rootPath = "/authorize/scim/v2/MFAPolicies"
+        Mock Invoke-ApiRequest { $response }
     }
-    Context "parameters" {       
-        It "support Policy from pipeline " {
-            $result = $policy | Remove-MFAPolicy 
-            Assert-MockCalled Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($policy.id)" }
+    Context "api" {
+        It "invokes request" {
+            $result = Remove-MFAPolicy -Policy $policy
+            Should -Invoke Invoke-ApiRequest -ParameterFilter {
+                $Path -eq "$($rootPath)/$($policy.id)" -and `
+                $Version -eq 2 -and `
+                $Method -eq "Delete" -and `
+                $ValidStatusCodes -eq 204
+            }
+            $result | Should -Be $response
         }
-        It "ensures Policy is specified" {
+    }
+    Context "param" {       
+        It "accepts value from pipeline" {
+            $result = $policy | Remove-MFAPolicy 
+            Should -Invoke Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($policy.id)" }
+        }
+        It "ensures -Policy not null" {
             {Remove-MFAPolicy -Policy $null } | Should -Throw "Cannot validate argument on parameter 'Policy'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
         }
     }

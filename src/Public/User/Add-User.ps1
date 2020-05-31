@@ -200,16 +200,16 @@ function Add-User {
         # if ($Address) {
         #     $body.address = $address;
         # }
-        if ($PreferredLanguage) {
-            $body.preferredLanguage = $PreferredLanguage
-        }
+        # if ($PreferredLanguage) {
+        #     $body.preferredLanguage = $PreferredLanguage
+        # }
         
         $response = (Invoke-ApiRequest -Path "/authorize/identity/User" -Version 2 -Method Post -Body $body `
             -AddHsdpApiSignature `
             -ValidStatusCodes @(200,201) `
             -ProcessHeader { # Used to parse the user id from the end of the location header
                 $segments = ([System.Uri]"http://localhost$($args[0].Location[0])").segments
-                $body.id = $segments[$segments.Count-1]
+                $body.Id = $segments[$segments.Count-1]
                 Write-Output $body
             })
         Write-Output @($response)

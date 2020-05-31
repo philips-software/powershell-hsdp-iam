@@ -62,8 +62,8 @@ function Add-Group {
         
         Write-Debug ($response | ConvertTo-Json)
         
-        $response | Add-Member -MemberType ScriptMethod -Name "AssignA" -Value { param($Ids) $this | Set-GroupIdentity -Ids $Ids }
-        $response | Add-Member -MemberType ScriptMethod -Name "RemoveB" -Value { param($Ids) $this | Remove-GroupIdentity -Ids $Ids }
+        $response | Add-Member -MemberType ScriptMethod -Name "Setdentity" -Value { param($Ids) $this | Set-GroupIdentity -Ids $Ids }
+        $response | Add-Member -MemberType ScriptMethod -Name "RemoveIdentity" -Value { param($Ids) $this | Remove-GroupIdentity -Ids $Ids }
         $response | Add-Member -MemberType ScriptMethod -Name "SetRole" -Value { param($Role) $this | Set-GroupRole -Role $Role }
         $response | Add-Member -MemberType ScriptMethod -Name "RemoveRole" -Value { param($Role) $this | Remove-GroupRole -Role $Role }
         $response | Add-Member -MemberType ScriptMethod -Name "SetMember" -Value { param($User) $this | Set-GroupMember -User $User }
