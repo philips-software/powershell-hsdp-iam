@@ -1,9 +1,18 @@
-param($major = "0", $minor = "1", $patch = "0")
+param($major = "0", $minor = "1", $patch = "0", $Test = $true, $Analyze = $True)
 
+$ErrorActionPreference = "stop"
+
+if ($Test) {
+    & .\hsdp-iam.tests.ps1
+}
+
+# run unit tests
 Push-Location $PSScriptRoot/src
 
-Install-Module -Name PSScriptAnalyzer -Force
-Invoke-ScriptAnalyzer -Path Public -Recurse
+if ($Analyze) {
+    Install-Module -Name PSScriptAnalyzer -Force
+    Invoke-ScriptAnalyzer -Path Public -Recurse
+}
 
 # ensure the module imports
 Import-Module -Name ./hsdp-iam -Force
