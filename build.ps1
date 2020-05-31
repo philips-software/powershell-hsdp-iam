@@ -2,6 +2,7 @@ param($major = "0", $minor = "1", $patch = "0")
 
 Push-Location $PSScriptRoot/src
 
+Install-Module -Name PSScriptAnalyzer
 Invoke-ScriptAnalyzer -Path Public -Recurse
 
 # ensure the module imports
