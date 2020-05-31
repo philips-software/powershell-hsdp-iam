@@ -32,7 +32,7 @@
 |||GET /authorize/identity/Group/{groupId}|1|Supported|`Get-Group`|
 |||POST /authorize/identity/Group/groupID/$remove|1|Supported|`Remove-GroupIdentity`|
 |||POST /authorize/identity/Group/{groupId}/$add-members|1|Supported|`Set-GroupMember`|
-|||POST /authorize/identity/Group/{groupId}/$remove-members|1|Future||
+|||POST /authorize/identity/Group/{groupId}/$remove-members|1|`Remove-GroupMember`||
 |||POST /authorize/identity/Group/{groupId}/$assign-role|1|Supported|`Set-GroupRole`|
 |||POST /authorize/identity/Group/{groupId}/$remove-role|1|Supported|`Clear-GroupRole`|
 |||POST /authorize/identity/Group/{groupID}/$assign|1|Supported|`Set-GroupIdentity`|

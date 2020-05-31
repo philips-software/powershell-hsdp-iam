@@ -37,10 +37,10 @@ function Get-Users {
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(        
-        [Parameter(Mandatory=$false, ParameterSetName="Org", ValueFromPipeline)]
+        [Parameter(Mandatory=$true, ValueFromPipeline)]
         [PSObject]$Org,
 
-        [Parameter(Mandatory=$false, ParameterSetName="Group")]
+        [Parameter(Mandatory=$false)]
         [PSObject]$Group
     )
      
@@ -52,18 +52,16 @@ function Get-Users {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
         $p = @{ Page = 1; Size = 100}
-        if ($PSCmdlet.ParameterSetName -eq "Org") {
-            $p.Org = $Org
-        }
-        if ($PSCmdlet.ParameterSetName -eq "Group") {
+        $p.Org = $Org
+        if ($Group) {
             $p.Group = $Group
         }
         do {
             Write-Verbose "Page # $($p.Page)"
             $response = (Get-UsersByPage @p)
-            Write-Output ($response.exchange.users | Select-Object -ExpandProperty userUUID)            
+            Write-Output ($response.exchange.users | Select-Object -ExpandProperty userUUID)
             $p.Page += 1
-        } while (($response.exchange.nextPageExists -eq "false"))
+        } while (($response.exchange.nextPageExists -eq "true"))
     }
 
     end {

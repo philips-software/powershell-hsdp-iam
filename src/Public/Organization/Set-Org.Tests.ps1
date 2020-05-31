@@ -1,30 +1,35 @@
-$source = Split-Path -Parent $MyInvocation.MyCommand.Path
-. "$source\Set-Org.ps1"
-. "$source\..\Utility\Invoke-ApiRequest.ps1"
-Describe "Set-Org" {
-    $response = [PSCustomObject]@{}
-    $Org = @{ "id" = "2"; }
-    $response = @{}
-    Mock Invoke-ApiRequest { $response }        
-    $rootPath = "/authorize/scim/v2/Organizations"
+Set-StrictMode -Version Latest
 
-    Context "Set minimal org" {
-        # Act
-        $updated = Set-Org $Org
-        # Assert
-        Assert-MockCalled Invoke-ApiRequest -ParameterFilter {
-            $Path -eq "$($rootPath)/$($Org.id)" -and `
-            $Version -eq 2 -and `
-            $Method -eq "Put" -and `
-            $AddIfMatch -ne $null -and `
-            (Compare-Object $ValidStatusCodes @(200)) -eq $null
-        }
-        $updated | Should -Be $response
+BeforeAll {        
+    . "$PSScriptRoot\Set-Org.ps1"
+    . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
+}
+
+Describe "Set-Org" {
+    BeforeAll {
+        $response = [PSCustomObject]@{}
+        $Org = @{ "id" = "2"; }
+        $response = @{}
+        $rootPath = "/authorize/scim/v2/Organizations"
+        Mock Invoke-ApiRequest { $response }        
     }
-    Context "parameters" {       
-        It "support parent org from pipeline " {
+    Context "api" {
+        It "invokes request" {
+            $updated = Set-Org $Org
+            Should -Invoke Invoke-ApiRequest -ParameterFilter {
+                $Path -eq "$($rootPath)/$($Org.id)" -and `
+                $Version -eq 2 -and `
+                $Method -eq "Put" -and `
+                $AddIfMatch -ne $null -and `
+                (Compare-Object $ValidStatusCodes @(200)) -eq $null
+            }
+            $updated | Should -Be $response
+        }
+    }
+    Context "params" {       
+        It "accepts value from pipeline " {
             $updated =  $Org | Set-Org
-            Assert-MockCalled Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($Org.id)" }
+            Should -Invoke Invoke-ApiRequest -ParameterFilter { $Path -eq "$($rootPath)/$($Org.id)" }
             $updated | Should -Be $response
         }        
     }

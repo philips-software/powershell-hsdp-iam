@@ -37,10 +37,10 @@ function Get-UsersByPage {
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(        
-        [Parameter(Mandatory = $false, ParameterSetName = "Org", ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         [PSObject]$Org,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "Group")]
+        [Parameter(Mandatory = $false)]
         [PSObject]$Group,
 
         [Parameter(Mandatory = $false)]
@@ -57,11 +57,9 @@ function Get-UsersByPage {
     process {
         $path = "/security/users"
 
-        if ($PSCmdlet.ParameterSetName -eq "Org") {
-            $path += "?organizationId=$($Org.id)"
-        }
-        elseif ($PSCmdlet.ParameterSetName -eq "Group") {
-            $path += "?groupID=$($Group._id)"
+        $path += "?organizationId=$($Org.id)"        
+        if ($Group) {
+            $path += "&groupID=$($Group.id)"
         }
 
         $path += "&pageSize=$($Size)&pageNumber=$($Page)"

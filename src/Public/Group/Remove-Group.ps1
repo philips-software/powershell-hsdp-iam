@@ -43,9 +43,9 @@ function Remove-Group {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         if ($Force) {
-            // TODO: Remove associated User, Roles, and Services
+            # TODO: Remove associated User, Roles, and Services
         }
-        Write-Output @(Invoke-ApiRequest -Path "/authorize/identity/Group/$($Group._id)" -Version 1 -Method Delete)
+        Write-Output @(Invoke-ApiRequest -Path "/authorize/identity/Group/$($Group.id)" -Version 1 -Method Delete -ValidStatusCodes @(204))
     }
 
     end {

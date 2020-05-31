@@ -33,17 +33,17 @@ function Set-UsersInGroup {
     param(   
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
-        [psobject]
+        [PSObject]
         $Org,
 
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [string]
+        [String]
         $GroupName,
 
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
-        [array]
+        [Array]
         $UserIds
     )
      
@@ -54,17 +54,15 @@ function Set-UsersInGroup {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         
-        $groups = Get-Groups -Org $Org.id
-        $group = $groups | Where-Object { $_.groupName -eq $GroupName }
+        $group = Get-Groups -Org $Org.id | Where-Object { $_.groupName -eq $GroupName }
         $UserIds | ForEach-Object {
-            $user = Get-User $_
-            $membership = ($user.memberships | Where-Object { $_.organizationId -eq $Org.id -and $_.groups.Contains($GroupName) })        
-            if (-not $membership) {            
+            $user = Get-User -Id $_
+            $membership = ($user.memberships | Where-Object { $_.organizationId -eq $Org.id -and $_.groups.Contains($GroupName) })
+            if ($membership -eq $null) {
                 Write-Information "+adding user '$($user.loginId)' to group '$($GroupName)' in org '$($Org.id)' ('$($Org.name)')"
                 Set-GroupMember -Group $group -User $user
-            }
-            else {
-                Write-Information "# skipping user '$($user.loginId)' : already member of group '$($GroupName)' in org '$($Org.id)' ('$($Org.name)')"
+            } else {
+                Write-Information "# skipping user '$($user.loginId)' : already member of group '$($GroupName)' in org '$($Org.id) ('$($Org.name)')'"
             }        
         }        
     }

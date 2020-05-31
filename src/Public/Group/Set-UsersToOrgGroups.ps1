@@ -49,18 +49,17 @@ function Set-UsersToOrgGroups {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
      
         Write-Information "Testing orgs"
-        $invalidOrgs = Test-OrgIds $OrgIds
+        $invalidOrgs = Test-OrgIds -Ids $OrgIds
 
         Write-Information "Testing users"
-        $invalidUsers = Test-UserIds $UserIds
+        $invalidUsers = Test-UserIds -Ids $UserIds
 
         Write-Information "Testing groups"
         # Just write warnings. do not use result
         Test-GroupInOrgs -OrgIds $OrgIds -GroupName $GroupName
         
         if ($invalidOrgs.Count -gt 0 -or $invalidUsers.Count -gt 0) {
-            $ErrorActionPreference = "Stop"
-            Write-Error "Unable to continue -- Check warnings"
+            throw "Unable to continue -- Check warnings"
         }
         
         Get-Orgs | Where-Object { $orgIds.Contains( $_.id) } | ForEach-Object {

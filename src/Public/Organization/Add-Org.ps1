@@ -123,9 +123,9 @@ function Add-Org {
                 "value" = $ParentOrg.id;
              };
         }
-        if ($DisplayName) { $Org.DisplayName = $DisplayName }
-        if ($Description) { $Org.Description = $Description }
-        if ($ExternalId) { $Org.ExternalId = $ExternalId }
+        if ($DisplayName) { $Org.displayName = $DisplayName }
+        if ($Description) { $Org.description = $Description }
+        if ($ExternalId) { $Org.externalId = $ExternalId }
         if ($Type) { $Org.type = $Type }
         if ($AddressFormated -or $StreetAddress -or $Locality -or $Region -or $PostalCode -or $Country) {
             $Org.address = @{}

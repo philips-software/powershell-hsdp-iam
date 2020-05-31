@@ -54,7 +54,7 @@ function Clear-GroupRole {
         # API documents show that it can support multiple roles assigned but only one is supported.
         $body = @{ "roles" = @($Role.id) }
         $path = "/authorize/identity/Group/$($Group.id)/`$remove-role"
-        $response = (Invoke-ApiRequest -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
+        $response = (Invoke-ApiRequest -Path $path -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
         Write-Output @($response)
     }
 

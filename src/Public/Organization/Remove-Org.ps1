@@ -53,7 +53,7 @@ function Remove-Org {
         
         Invoke-ApiRequest -Path "/authorize/scim/v2/Organizations/$($Org.Id)" -AdditionalHeaders @{"If-Method"="DELETE"} -Version 2 -Method Delete -ValidStatusCodes @(202)
         if ($WaitComplete) {
-            Wait-Action -Timeout 300 -RetryInterval 5 -Condition { "IN_PROGRESS" -ne (Get-OrgDeleteStatus -Org $Org) } 
+            Wait-Action -Timeout 300 -RetryInterval 5 -Condition { "IN_PROGRESS" -ne (Get-OrgRemoveStatus -Org $Org) } 
         }
     }
 

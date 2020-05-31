@@ -1,54 +1,45 @@
-$source = Split-Path -Parent $MyInvocation.MyCommand.Path
-. "$source\Test-UserIds.ps1"
-. "$source\Get-User.ps1"
+Set-StrictMode -Version Latest
+
+BeforeAll {        
+    . "$PSScriptRoot\Test-UserIds.ps1"
+    . "$PSScriptRoot\Get-User.ps1"
+}
 
 Describe "Test-UserIds" {
-
-    $user1 = ([PSCustomObject]@{id = "1"})
-    $users = @($user1)
-
-    Context "functionality" {
-        Mock Get-User { $null }
+    BeforeAll {
         Mock Write-Warning
+        Mock Get-User { $null }        
+    }
+    Context "functionality" {
         It "identifies an invalid user" {
             $result = Test-UserIds -Ids @("a")
-            Assert-MockCalled Get-User -Times 1
-            Assert-MockCalled Write-Warning -ParameterFilter { $Message -eq "user 'a' is not found" }
-            $result.Count | Should -Be 1
+            Should -Invoke Get-User -Times 1 -ParameterFilter { $Id -eq "a" }
+            Should -Invoke Write-Warning -ParameterFilter { $Message -eq "user 'a' is not found" }
             $result | Should -Be @("a")
         }
-        It "identifies an valid user" {
-            $user1 = ([PSCustomObject]@{id = "1"})
-            $users = @($user1)
-            Mock Get-User { $users }
+        It "does not return an valid user" {
+            $user = @{id = "1"}        
             Mock Write-Warning
+            Mock Get-User { $user }
             $result = Test-UserIds -Ids @("1")
-            Assert-MockCalled Get-User -Times 1
-            $result.Count | Should -Be 0
+            Should -Invoke Get-User -Times 1
+            $result | Should -BeNull
         } 
         It "calls for each user" {
-            Mock Get-User { $null }
-            Mock Write-Warning
             $result = Test-UserIds -Ids @("a", "b")
-            Assert-MockCalled Get-User -Times 2
-            $result.Count | Should -Be 2
+            Should -Invoke Get-User -Times 2
+            $result[0] | Should -Be @("a")
+            $result[1] | Should -Be @("b")
         }     
     }
-    Context "parameters" {
-        Mock Get-User { $users }
-        Mock Write-Warning
-        It "supports Ids from pipeline" {
+    Context "param" {
+        It "accepts value from pipeline" {
             @("1") | Test-UserIds
-            Assert-MockCalled Get-User -Times 1
+            Should -Invoke Get-User -Times 1
         }
-        It "supports Ids from pipeline" {
-            @("1") | Test-UserIds
-            Assert-MockCalled Get-User -Times 1
-        }
-        It "requres non null Ids array" {
+        It "ensures -Id not null" {
             { Test-UserIds -Ids $null } `
-                | Should -Throw "Cannot validate argument on parameter 'Ids'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
+                | Should -Throw "*'Ids'. The argument is null or empty*"
         }
-
     }
 }
