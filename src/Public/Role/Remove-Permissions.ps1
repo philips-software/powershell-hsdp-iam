@@ -6,7 +6,7 @@
     Removes permission(s) from a role. The operation will fail if the permission(s) are not the
     assigned ones for the requested role.
     Note: A maximum of 10 permissions can be removed per request.
-    
+
     .INPUTS
     A role PSObject
 
@@ -30,9 +30,9 @@
 #>
 function Remove-Permissions {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
-    param(   
+    param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]
@@ -41,23 +41,39 @@ function Remove-Permissions {
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
         [string[]]
-        $Permissions
+        $Permissions,
+
+        [Parameter()]
+        [switch]
+        $Force
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        
-        $body = @{ "permissions"= $Permissions; }
 
-        $response  = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.id)/`$remove-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200,207))
-        Write-Output @($response)
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            $body = @{ "permissions"= $Permissions; }
+            $response  = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.id)/`$remove-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200,207))
+            Write-Output @($response)
+        }
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

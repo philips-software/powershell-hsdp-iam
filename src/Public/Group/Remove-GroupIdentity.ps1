@@ -3,9 +3,9 @@
     Remove identity from a group
 
     .DESCRIPTION
-    Removes an identity from a group. This will delete all privileges the member got through group membership. 
+    Removes an identity from a group. This will delete all privileges the member got through group membership.
     A user with GROUP.WRITE permission will be allowed to do this operation.
-    
+
     Supported member types are - DEVICE, SERVICE
     Note: Maximum of 10 members can be removed using this resource in one call.
 
@@ -16,7 +16,7 @@
     The updated group object. Must use this object for subsequent requests to meta.version is correct.
 
     .PARAMETER Group
-    The group object 
+    The group object
 
     .PARAMETER Ids
     An array of identifiers to remove from the group
@@ -25,7 +25,7 @@
     The member type of either "SERVICE" or "DEVICE". Defaults to "SERVICE"
 
     .EXAMPLE
-    $group = Get-Group -Id "6ec094e1-73bf-4cfc-9a4e-5a17b577a3d1"    
+    $group = Get-Group -Id "6ec094e1-73bf-4cfc-9a4e-5a17b577a3d1"
     $group = Remove-GroupIdentity -Group $group -Ids @("1e9789bc-7267-4e94-9745-a3457adfd225")
 
     .LINK
@@ -36,9 +36,9 @@
 #>
 function Remove-GroupIdentity {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
-    param(   
+    param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]
@@ -52,34 +52,51 @@ function Remove-GroupIdentity {
         [Parameter(Position = 2)]
         [ValidateSet("SERVICE", "DEVICE")]
         [String]
-        $MemberType = "SERVICE"
+        $MemberType = "SERVICE",
+
+        [Parameter()]
+        [switch]
+        $Force
     )
- 
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        # API documents show that it can support multiple roles assigned but only one is supported.
-        $body = @{
-            "memberType" = $MemberType;
-            "value"      = $Ids;
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            # API documents show that it can support multiple roles assigned but only one is supported.
+            $body = @{
+                "memberType" = $MemberType;
+                "value"      = $Ids;
+            }
+            if ($null -eq $Group.meta || $null -eq $Group.meta.version || $null -eq $Group.meta.version[0]) {
+                throw "the meta.version[0] must be specified"
+            }
+            $path = "/authorize/identity/Group/$($Group.id)/`$remove"
+            $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Version 1 -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
+
+            # update the group version
+            $group.meta.version = $response.meta.version
+
+            Write-Output $response
         }
-        if ($Group.meta -eq $null || $Group.meta.version -eq $null || $Group.meta.version[0] -eq $null) {
-            throw "the meta.version[0] must be specified"
-        }
-        $path = "/authorize/identity/Group/$($Group.id)/`$remove"
-        $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Version 1 -Path $path -Method Post -Body $body -ValidStatusCodes @(200))
-    
-        # update the group version
-        $group.meta.version = $response.meta.version
-        
-        Write-Output $response
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

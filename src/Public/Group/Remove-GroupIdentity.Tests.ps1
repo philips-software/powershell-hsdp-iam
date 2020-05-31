@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Remove-GroupIdentity.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -13,13 +13,15 @@ Describe "Remove-GroupIdentity" {
                 version = @("3")
             }
         })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedPath = "/authorize/identity/Group/$($group.id)/`$remove"
         $MemberType = "SERVICE"
         $Ids = @("2")
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $body = @{
             "memberType" = $MemberType;
             "value"      = $Ids;
-        }    
+        }
         $response = @{
             meta = @{
                 version = "4"
@@ -27,13 +29,13 @@ Describe "Remove-GroupIdentity" {
         }
         Mock Invoke-ApiRequest { $response }
     }
-    Context "api" {        
-        It "invokes request" {            
+    Context "api" {
+        It "invokes request" {
             Remove-GroupIdentity -Group $group -Ids @("2") -MemberType "SERVICE"
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 ($Path -eq $expectedPath) -and `
                     ($Method -eq "Post") -and `
-                    ($Version -eq "1") -and `  
+                    ($Version -eq "1") -and `
                     ((Compare-Object $ValidStatusCodes @(200)) -eq $null) -and `
                     ((Compare-Object $AdditionalHeaders @{"If-Match"="3"}) -eq $null)
             }

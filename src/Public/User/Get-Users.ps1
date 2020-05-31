@@ -7,7 +7,7 @@
 
     .INPUTS
     The org or group to retrieve users
-    
+
     .OUTPUTS
     An array of user ids
 
@@ -36,14 +36,14 @@ function Get-Users {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
-    param(        
+    param(
         [Parameter(Mandatory=$true, ValueFromPipeline)]
         [PSObject]$Org,
 
         [Parameter(Mandatory=$false)]
         [PSObject]$Group
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -66,5 +66,5 @@ function Get-Users {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

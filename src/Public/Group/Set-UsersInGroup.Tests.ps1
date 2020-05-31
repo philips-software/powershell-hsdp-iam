@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Set-UsersInGroup.ps1"
     . "$PSScriptRoot\Get-Groups.ps1"
     . "$PSScriptRoot\..\User\Get-User.ps1"
@@ -8,8 +8,10 @@ BeforeAll {
 
 Describe "Set-UsersInGroup" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $eOrg = @{id="1";name="org1"}
         $eGroupName = "group01"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $eUserIds = @("1")
         $eGroup = @{groupName=$eGroupName}
         $groups = @($eGroup)
@@ -26,21 +28,21 @@ Describe "Set-UsersInGroup" {
         Mock Set-GroupMember
         Mock Write-Information
     }
-    Context "Get-Orgs" {        
-        It "adds user to to group when not a member" {                            
+    Context "Get-Orgs" {
+        It "adds user to to group when not a member" {
             Set-UsersInGroup -Org $eOrg -GroupName $eGroupName -UserIds $eUserIds
-            Should -Invoke Set-GroupMember -ParameterFilter { $Group -eq $eGroup -and $User -eq $eUser }            
-            Should -Invoke Write-Information -ParameterFilter { 
+            Should -Invoke Set-GroupMember -ParameterFilter { $Group -eq $eGroup -and $User -eq $eUser }
+            Should -Invoke Write-Information -ParameterFilter {
                 Write-Debug $Message
-                $Message -eq "+adding user 'user01' to group 'group01' in org '1' ('org1')" 
+                $Message -eq "+adding user 'user01' to group 'group01' in org '1' ('org1')"
             }
         }
         It "does not adds user to to group when already a member" {
             $eUser.memberships[0].groups[0] = $eGroupName
             Set-UsersInGroup -Org $eOrg -GroupName $eGroupName -UserIds $eUserIds
-            Should -Invoke Write-Information -ParameterFilter { 
+            Should -Invoke Write-Information -ParameterFilter {
                 Write-Debug $Message
-                $Message -eq "# skipping user 'user01' : already member of group 'group01' in org '1 ('org1')'" 
+                $Message -eq "# skipping user 'user01' : already member of group 'group01' in org '1 ('org1')'"
             }
         }
     }

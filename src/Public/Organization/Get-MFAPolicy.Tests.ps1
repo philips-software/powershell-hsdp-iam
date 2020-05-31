@@ -1,14 +1,16 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-MFAPolicy.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
 
 Describe "Get-MFAPolicy" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $response = [PSCustomObject]@{ }
-        $rootPath = "/authorize/scim/v2/MFAPolicies"    
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
+        $rootPath = "/authorize/scim/v2/MFAPolicies"
     }
     Context "api" {
         It "invoke request" {
@@ -29,8 +31,8 @@ Describe "Get-MFAPolicy" {
         AfterEach {
             Should -Invoke Invoke-GetRequest -ParameterFilter { $Path -eq "$($rootPath)/1" }
         }
-        It "by position" {      
-            $result = Get-MFAPolicy "1"            
+        It "by position" {
+            $result = Get-MFAPolicy "1"
             $result | Should -Be $response
         }
         It "accepts value from pipeline" {

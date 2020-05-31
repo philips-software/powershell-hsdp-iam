@@ -4,7 +4,7 @@
 
     .DESCRIPTION
     This module stores configuration in a script level varaible to accessing configuration
-    across multiple cmdlets easier. 
+    across multiple cmdlets easier.
 
     This cmdlet returns the HSDP-IAM powershell module session token.
 
@@ -16,7 +16,7 @@ function Get-Token {
     [CmdletBinding()]
     [OutputType([string])]
     param()
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -28,5 +28,5 @@ function Get-Token {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

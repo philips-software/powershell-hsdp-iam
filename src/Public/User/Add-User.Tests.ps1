@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Add-User.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -15,6 +15,7 @@ Describe "Add-User" {
         $givenName = "One"
         $email = "user@mailinator.com"
 
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $MatchBody = @{
             "resourceType"= "Person";
             "loginId"= $loginId;
@@ -31,10 +32,11 @@ Describe "Add-User" {
             );
             "isAgeValidated"= $true;
         }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/User"
-        Mock Invoke-ApiRequest { $response } 
+        Mock Invoke-ApiRequest { $response }
     }
-    
+
     Context "api" {
         It "invoke request" {
             $result = Add-User -Org $org -LoginId $loginId -Email $email -GivenName $givenName -FamilyName $familyName
@@ -58,7 +60,7 @@ Describe "Add-User" {
             }
         }
     }
-    Context "param" {       
+    Context "param" {
         It "supports value from pipeline " {
             $result = $org | Add-User -LoginId $loginId -Email $email -GivenName $givenName -FamilyName $familyName
             Should -Invoke Invoke-ApiRequest #-ParameterFilter { ($MatchBody, $Body | Test-Equality) }

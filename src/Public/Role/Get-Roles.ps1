@@ -40,13 +40,13 @@ function Get-Roles {
         [Parameter(Mandatory=$false, ParameterSetName="Org")]
         [PSObject]$Org,
 
-        [Parameter(Mandatory=$false, ParameterSetName="Group")]        
+        [Parameter(Mandatory=$false, ParameterSetName="Group")]
         [PSObject]$Group,
 
         [Parameter(Mandatory=$false, ParameterSetName="Name")]
         [String]$Name
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -71,5 +71,5 @@ function Get-Roles {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

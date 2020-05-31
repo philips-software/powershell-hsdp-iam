@@ -10,7 +10,7 @@ Install-Module PowerShell-JWT -Force
     .INPUTS
     A service PSObject
 
-    .OUTPUTS    
+    .OUTPUTS
     Returns a JWT string
 
     .PARAMETER Service
@@ -24,27 +24,54 @@ Install-Module PowerShell-JWT -Force
 #>
 function New-HsdpJWT {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Low')]
     [OutputType([string])]
     param(
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline)]
         [PSObject]$Service,
 
         [Parameter(Mandatory = $true, Position = 1)]
-        [PSObject]$KeyFile
+        [PSObject]$KeyFile,
 
-    )    
+        [Parameter()]
+        [switch]
+        $Force
+    )
 
-    $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-    
-    $exp = [int](Get-Date -UFormat %s) + 5400    
-    $payloadClaims = @{
-        "aud" = @("$($config.IamUrl)/oauth2/access_token")
-        "sub" = $Service.serviceId
+    begin {
+        Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
-    $rsaPrivateKey = Get-Content $KeyFile -AsByteStream
+    process {
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-    Write-Output (New-JWT -Algorithm 'RS256' -Issuer $Service.serviceId -ExpiryTimestamp $exp -PayloadClaims $payloadClaims -SecretKey $rsaPrivateKey)
-    
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            $config = Get-Variable -Name _Config -Scope Script -ValueOnly
+
+            $exp = [int](Get-Date -UFormat %s) + 5400
+            $payloadClaims = @{
+                "aud" = @("$($config.IamUrl)/oauth2/access_token")
+                "sub" = $Service.serviceId
+            }
+
+            $rsaPrivateKey = Get-Content $KeyFile -AsByteStream
+
+            Write-Output (New-JWT -Algorithm 'RS256' -Issuer $Service.serviceId -ExpiryTimestamp $exp -PayloadClaims $payloadClaims -SecretKey $rsaPrivateKey)
+        }
+    }
+
+    end {
+        Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
+    }
 }

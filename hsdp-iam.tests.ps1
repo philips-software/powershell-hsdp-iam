@@ -4,7 +4,7 @@ Push-Location $PSScriptRoot/src
 function Install-ModuleVersion($Name, $Version) {
     if ((Get-Module -list -Name $Name | where { $_.version -eq $Version }) -notcontains $Name) {
         Install-Module -Name $Name -SkipPublisherCheck -RequiredVersion $Version -Force
-    }    
+    }
 }
 
 Install-ModuleVersion -Name "Pester" -Version "5.0.1"

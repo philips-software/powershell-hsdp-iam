@@ -4,18 +4,18 @@
 
     .DESCRIPTION
     Creates a new user within an organization. A user can be registered in the system in two ways
-    
+
     Admin Managed
-    A user with 'USER.WRITE' permission can register users within an organization on behalf of the user. 
-    In this case, managingOrganization is mandatory and user will be created under specified organization. 
-    The registration triggers an account activation email to the registered email address of the user. 
+    A user with 'USER.WRITE' permission can register users within an organization on behalf of the user.
+    In this case, managingOrganization is mandatory and user will be created under specified organization.
+    The registration triggers an account activation email to the registered email address of the user.
     Upon activation, the user shall set the password for the account and update the complete user profile.
 
     Self Managed
-    Consumer applications can trigger user registration in a way that does not need an organization. 
-    All self-managed users will be created under a system organization called Consumer organization. 
-    Self-registration sends an account activation email to the registered email address of the user. 
-    Upon activation, the user shall set the password for the account and update the complete user profile. 
+    Consumer applications can trigger user registration in a way that does not need an organization.
+    All self-managed users will be created under a system organization called Consumer organization.
+    Self-registration sends an account activation email to the registered email address of the user.
+    Upon activation, the user shall set the password for the account and update the complete user profile.
     Self managed registration request must set isAgeValidated property to true.
 
     Minimum properties required to create a user are loginId, emailAddress, givenName and familyName.
@@ -36,23 +36,23 @@
     .PARAMETER Email
     Email ID
     Allowed characters are _A-Za-z0-9-@ with a minimum length of 3, max of 255.
-    
+
     The sequence of characters of email address should be as follows:
         a. Any character one or more times.[ _ A to Z a to z 0 to 9 to +]
-        b. If there is a '.' then it should also be followed by one or more characters [ _ A to Z a to z 0 to 9 -]. A '.'  without characters following it is not allowed 
+        b. If there is a '.' then it should also be followed by one or more characters [ _ A to Z a to z 0 to 9 -]. A '.'  without characters following it is not allowed
         c. '@' is required
         d. Any character[ A to Z a to z 0 to 9 -] one or more times
         e. If there is a '.' then it should also be followed by one or more characters [A to Z a to z 0 to 9].
         f. A '.' without characters following it is not allowed A '.' followed by any alphabet 2 or more times
 
-    .PARAMETER LoginId    
-    Unique login ID for the user. 
+    .PARAMETER LoginId
+    Unique login ID for the user.
     pattern: ^((?![~`!#%^&*()+={}[\]|/\\<>,;:"'?])[\S])*$
 
     .PARAMETER GivenName
     Given names (not always 'first'). Includes middle names. pattern: ^((?![0-9,#<>~&^%?*|/\\{}[\]!@$():;+=''"])[\S])*$
 
-    .PARAMETER FamilyName    
+    .PARAMETER FamilyName
     Family name (often called 'Surname'). pattern: ^((?![0-9,#<>~&^%?*|/\\{}[\]/!@$():;+=''"])[\S])*$
 
     .PARAMETER MobilePhone
@@ -157,7 +157,7 @@ function Add-User {
         [Parameter()]
         [Bool]$AgeValidated = $true
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -184,7 +184,7 @@ function Add-User {
                 "family"= $FamilyName;
                 "given"= $GivenName;
             };
-            "telecom" = $telcom;            
+            "telecom" = $telcom;
             "isAgeValidated" = $AgeValidated
         }
         # $address = @()
@@ -203,7 +203,7 @@ function Add-User {
         # if ($PreferredLanguage) {
         #     $body.preferredLanguage = $PreferredLanguage
         # }
-        
+
         $response = (Invoke-ApiRequest -Path "/authorize/identity/User" -Version 2 -Method Post -Body $body `
             -AddHsdpApiSignature `
             -ValidStatusCodes @(200,201) `
@@ -217,5 +217,5 @@ function Add-User {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

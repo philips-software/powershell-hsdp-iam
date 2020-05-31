@@ -1,12 +1,13 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Add-Group.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
-Describe "Add-Group" {    
+Describe "Add-Group" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/Group"
     }
     Context "api" {
@@ -15,7 +16,7 @@ Describe "Add-Group" {
             $response = @{}
             Mock Invoke-ApiRequest { $response }
             Add-Group -Org $org -Name "foo" -Description "bar"
-            Should -Invoke Invoke-ApiRequest -ParameterFilter {            
+            Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Path -eq $rootPath -and `
                 $Version -eq 1 -and `
                 $Method -eq "Post" -and `
@@ -25,8 +26,9 @@ Describe "Add-Group" {
             }
         }
     }
-    Context "param" {       
+    Context "param" {
         BeforeAll {
+            [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
             $org = ([PSCustomObject]@{id = "1"})
         }
         It "accepts value from pipeline" {
@@ -34,7 +36,7 @@ Describe "Add-Group" {
             Mock Invoke-ApiRequest { $response }
             $org | Add-Group -Name "foo"
             Should -Invoke Invoke-ApiRequest
-        }        
+        }
         It "ensures -Org not null" {
             {Add-Group -Org $null } | Should -Throw "*'Org'. The argument is null or empty*"
         }
@@ -48,7 +50,7 @@ Describe "Add-Group" {
             $response = @{}
             Mock Invoke-ApiRequest { $response }
             Add-Group $org "foo" "bar"
-            Should -Invoke Invoke-ApiRequest -ParameterFilter {            
+            Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Body.managingOrganization -eq "1" -and `
                 $Body.name -eq "foo" -and `
                 $Body.description -eq "bar"

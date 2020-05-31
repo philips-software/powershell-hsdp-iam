@@ -3,7 +3,7 @@
     Retrieves Application(s) based on a set of parameters.
 
     .DESCRIPTION
-    Retrieves Application(s) based on a set of parameters in order to either check certain values, or to change (some) values 
+    Retrieves Application(s) based on a set of parameters in order to either check certain values, or to change (some) values
     of this resource and PUT the resource back to the API. A user with APPLICATION.READ permissions assigned to the organization
     role can retrieve the application under the proposition. The ID or propositionId parameter is mandatory for application retrieval.
 
@@ -16,14 +16,14 @@
     .PARAMETER Id
     The identifier of application
 
-    .EXAMPLE 
+    .EXAMPLE
     $app = Get-Application -Id "9c186070-2804-45bb-b397-72396651f5db"
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/application-api#/Application/get_authorize_identity_Application
 
     .NOTES
-    GET: ​/authorize​/identity​/Application v1
+    GET /authorize/identity/Application v1
 #>
 function Get-Application {
 
@@ -33,7 +33,7 @@ function Get-Application {
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [String]$Id
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -46,5 +46,5 @@ function Get-Application {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

@@ -21,8 +21,8 @@
     The page number to retrieve. Defaults to 1
 
     .PARAMETER Size
-    The the number of records in a page. Defaults to 100 
-    
+    The the number of records in a page. Defaults to 100
+
     .EXAMPLE
     $org = Get-Org "10cd23a9-f111-4fe4-9eec-716b05361565"
     $tenUsers = Get-UsersByPage -Org org -Page 1 -Size 10
@@ -36,7 +36,7 @@
 function Get-UsersByPage {
     [CmdletBinding()]
     [OutputType([PSObject])]
-    param(        
+    param(
         [Parameter(Mandatory, ValueFromPipeline)]
         [PSObject]$Org,
 
@@ -44,7 +44,7 @@ function Get-UsersByPage {
         [PSObject]$Group,
 
         [Parameter(Mandatory = $false)]
-        [int]$Page = 1, 
+        [int]$Page = 1,
 
         [Parameter(Mandatory = $false)]
         [int]$Size = 100
@@ -57,16 +57,16 @@ function Get-UsersByPage {
     process {
         $path = "/security/users"
 
-        $path += "?organizationId=$($Org.id)"        
+        $path += "?organizationId=$($Org.id)"
         if ($Group) {
             $path += "&groupID=$($Group.id)"
         }
 
         $path += "&pageSize=$($Size)&pageNumber=$($Page)"
         Write-Output (Invoke-GetRequest -Path $path -Version 1 -ValidStatusCodes @(200))
-    }    
+    }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }           
+    }
 }

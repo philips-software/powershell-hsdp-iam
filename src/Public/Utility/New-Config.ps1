@@ -28,16 +28,16 @@
 
     .PARAMETER AppCredentialsUserName
     App shared key
-    
+
     .PARAMETER AppCredentialsPassword
     App secret
 
     .PARAMETER OAuth2CredentialsUserName
-    OAuth2 Client ID and password 
-    
+    OAuth2 Client ID and password
+
     .PARAMETER OAuth2CredentialsPassword
-    OAuth2  password 
-    
+    OAuth2  password
+
     .PARAMETER IamUrl
     The HSDP IAM URL. Example: https://iam-integration.us-east.philips-healthsuite.com
 
@@ -52,15 +52,18 @@
 #>
 function New-Config {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Low')]
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification='needed to collect')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
     param(
         [Parameter()]
         [Bool]
         $Prompt = $true,
 
         [Parameter()]
-        [String]
+        [SecureString]
         $CredentialsUserName,
 
         [Parameter()]
@@ -101,36 +104,53 @@ function New-Config {
 
         [Parameter()]
         [String]
-        $Path = "./config.xml"
+        $Path = "./config.xml",
+
+        [Parameter()]
+        [switch]
+        $Force
     )
-    
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $config = $null
-        if ($Prompt) {
-            $config = Read-Config
-        } else {
-            $config = (New-Object PSObject -Property @{
-                Credentials         = New-Object System.Management.Automation.PSCredential ($CredentialsUserName, (ConvertTo-SecureString -String $CredentialsPassword -AsPlainText -Force))
-                ClientCredentials   = New-Object System.Management.Automation.PSCredential ($ClientCredentialsUserName, (ConvertTo-SecureString -String $ClientCredentialsPassword -AsPlainText -Force))
-                AppCredentials      = New-Object System.Management.Automation.PSCredential ($AppCredentialsUserName, (ConvertTo-SecureString -String $AppCredentialsPassword -AsPlainText -Force))
-                OAuth2Credentials   = New-Object System.Management.Automation.PSCredential ($OAuth2CredentialsUserName, (ConvertTo-SecureString -String $OAuth2CredentialsPassword -AsPlainText -Force))
-                IamUrl              = $IamUrl
-                IdmUrl              = $IdmUrl
-            })            
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            $ConfirmPreference = 'None'
+            $config = $null
+            if ($Prompt) {
+                $config = Read-Config
+            } else {
+                $config = (New-Object PSObject -Property @{
+                    Credentials         = New-Object System.Management.Automation.PSCredential ($CredentialsUserName, (ConvertTo-SecureString -String $CredentialsPassword -AsPlainText -Force))
+                    ClientCredentials   = New-Object System.Management.Automation.PSCredential ($ClientCredentialsUserName, (ConvertTo-SecureString -String $ClientCredentialsPassword -AsPlainText -Force))
+                    AppCredentials      = New-Object System.Management.Automation.PSCredential ($AppCredentialsUserName, (ConvertTo-SecureString -String $AppCredentialsPassword -AsPlainText -Force))
+                    OAuth2Credentials   = New-Object System.Management.Automation.PSCredential ($OAuth2CredentialsUserName, (ConvertTo-SecureString -String $OAuth2CredentialsPassword -AsPlainText -Force))
+                    IamUrl              = $IamUrl
+                    IdmUrl              = $IdmUrl
+                })
+            }
+            if ($Path) {
+                $config | Export-Clixml -Path $Path
+            }
+            Write-Output $config
         }
-        if ($Path) {
-            $config | Export-Clixml -Path $Path
-        }
-        Write-Output $config
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }       
+    }
 }

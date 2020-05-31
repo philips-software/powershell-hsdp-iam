@@ -3,10 +3,10 @@
     Creates a new organization account.
 
     .DESCRIPTION
-    Creates an organization account. An OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.CREATE permission is required to 
+    Creates an organization account. An OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.CREATE permission is required to
     perform only this operation.
-    
-    If a parent organization is specified in the request, the new organization will be created under the specified parent organization. 
+
+    If a parent organization is specified in the request, the new organization will be created under the specified parent organization.
     Otherwise, the new organization will be created under the requester organization. The provisioning logic for all possible combinations
      is as follows:
 
@@ -37,7 +37,7 @@
 
     .PARAMETER StreetAddress
     The street address of the organization
-    
+
     .PARAMETER Locality
     The locality of the organization
 
@@ -46,7 +46,7 @@
 
     .PARAMETER PostalCode
     The postal code of the organization
-    
+
     .PARAMETER Country
     The country of the organization
 
@@ -55,7 +55,7 @@
 
     .PARAMETER Type
     The type (e.g. Hospital) of the organization
-        
+
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Organization/post_Organizations
 
@@ -109,7 +109,7 @@ function Add-Org {
         [Parameter(Mandatory = $false, Position = 11)]
         [String]$Type
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -141,5 +141,5 @@ function Add-Org {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

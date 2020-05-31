@@ -4,7 +4,7 @@
 
     .DESCRIPTION
     This utility function can be used to validate input from scripts or users.
-    
+
     .INPUTS
     An array of organization ids
 
@@ -32,7 +32,7 @@ function Test-OrgIds  {
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $orgs = Get-Orgs
         [string[]]$invalid = @()
         $Ids | ForEach-Object {
@@ -41,7 +41,7 @@ function Test-OrgIds  {
                 $invalid += $id
                 Write-Warning "org '$($id)' is not a valid id"
             }
-        }        
+        }
         Write-Output @($invalid)
     }
 

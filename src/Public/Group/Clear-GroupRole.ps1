@@ -4,7 +4,7 @@
 
     .DESCRIPTION
     Removes a role to a Group that, in turn, would revoke the corresponding role permissions to all the users underneath
-    that Group. The role must be a registered role in the HSDP platform. To retrieve all assigned roles for a Group, 
+    that Group. The role must be a registered role in the HSDP platform. To retrieve all assigned roles for a Group,
     refer to the Role management API. Roles can be removed from a Group one at a time.
 
     .INPUTS
@@ -32,7 +32,7 @@ function Clear-GroupRole {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
-    param(   
+    param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]
@@ -43,7 +43,7 @@ function Clear-GroupRole {
         [PSObject]
         $Role
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -60,5 +60,5 @@ function Clear-GroupRole {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

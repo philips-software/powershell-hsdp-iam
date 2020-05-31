@@ -1,20 +1,22 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Remove-Org.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
 Describe "Remove-Org" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $org = ([PSCustomObject]@{id = "1"})
-        $rootPath = "/Organizations​"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
+        $rootPath = "/Organizations"
         Mock Invoke-ApiRequest
     }
     Context "api" {
         It "invokes request" {
-            Remove-Org -Org $org
-            Should -Invoke Invoke-ApiRequest -ParameterFilter {            
+            Remove-Org -Org $org -Force
+            Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 ($Path -eq "/authorize/scim/v2/Organizations/$($org.id)") `
                     -and ($Method -eq "Delete") `
                     -and ($Version -eq "2") `
@@ -23,13 +25,13 @@ Describe "Remove-Org" {
             }
         }
     }
-    Context "param" {       
+    Context "param" {
         It "accepts value from pipeline " {
-            $org | Remove-Org
+            $org | Remove-Org -Force
             Should -Invoke Invoke-ApiRequest
         }
         It "ensures -Org not null" {
-            {Remove-Org -Org $null } | Should -Throw "Cannot validate argument on parameter 'Org'. The argument is null or empty. Provide an argument that is not null or empty, and then try the command again."
+            {Remove-Org -Org $null  } | Should -Throw "*'Org'. The argument is null or empty*"
         }
     }
 }

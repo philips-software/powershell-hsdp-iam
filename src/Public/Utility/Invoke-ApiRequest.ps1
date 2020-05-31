@@ -39,7 +39,7 @@
     Adds any additional headers to the request
 
     .PARAMETER ReturnResponseHeader
-    Indicates the response header should be returned and not the body    
+    Indicates the response header should be returned and not the body
 
     .PARAMETER ProcessHeader
     A script block that will accept the headers and the API response and process it returning a new response object
@@ -105,7 +105,7 @@ function Invoke-ApiRequest {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $headers = Get-Variable -Name _headers -Scope Script -ValueOnly
-        
+
         if (-Not $base) {
             $config = Get-Config
             $base = $config.IdmUrl
@@ -119,7 +119,7 @@ function Invoke-ApiRequest {
         $HeaderCopy."content-type" = $ContentType
         if ($Authorization) {
             $HeaderCopy."Authorization" = $Authorization
-        }        
+        }
         if ($AddHsdpApiSignature) {
             $addHeaders = Get-ApiSignatureHeaders
             $addHeaders.keys | Where-Object {$_ -notin $HeaderCopy.keys} | ForEach-Object { $HeaderCopy[$_] = $addHeaders[$_] }
@@ -133,7 +133,7 @@ function Invoke-ApiRequest {
         Write-Debug "HEADERS: $($HeaderCopy | ConvertTo-Json)"
 
         $outcome = try {
-            if ($Body) {                    
+            if ($Body) {
                 if ($HeaderCopy."Content-Type" -eq "application/json") {
                     Write-Debug "REQUEST BODY: $($Body | ConvertTo-Json -Depth 99)"
                     Write-Debug "INVOKING REQUEST..."
@@ -145,7 +145,7 @@ function Invoke-ApiRequest {
                 $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -ErrorAction Stop
             }
             Write-Debug "HTTP STATUS: $($response.StatusCode)"
-            @{ status = $response.StatusCode; response = $response; headers = [System.Collections.Hashtable]::new($response.Headers) }
+            @{ status = $response.StatusCode; response = $response; headers = $response.Headers.Clone() }
         } catch {
             Write-Debug "HTTP STATUS: $($_.Exception.Response.StatusCode.value__)"
             Write-Debug $_
@@ -153,15 +153,15 @@ function Invoke-ApiRequest {
         }
         if (($outcome.status -in $ValidStatusCodes)) {
             if ($null -ne $outcome.response) {
-                $content = $outcome.response.content                
-                $objContent = $outcome.response.content | ConvertFrom-Json                
+                $content = $outcome.response.content
+                $objContent = $outcome.response.content | ConvertFrom-Json
                 Write-Debug "RESPONSE: $($content)"
                 # copy the eTag to the meta element on the resource
                 if ($null -eq $objContent.meta -and $null -eq $objContent.meta.version -and $outcome.headers.ETag) {
                     Write-Debug "Adding meta.version tag from etag header $($outcome.headers.ETag)"
                     $objContent | Add-Member NoteProperty meta (New-Object PSObject -Property @{ version = $outcome.headers.ETag } )
                     $content = ($objContent | ConvertTo-Json)
-                }                
+                }
                 if ($ReturnResponseHeader) {
                     Write-Output ($outcome.headers | ConvertTo-Json)
                 } else {
@@ -184,5 +184,5 @@ function Invoke-ApiRequest {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }    
+    }
 }

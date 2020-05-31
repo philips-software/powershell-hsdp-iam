@@ -1,11 +1,11 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-Orgs.ps1"
     . "$PSScriptRoot\Get-OrgsByPage.ps1"
 }
 
-Describe "Get-Orgs" {   
+Describe "Get-Orgs" {
     Context "paging" {
         It "returns 1 page" {
             Mock Get-OrgsByPage { @{

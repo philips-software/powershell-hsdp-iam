@@ -4,7 +4,7 @@
 
     .DESCRIPTION
 
-    .OUTPUTS    
+    .OUTPUTS
     Returns a hashtable to be used asan  API signature header
 
     .PARAMETER DateString
@@ -31,22 +31,22 @@ function Get-ApiSignatureHeaders {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly        
-        
+
+        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
+
         $sharedKey = $config.AppCredentials.GetNetworkCredential().username
         $secretKey = $config.AppCredentials.GetNetworkCredential().password
-        
+
         $secret = "DHPWS$($secretKey)"
         if (-not $DateString) {
-            $DateString = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")   
+            $DateString = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
         }
 
         $message = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($DateString))
         $hmacsha = New-Object System.Security.Cryptography.HMACSHA256
         $hmacsha.key = [Text.Encoding]::UTF8.GetBytes($secret)
         $signature = [Convert]::ToBase64String($hmacsha.ComputeHash([Text.Encoding]::UTF8.GetBytes($message)))
-        
+
         Write-Output @{
             "hsdp-api-signature" = "HmacSHA256;Credential:$($sharedKey);SignedHeaders:SignedDate;Signature:$($signature)";
             "signeddate" = $DateString
@@ -55,5 +55,5 @@ function Get-ApiSignatureHeaders {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

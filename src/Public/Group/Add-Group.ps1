@@ -13,7 +13,7 @@
     The new group object
 
     .PARAMETER Org
-    The managing organization where the group will be created 
+    The managing organization where the group will be created
 
     .PARAMETER Name
     The name of the group
@@ -21,7 +21,7 @@
     .PARAMETER Description
     The description of the group
 
-    .EXAMPLE 
+    .EXAMPLE
     $group = $org | Add-Group -Name "My Group"
 
     .LINK
@@ -46,7 +46,7 @@ function Add-Group {
         [Parameter(Position = 2)]
         [String]$Description = ""
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -59,9 +59,9 @@ function Add-Group {
             "description"          = $Description
         }
         $response = (Invoke-ApiRequest -Path "/authorize/identity/Group" -Version 1 -Method Post -Body $Group)
-        
+
         Write-Debug ($response | ConvertTo-Json)
-        
+
         $response | Add-Member -MemberType ScriptMethod -Name "Setdentity" -Value { param($Ids) $this | Set-GroupIdentity -Ids $Ids }
         $response | Add-Member -MemberType ScriptMethod -Name "RemoveIdentity" -Value { param($Ids) $this | Remove-GroupIdentity -Ids $Ids }
         $response | Add-Member -MemberType ScriptMethod -Name "SetRole" -Value { param($Role) $this | Set-GroupRole -Role $Role }
@@ -74,5 +74,5 @@ function Add-Group {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

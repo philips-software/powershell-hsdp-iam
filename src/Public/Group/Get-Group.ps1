@@ -3,9 +3,9 @@
     Retrieves Group(s) based on a set of parameters.
 
     .DESCRIPTION
-    Retrieves one or more Group resources found under a given parent Organization and matches given search parameters. 
-    A user with GROUP.READ will be allowed to retrieve groups from an organization. For query by memberId of an identity 
-    that is assigned across organizations (such as SERVICE), this API retrieves all groups assigned to the identity irrespective 
+    Retrieves one or more Group resources found under a given parent Organization and matches given search parameters.
+    A user with GROUP.READ will be allowed to retrieve groups from an organization. For query by memberId of an identity
+    that is assigned across organizations (such as SERVICE), this API retrieves all groups assigned to the identity irrespective
     of organization
 
     .INPUTS
@@ -49,7 +49,7 @@ function Get-Group {
         [ValidateNotNullOrEmpty()]
         [String]$Id
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -69,5 +69,5 @@ function Get-Group {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

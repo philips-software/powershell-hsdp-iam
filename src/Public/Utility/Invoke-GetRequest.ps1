@@ -37,11 +37,11 @@ function Invoke-GetRequest {
     }
 
     process {
-        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"        
+        Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         Write-Output (Invoke-ApiRequest -Path $Path -Method Get -Version $Version -ValidStatusCodes $ValidStatusCodes)
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }    
+    }
 }

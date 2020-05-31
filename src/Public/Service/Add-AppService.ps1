@@ -1,9 +1,9 @@
 <#
     .SYNOPSIS
-    Create a new Service
+    Create a new App Service
 
     .DESCRIPTION
-    Creates a service
+    Creates a app service
 
     .INPUTS
     An application PSObject
@@ -35,7 +35,7 @@
     .NOTES
     POST: /authorize/identity/Service v1
 #>
-function Add-Service {
+function Add-AppService {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -59,7 +59,7 @@ function Add-Service {
         [Parameter(Mandatory = $false, Position = 4)]
         [String]$Description = ""
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
     }
@@ -68,11 +68,11 @@ function Add-Service {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $body = @{
             "applicationId"     = $Application.id;
-            "name"              = $Name;        
+            "name"              = $Name;
             "description"       = $Description;
             "validity"          = $Validity;
         }
-        
+
         $service = (Invoke-ApiRequest -Path "/authorize/identity/Service" -Version 1 -Method Post -Body $body -ValidStatusCodes @(201) )
 
         $key = $service.privateKey
@@ -80,7 +80,7 @@ function Add-Service {
         $key = $key -replace "-----END RSA PRIVATE KEY-----", "`n-----END RSA PRIVATE KEY-----`n"
 
         Set-Content -Path $PrivateKeyPath -Value $key
-        
+
         Write-Output $service
     }
 

@@ -16,14 +16,14 @@
 
     .EXAMPLE
     Set-UsersToOrgGroups -OrgIds @(...) -UserIds @(...) -GroupName "My Group"
-    
-    .NOTES    
+
+    .NOTES
     Users that are already memebers of the group will be skipped
 #>
 function Set-UsersToOrgGroups {
-   
-    [CmdletBinding()]
-    param(   
+
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
+    param(
         [Parameter(Mandatory, Position = 0)]
         [ValidateNotNullOrEmpty()]
         [array]
@@ -37,17 +37,31 @@ function Set-UsersToOrgGroups {
         [Parameter(Mandatory, Position = 2)]
         [ValidateNotNullOrEmpty()]
         [string]
-        $GroupName
+        $GroupName,
 
+        [Parameter()]
+        [switch]
+        $Force
     )
-     
+
     begin {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Function started"
-    }
+        if (-not $PSBoundParameters.ContainsKey('Verbose')) {
+            $VerbosePreference = $PSCmdlet.SessionState.PSVariable.GetValue('VerbosePreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('Confirm')) {
+            $ConfirmPreference = $PSCmdlet.SessionState.PSVariable.GetValue('ConfirmPreference')
+        }
+        if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
+            $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
+        }
+        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
+   }
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-     
+
+        $ConfirmPreference = 'None'
         Write-Information "Testing orgs"
         $invalidOrgs = Test-OrgIds -Ids $OrgIds
 
@@ -57,17 +71,19 @@ function Set-UsersToOrgGroups {
         Write-Information "Testing groups"
         # Just write warnings. do not use result
         Test-GroupInOrgs -OrgIds $OrgIds -GroupName $GroupName
-        
+
         if ($invalidOrgs.Count -gt 0 -or $invalidUsers.Count -gt 0) {
             throw "Unable to continue -- Check warnings"
         }
-        
-        Get-Orgs | Where-Object { $orgIds.Contains( $_.id) } | ForEach-Object {
-            Set-UsersInGroup -Org $_ -GroupName $GroupName -UserIds $UserIds
+
+        if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
+            Get-Orgs | Where-Object { $orgIds.Contains( $_.id) } | ForEach-Object {
+                Set-UsersInGroup -Org $_ -GroupName $GroupName -UserIds $UserIds
+            }
         }
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

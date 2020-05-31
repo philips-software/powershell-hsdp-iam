@@ -1,13 +1,15 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Get-Users.ps1"
     . "$PSScriptRoot\Get-UsersByPage.ps1"
 }
 
 Describe "Get-Users" {
     BeforeAll {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $objOrg = [PSCustomObject]@{ Id = "1" }
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $objGroup = [PSCustomObject]@{ Id = "1" }
     }
     Context "get" {
@@ -18,7 +20,7 @@ Describe "Get-Users" {
                             @{ "userUUID" = "06695589-af39-4928-b6db-33e52d28067f" }
                         )
                         "nextPageExists" = $false
-                    }        
+                    }
                 }
             }
             $result = Get-Users -Org $objOrg
@@ -32,26 +34,26 @@ Describe "Get-Users" {
             Mock Get-UsersByPage {
                 if ($Page -eq 1) {
                     @{
-                        "exchange" = @{ 
+                        "exchange" = @{
                             "users"          = @( @{ "userUUID" = "1" } )
                             "nextPageExists" = "true"
-                        }        
+                        }
                     }
                 }
                 if ($Page -eq 2) {
                     @{
-                        "exchange" = @{ 
+                        "exchange" = @{
                             "users"          = @( @{ "userUUID" = "2" } )
                             "nextPageExists" = "false"
-                        }        
-                    } 
+                        }
+                    }
                 }
             }
             Get-Users -Org $objOrg
             Should -Invoke Get-UsersByPage -Exactly 2
         }
     }
-    Context "parameters" {             
+    Context "parameters" {
         It "support org from pipeline " {
             Mock Get-UsersByPage { @{
                     "exchange" = @{
@@ -59,7 +61,7 @@ Describe "Get-Users" {
                             @{ "userUUID" = "06695589-af39-4928-b6db-33e52d28067f" }
                         )
                         "nextPageExists" = $false
-                    }        
+                    }
                 } }
             $objOrg | Get-Users
             Assert-MockCalled Get-UsersByPage

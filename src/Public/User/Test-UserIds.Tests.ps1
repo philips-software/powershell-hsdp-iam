@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Test-UserIds.ps1"
     . "$PSScriptRoot\Get-User.ps1"
 }
@@ -8,7 +8,7 @@ BeforeAll {
 Describe "Test-UserIds" {
     BeforeAll {
         Mock Write-Warning
-        Mock Get-User { $null }        
+        Mock Get-User { $null }
     }
     Context "functionality" {
         It "identifies an invalid user" {
@@ -18,19 +18,19 @@ Describe "Test-UserIds" {
             $result | Should -Be @("a")
         }
         It "does not return an valid user" {
-            $user = @{id = "1"}        
+            $user = @{id = "1"}
             Mock Write-Warning
             Mock Get-User { $user }
             $result = Test-UserIds -Ids @("1")
             Should -Invoke Get-User -Times 1
             $result | Should -BeNull
-        } 
+        }
         It "calls for each user" {
             $result = Test-UserIds -Ids @("a", "b")
             Should -Invoke Get-User -Times 2
             $result[0] | Should -Be @("a")
             $result[1] | Should -Be @("b")
-        }     
+        }
     }
     Context "param" {
         It "accepts value from pipeline" {

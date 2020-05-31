@@ -8,7 +8,7 @@ function Wait-Action {
         [ScriptBlock]$Condition,
 
         [ValidateNotNullOrEmpty()]
-        [int]$Timeout = 300, 
+        [int]$Timeout = 300,
 
         [Parameter()]
         [int]$RetryInterval = 5
@@ -20,7 +20,7 @@ function Wait-Action {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        
+
         $timer = [Diagnostics.Stopwatch]::StartNew()
         while (($timer.Elapsed.TotalSeconds -lt $Timeout) -and (-not (& $Condition))) {
             Start-Sleep -Seconds $RetryInterval
@@ -34,8 +34,8 @@ function Wait-Action {
             Write-Verbose -Message 'Action completed'
         }
     }
- 
+
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }     
+    }
 }

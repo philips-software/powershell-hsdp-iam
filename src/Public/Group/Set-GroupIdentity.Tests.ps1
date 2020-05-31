@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-BeforeAll {        
+BeforeAll {
     . "$PSScriptRoot\Set-GroupIdentity.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
@@ -13,13 +13,16 @@ Describe "Set-GroupIdentity" {
                 version = @("3")
             }
         })
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedPath = "/authorize/identity/Group/$($group.id)/`$assign"
         $MemberType = "SERVICE"
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $Ids = @("2")
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedBody = @{
             "memberType" = $MemberType;
             "value"      = $Ids;
-        }    
+        }
         $response = @{
             meta = @{
                 version = "4"
@@ -27,8 +30,8 @@ Describe "Set-GroupIdentity" {
         }
         Mock Invoke-ApiRequest { $response }
     }
-    Context "api" {        
-        It "invoke request" {            
+    Context "api" {
+        It "invoke request" {
             Set-GroupIdentity -Group $group -Ids @("2") -MemberType "SERVICE"
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 ($Path -eq $expectedPath) -and `

@@ -4,10 +4,10 @@
 
     .DESCRIPTION
     Evaluates all types of policies that are applicable to the resource(s) requested with respect to the subject specified.
-    
+
     Before evaluating the policies, the subject token will be validated to make sure the subject is authenticated. Once the validation
     is successful, the subject permissions will be evaluated against the resource policies to see what actions the subject can do on the resource.
-    
+
     Any client with auth_iam_policy_evaluation scope will be able to do this operation.
 
     Condition based evaluation
@@ -16,12 +16,12 @@
     is - organizationId. Given an organization ID, evaluation will filter the policy decision check with respect to the specified organization.
 
     Requested permission based evaluation
-    A resource can be evaluated with a specific request permission. This allows client to evaluate whether a specific permission is available for the 
-    subject to access the requested resource. For example, a resource attribute value of 
-    https://my-service.example.com/patient/Observation?requestedPermission=OBSERVATION.READ means that while evaluating this resource 
+    A resource can be evaluated with a specific request permission. This allows client to evaluate whether a specific permission is available for the
+    subject to access the requested resource. For example, a resource attribute value of
+    https://my-service.example.com/patient/Observation?requestedPermission=OBSERVATION.READ means that while evaluating this resource
     check whether the subject has OBSERVATION.READ permission.
 
-    .OUTPUTS    
+    .OUTPUTS
     Returns an EvalResponse as a PSObject
 
     .PARAMETER Application
@@ -40,7 +40,7 @@
     An optional organization object for condition based evaluation
 
     .EXAMPLE
-    
+
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/policy-api-v3#/Policy%20evaluation/post_authorize_policy__evaluate
 
@@ -57,7 +57,7 @@ function Get-Evaluate {
 
         [Parameter(Position = 1, Mandatory = $true)]
         [Array]$Resources,
-        
+
         [Parameter(Position = 2, Mandatory = $false)]
         [String]$Token = $null,
 
@@ -100,11 +100,11 @@ function Get-Evaluate {
         $OAuth2ClientId = $config.OAuth2Credentials.GetNetworkCredential().username
         $OAuth2ClientPassword = $config.OAuth2Credentials.GetNetworkCredential().password
 
-        $auth = "Basic " + [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($OAuth2ClientId):$($OAuth2ClientPassword)"))        
+        $auth = "Basic " + [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($OAuth2ClientId):$($OAuth2ClientPassword)"))
         Write-Output (Invoke-ApiRequest -Path "/authorize/policy/`$evaluate" -Version 3 -Method Post -Base $config.IamUrl -Body $body -ValidStatusCodes @(200) -Authorization $auth)
     }
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }   
+    }
 }

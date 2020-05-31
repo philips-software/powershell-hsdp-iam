@@ -1,8 +1,8 @@
 param($major = "0", $minor = "1", $patch = "0")
 
-$VerbosePreference = "continue"
-
 Push-Location $PSScriptRoot/src
+
+Invoke-ScriptAnalyzer -Path Public -Recurse
 
 # ensure the module imports
 Import-Module -Name ./hsdp-iam -Force

@@ -3,7 +3,7 @@
     Imports users to groups using multiple .csv files
 
     .DESCRIPTION
-    This is a utility cmdlet to allow batch adding of users into groups in orgs. 
+    This is a utility cmdlet to allow batch adding of users into groups in orgs.
     All users will be placed in the group in all the orgs specified.
 
     .PARAMTER OrgCsvFileName
@@ -48,5 +48,5 @@ function Import-UsersToOrgGroups {
 
     end {
         Write-Verbose "[$($MyInvocation.MyCommand.Name)] Complete"
-    }    
+    }
 }
