@@ -59,7 +59,6 @@ function Remove-Permissions {
         if (-not $PSBoundParameters.ContainsKey('WhatIf')) {
             $WhatIfPreference = $PSCmdlet.SessionState.PSVariable.GetValue('WhatIfPreference')
         }
-        Write-Verbose ('[{0}] Confirm={1} ConfirmPreference={2} WhatIf={3} WhatIfPreference={4}' -f $MyInvocation.MyCommand, $Confirm, $ConfirmPreference, $WhatIf, $WhatIfPreference)
     }
 
     process {

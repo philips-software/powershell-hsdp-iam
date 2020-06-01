@@ -1,0 +1,57 @@
+<!--
+  https://iam-integration.us-east.philips-healthsuite.com
+  https://idm-integration.us-east.philips-healthsuite.com
+  grp_orgadmin-h2hdev@Philips.onmicrosoft.com
+  Philips@234
+  mcFWGjyT1DVX4KOMlLJxGbotdF3ZTgRl
+  QM8GXT7xZmI7sMBu
+  MTW7stlS/Ww3Q3+iTuMRueuLVABjLh6vyU2cEnthGKQ=
+  CRh2iKMZC997F1ScD/2TKg+nYE2OP9f5OKEl6uFEvhI=
+-->
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04">
+  <Obj RefId="0">
+    <TN RefId="0">
+      <T>System.Management.Automation.PSCustomObject</T>
+      <T>System.Object</T>
+    </TN>
+    <MS>
+      <Obj N="ClientCredentials" RefId="1">
+        <TN RefId="1">
+          <T>System.Management.Automation.PSCredential</T>
+          <T>System.Object</T>
+        </TN>
+        <ToString>System.Management.Automation.PSCredential</ToString>
+        <Props>
+          <S N="UserName">mcFWGjyT1DVX4KOMlLJxGbotdF3ZTgRl</S>
+          <SS N="Password">01000000d08c9ddf0115d1118c7a00c04fc297eb0100000026b964d7194fad4890f6f2108e0f6bae00000000020000000000106600000001000020000000addc88813dd49d219b3135cc5ddecebdbe31912519c196dc01341eefc03ae8c3000000000e8000000002000020000000a7286f30984712b26925593cf9d16b8727e541ed767a17c71ae9aa96cb1c3e9f3000000032000f8008ddbdd6393feca42a6e3c187145d63cfaa151c008721f7b7e0c4dd50146df47bcdc4714481ccfff4adf83dd40000000fea6c24619b52b0cadeaa22511a6fb92d4bc80614fbe07f0103c534f77c262918a75caf48343ef7c142f112b02b750cbee79425222395fb8955694cad2a40a50</SS>
+        </Props>
+      </Obj>
+      <S N="IamUrl">https://iam-client-test.us-east.philips-healthsuite.com</S>
+      <Obj N="Credentials" RefId="2">
+        <TNRef RefId="1" />
+        <ToString>System.Management.Automation.PSCredential</ToString>
+        <Props>
+          <S N="UserName">grp_orgadmin-h2hdev@Philips.onmicrosoft.com</S>
+          <SS N="Password">01000000d08c9ddf0115d1118c7a00c04fc297eb0100000026b964d7194fad4890f6f2108e0f6bae00000000020000000000106600000001000020000000cf62c6425d67b1f10bf4254deac959dfe0b096d1f27618aa2edd0d10bcd65fcd000000000e80000000020000200000009daf496be9787664effc5c17d0958e193a53d195f1c6ec3a03b1741a7d4ec84b200000000805da73d31ccbf773b86174e7ef8c61c32c312eda59e872543238334722758e40000000bac85125d77d12c3b00e99c7e9b28ff038c02dffb58c75ca984b68a353fb7bf9c53648e91e4170f0cc196756fb111b480dc0c4d8f5554587b6432e5ed96931b6</SS>
+        </Props>
+      </Obj>
+      <S N="IdmUrl">https://idm-client-test.us-east.philips-healthsuite.com</S>
+      <Obj N="OAuth2Credentials" RefId="3">
+        <TNRef RefId="1" />
+        <ToString>System.Management.Automation.PSCredential</ToString>
+        <Props>
+          <S N="UserName">grp_orgadmin-h2hdev@Philips.onmicrosoft.com</S>
+          <SS N="Password">01000000d08c9ddf0115d1118c7a00c04fc297eb0100000026b964d7194fad4890f6f2108e0f6bae000000000200000000001066000000010000200000008975ce7d6f1d383db16441e67bbf82d7bf3ac70e21023f9785e3596df2bbaa30000000000e800000000200002000000053524b9e833e917f265caa697b49aedfc55b2ce764444d9fbaaca262b8e8b7ff2000000092572b72b94a058b47e91f56e05bb0800d7feaafc143f0b66e45bb78f87d7b87400000004592011ba014dc6cc7a2782cde1a668163cd7b8280e0fd5b99b9423da225c3f6f7044387cdb2627232a7b34441544973f6cb0e443b72266db2213c268d17641f</SS>
+        </Props>
+      </Obj>
+      <Obj N="AppCredentials" RefId="4">
+        <TNRef RefId="1" />
+        <ToString>System.Management.Automation.PSCredential</ToString>
+        <Props>
+          <S N="UserName">MTW7stlS/Ww3Q3+iTuMRueuLVABjLh6vyU2cEnthGKQ=</S>
+          <SS N="Password">01000000d08c9ddf0115d1118c7a00c04fc297eb0100000026b964d7194fad4890f6f2108e0f6bae00000000020000000000106600000001000020000000b9caa847ae583c55b25a212f3380b7a591fd04bef88757aa4aeaafa19b3d02d2000000000e80000000020000200000005c4a05930c3262cef9cc3ae98d20013b12bf3f7e9ec4e85ef751d2402abe154b600000008c882a99551aa98f875c5b5bc7794889f8471282aaf75ca1d8db88dba2d5a0ffbedbcc2bcf20d17859a7b76d39708b1a4b0e88508f8bda166da524f7779b8d4b6475543c1f4806386b8730cd5b963e91716a9066361f20f96ccc3531d122522e400000002de18de120471655f042e215bfb591c6490198c38ddd4aa00ab2180e76c646e6f78c1a6ab3aba003866b1948787c481afd34d686a6c5021c7bdfcfc80111bb85</SS>
+        </Props>
+      </Obj>
+    </MS>
+  </Obj>
+</Objs>
