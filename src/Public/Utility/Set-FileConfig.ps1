@@ -48,9 +48,6 @@ function Set-FileConfig  {
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
             Set-Config (Import-CliXml -Path $Path)
-            $config = Get-Config
-            $headers = Get-Headers -IamUrl $config.IamUrl -Credentials $config.Credentials -ClientCredentials $config.ClientCredentials
-            Set-Variable -Name _headers -Scope Script -Value $headers
         }
     }
 
