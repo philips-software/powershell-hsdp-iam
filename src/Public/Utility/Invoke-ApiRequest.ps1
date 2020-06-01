@@ -49,6 +49,7 @@ function Invoke-ApiRequest {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseLiteralInitializerForHashtable', '', Justification='clone dictionary')]
     param(
         [Parameter(Mandatory=$true, Position=0)]
         [ValidateNotNullOrEmpty()]
@@ -145,7 +146,7 @@ function Invoke-ApiRequest {
                 $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -ErrorAction Stop
             }
             Write-Debug "HTTP STATUS: $($response.StatusCode)"
-            @{ status = $response.StatusCode; response = $response; headers = $response.Headers.Clone() }
+            @{ status = $response.StatusCode; response = $response; headers = [System.Collections.Hashtable]::new($response.Headers) }
         } catch {
             Write-Debug "HTTP STATUS: $($_.Exception.Response.StatusCode.value__)"
             Write-Debug $_
