@@ -39,6 +39,10 @@ jobs:
       run: .\build.ps1 ${{ steps.gitversion.outputs.major }} ${{ steps.gitversion.outputs.minor }} ${{ steps.gitversion.outputs.patch }}
       shell: pwsh
 
+    - name: sanity test
+      run: ./Sanity.Tests.ps1 -IamUrl "https://iam-integration.us-east.philips-healthsuite.com" -IdmUrl "https://idm-integration.us-east.philips-healthsuite.com" -CredentialsUserName "${{ secrets.HSDP_CredentialsUserName }}" -CredentialsPassword "${{ secrets.HSDP_CredentialsPassword }}" -ClientCredentialsUserName "${{ secrets.HSDP_ClientCredentialsUserName }}" -ClientCredentialsPassword "${{ secrets.HSDP_ClientCredentialsPassword }}" -AppCredentialsUserName "${{ secrets.HSDP_AppCredentialsUserName }}" -AppCredentialsPassword "${{ secrets.HSDP_AppCredentialsPassword }}" -OAuth2CredentialsUserName "${{ secrets.HSDP_OAuth2CredentialsUserName }}" -OAuth2CredentialsPassword "${{ secrets.HSDP_OAuth2CredentialsPassword }}"
+      shell: pwsh
+
     - name: Download latest NuGet (cross-platform)
       uses: olegtarasov/download-nuget@v1
 

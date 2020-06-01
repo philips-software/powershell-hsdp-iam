@@ -42,6 +42,8 @@ function Set-Config  {
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
             Set-Variable -Name _Config -Scope Script -Value $config
+            $headers = Get-Headers -IamUrl $config.IamUrl -Credentials $config.Credentials -ClientCredentials $config.ClientCredentials
+            Set-Variable -Name _headers -Scope Script -Value $headers
         }
     }
 
