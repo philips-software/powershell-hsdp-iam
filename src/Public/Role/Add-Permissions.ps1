@@ -52,10 +52,8 @@ function Add-Permissions {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-
         $body = @{ "permissions" = $Permissions; }
-
-        $response = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.Id)/`$assign-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200, 207))
+        $response = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.Id)/`$assign-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
         Write-Output @($response)
     }
 

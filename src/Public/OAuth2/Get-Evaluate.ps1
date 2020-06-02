@@ -75,7 +75,6 @@ function Get-Evaluate {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
 
         # Use the current user token if not specified
         if (-not $Token) {

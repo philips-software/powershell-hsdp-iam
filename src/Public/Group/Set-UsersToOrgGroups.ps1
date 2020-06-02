@@ -61,13 +61,10 @@ function Set-UsersToOrgGroups {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
         $ConfirmPreference = 'None'
-        Write-Information "Testing orgs"
         $invalidOrgs = Test-OrgIds -Ids $OrgIds
 
-        Write-Information "Testing users"
         $invalidUsers = Test-UserIds -Ids $UserIds
 
-        Write-Information "Testing groups"
         # Just write warnings. do not use result
         Test-GroupInOrgs -OrgIds $OrgIds -GroupName $GroupName
 

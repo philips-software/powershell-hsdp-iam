@@ -1,10 +1,32 @@
-Set-FileConfig
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification='needed to collect')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
+param($IamUrl,$IdmUrl,$CredentialsUserName,$CredentialsPassword,$ClientCredentialsUserName,$ClientCredentialsPassword,$AppCredentialsUserName,$AppCredentialsPassword,$OAuth2CredentialsUserName,$OAuth2CredentialsPassword)
+
+Import-Module -Name ./src/hsdp-iam -Force
+
 $InformationPreference = "continue"
 $ErrorActionPreference = "stop"
 
+$p = @{
+    Prompt = $false;
+    CredentialsUserName = $CredentialsUserName;
+    CredentialsPassword = $CredentialsPassword;
+    ClientCredentialsUserName = $ClientCredentialsUserName;
+    ClientCredentialsPassword = $ClientCredentialsPassword;
+    AppCredentialsUserName = $AppCredentialsUserName;
+    AppCredentialsPassword = $AppCredentialsPassword;
+    OAuth2CredentialsUserName = $OAuth2CredentialsUserName;
+    OAuth2CredentialsPassword = $OAuth2CredentialsPassword;
+    IamUrl = $IamUrl;
+    IdmUrl = $IdmUrl;
+}
+
+Set-Config (New-Config @p)
+
 $rootOrgId = "e5550a19-b6d9-4a9b-ac3c-10ba817776d4"
 
-# Testing Org cmdlets
+# Testing Org cmdlets.
 $rootOrg = Get-Org -id $rootOrgId
 
 if ($rootOrg -eq $null) {
@@ -85,14 +107,14 @@ if ($newUser.loginId -ne $getUser.loginId) {
 
 # CmdLet: Get-Users
 $users = Get-Users -Org $newOrg
-if ($users.length -eq 1 -and $users[0].Id -ne $user.Id) {
+if ($users -ne $newUser.Id) {
     Write-Warning "Cross check of New-User/Get-Users failed"
     Write-Warning "$($newUser | ConvertTo-Json)"
     Write-Warning "$($users | ConvertTo-Json)"
 }
 
 # CmdLet: Test-UserIds
-if ((Test-UserIds -Ids @($newUser.Id)).length -ne 0) {
+if (-not (Test-UserIds -Ids @($newUser.Id)) -eq $null) {
     Write-Warning "Cross check of New-User/Test-UserIds failed"
 }
 
@@ -106,22 +128,25 @@ if ($addGroup -eq $null) {
 # CmdLet: Set-GroupIdentity
 Set-GroupMember -Group $addGroup -User $newUser | Out-Null
 $usersInGroup = Get-Users -Org $newOrg -Group $addGroup
-if ($usersInGroup[0] -eq $newUser.Id) {    
+if ($usersInGroup[0] -eq $newUser.Id) {
     Write-Warning "Cross check of Set-GroupIdentity/Get-Users failed"
     Write-Warning ($usersInGroup | ConvertTo-Json -Depth 20)
 }
 
 # CmdLet: Remove-GroupIdentity
 Remove-GroupMember -Group $addGroup -User $newUser | Out-Null
-if ((Get-Users -Org $newOrg -Group $addGroup).length -ne 0) {
+if (-not (Get-Users -Org $newOrg -Group $addGroup) -eq $null) {
     Write-Warning "Cross check of Remove-GroupIdentity/Get-Users failed"
 }
 
 # CmdLet: Remove-User
 Remove-User $newUser | Out-Null
-if ((Get-Users -Org $newOrg).Length -ne 0) {
+if (-not (Get-Users -Org $newOrg) -eq $null) {
     Write-Warning "Remove-User should not return any users"
 }
 
 # CmdLet: Remove-Org
-Remove-Org -Org $newOrg
+Remove-Org -Org $newOrg -Force
+
+# CmdLet: Get-OrgRemoveStatus
+Get-OrgRemoveStatus $newOrg | Out-Null

@@ -38,11 +38,11 @@ function Get-Introspect {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        if (-not $Token) {
+        if (-not $PSBoundParameters.ContainsKey('Token')) {
             $Token = Get-Token
         }
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-        $authForToken = "Basic $(Get-Variable -Name _authForToken -Scope Script -ValueOnly)"
+        $config = Get-Config
+        $authForToken = "Basic $(Get-Variable -Name "_authForToken" -Scope Script -ValueOnly)"
         Write-Output (Invoke-ApiRequest -Path "/authorize/oauth2/introspect" -Version 3 -Authorization $authForToken -Method Post -Base $config.IamUrl -ContentType "application/x-www-form-urlencoded" -Body "token=$($Token)")
     }
 

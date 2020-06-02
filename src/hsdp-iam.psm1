@@ -10,7 +10,6 @@ if ($modules.Name -notcontains 'functional') {
     Install-Module functional -Force -SkipPublisherCheck -Scope CurrentUser
 }
 
-
 $PublicFunctions = @( Get-ChildItem -Path "$PSScriptRoot/Public/*.ps1" -Recurse -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue )
 $PrivateFunctions = @( Get-ChildItem -Path "$PSScriptRoot/Private/*.ps1" -Recurse -Exclude *.Tests.ps1 -ErrorAction SilentlyContinue )
 

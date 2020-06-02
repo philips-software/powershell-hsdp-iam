@@ -21,7 +21,7 @@
     $proposition = Add-Proposition -Org $org -Name "My Proposition" -GlobalReferenceId "67fc0db4-ebce-4872-b522-e353d919200d"
 
     .LINK
-    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/proposition-api#/Proposition/get_authorize_identity_Proposition
+    https://www.hsdp.io/docume@ntation/identity-and-access-management-iam/api-documents/resource-reference-api/proposition-api#/Proposition/get_authorize_identity_Proposition
 
     .NOTES
     GET: /authorize/identity/Proposition v1
@@ -32,6 +32,7 @@ function Get-Proposition {
     [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [ValidateNotNullOrEmpty()]
         [String]$Id
     )
 
@@ -42,7 +43,7 @@ function Get-Proposition {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        # TBD: Support all query parameters (not just Id)
+        # TODO: Support all query parameters (not just Id)
         $response = (Invoke-GetRequest "/authorize/identity/Proposition?_id=$($Id)" -Version 1 -ValidStatusCodes @(200) )
         Write-Output $response.entry
     }

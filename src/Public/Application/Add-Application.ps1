@@ -49,7 +49,7 @@ function Add-Application {
         [ValidateNotNullOrEmpty()]
         [String]$Name,
 
-        [Parameter(Mandatory = $false, Position = 2)]
+        [Parameter(Mandatory = $true, Position = 2)]
         [String]$GlobalReferenceId,
 
         [Parameter(Mandatory = $false, Position = 3)]

@@ -38,8 +38,6 @@ function Get-TokenFromJWT {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-
         $Headers = @{
             "api-version"   = "1"
             "Content-Type"  = "application/x-www-form-urlencoded"
@@ -51,6 +49,7 @@ function Get-TokenFromJWT {
             "assertion"     = $JWT
         }
 
+        $config = Get-Config
         $Uri = "$($config.IamUrl)/authorize/oauth2/token"
 
         Write-Output (Invoke-RestMethod -Uri $Uri -Method Post -Body $Form -Headers $Headers)

@@ -21,6 +21,9 @@ Install-Module PowerShell-JWT -Force
 
     .EXAMPLE
     $jwt = New-HsdpJWT -Service $service -KeyFile "myservice.pem"
+
+    .NOTES
+    Use Add-AppService cmdlet to create a KeyFile
 #>
 function New-HsdpJWT {
 
@@ -56,16 +59,12 @@ function New-HsdpJWT {
 
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
-            $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-
             $exp = [int](Get-Date -UFormat %s) + 5400
             $payloadClaims = @{
-                "aud" = @("$($config.IamUrl)/oauth2/access_token")
+                "aud" = @("$((Get-Config).IamUrl)/oauth2/access_token")
                 "sub" = $Service.serviceId
             }
-
             $rsaPrivateKey = Get-Content $KeyFile -AsByteStream
-
             Write-Output (New-JWT -Algorithm 'RS256' -Issuer $Service.serviceId -ExpiryTimestamp $exp -PayloadClaims $payloadClaims -SecretKey $rsaPrivateKey)
         }
     }
