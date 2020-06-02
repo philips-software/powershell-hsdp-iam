@@ -52,7 +52,11 @@ function Set-GroupIdentity {
         [Parameter(Position = 2)]
         [ValidateSet("SERVICE", "DEVICE")]
         [String]
-        $MemberType = "SERVICE"
+        $MemberType = "SERVICE",
+
+        [Parameter()]
+        [switch]
+        $Force
     )
 
     begin {

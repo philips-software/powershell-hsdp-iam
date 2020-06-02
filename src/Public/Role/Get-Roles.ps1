@@ -37,13 +37,16 @@ function Get-Roles {
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(
-        [Parameter(Mandatory=$false, ParameterSetName="Org")]
+        [Parameter(ValueFromPipeline, Mandatory=$false, ParameterSetName="Org")]
+        [ValidateNotNullOrEmpty()]
         [PSObject]$Org,
 
         [Parameter(Mandatory=$false, ParameterSetName="Group")]
+        [ValidateNotNullOrEmpty()]
         [PSObject]$Group,
 
         [Parameter(Mandatory=$false, ParameterSetName="Name")]
+        [ValidateNotNullOrEmpty()]
         [String]$Name
     )
 

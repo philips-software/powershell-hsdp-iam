@@ -6,3 +6,4 @@ hsdp-iam.*.nupkg
 target/*
 src/hsdp-iam.nuspec
 src/hsdp-iam.psd1
+local-*.tests.ps1

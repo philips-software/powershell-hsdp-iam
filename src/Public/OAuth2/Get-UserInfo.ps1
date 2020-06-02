@@ -46,11 +46,10 @@ function Get-UserInfo {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        if (-not $Token) {
+        if (-not $PSBoundParameters.ContainsKey('Token')) {
             $Token = Get-Token
         }
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-        Write-Output (Invoke-ApiRequest -Path "/authorize/oauth2/userinfo" -Version 2 -Method Get -Base $config.IamUri)
+        Write-Output (Invoke-ApiRequest -Path "/authorize/oauth2/userinfo" -Version 2 -Base (Get-Config).IamUrl -Method "Get" -Authorization "Bearer $($Token)")
     }
 
     end {

@@ -65,9 +65,11 @@ function Add-Proposition {
             "globalReferenceId" = $GlobalReferenceId;
             "description"       = $Description;
         }
+
         $headers = (Invoke-ApiRequest -ReturnResponseHeader -Path "/authorize/identity/Proposition" -Version 1 -Method Post -Body $prop -ValidStatusCodes @(201) )
 
-        # The create proposition does not return a response so use the location header to determine the new object id
+        # HSDP-INCONSISTENCY: does not return new resource
+        # Use the location header to determine the new object id and retrieve the complete object using the get method
         $location = ($headers | ConvertFrom-Json -Depth 20).Location[0]
         if ($location -match "([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})") {
             Write-Output (Get-Proposition -Id $matches[0])

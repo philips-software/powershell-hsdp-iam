@@ -39,7 +39,7 @@ function Get-Permissions {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Write-Output @((Invoke-GetRequest "/authorize/identity/Permission?roleId=$($Role.id)" -Version 1).entry)
+        Write-Output @((Invoke-GetRequest "/authorize/identity/Permission?roleId=$($Role.id)" -Version 1 -ValidStatusCodes @(200)).entry)
     }
 
     end {

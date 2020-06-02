@@ -67,7 +67,7 @@ function Remove-Permissions {
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
             $body = @{ "permissions"= $Permissions; }
-            $response  = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.id)/`$remove-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200,207))
+            $response  = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.id)/`$remove-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
             Write-Output @($response)
         }
     }

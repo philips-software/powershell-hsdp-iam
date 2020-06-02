@@ -39,7 +39,7 @@ function Get-Role {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Write-Output (Invoke-GetRequest -Version 1 -Path "/authorize/identity/Role/$($Id)")
+        Write-Output (Invoke-GetRequest -Version 1 -Path "/authorize/identity/Role/$($Id)" -ValidStatusCodes @(200))
     }
 
     end {

@@ -48,10 +48,9 @@ function Get-Headers {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $config = Get-Config
-
         $authForToken = $null
         if ($ClientCredentials -eq $null) {
+            $config = Get-Config
             $authForToken = [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($config.ClientCredentials.GetNetworkCredential().username):$($config.ClientCredentials.GetNetworkCredential().password)"))
         }
         else {
@@ -67,6 +66,7 @@ function Get-Headers {
 
         $Form = $null
         if ($Credentials -eq $null) {
+            $config = Get-Config
             $Form = @{
                 "grant_type" = "password"
                 "username"   = $config.Credentials.GetNetworkCredential().username
