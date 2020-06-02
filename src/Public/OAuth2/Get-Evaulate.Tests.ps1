@@ -5,10 +5,10 @@ function runTests() {
     param()
 
     BeforeAll {
-        . "$PSScriptRoot/Get-Evaluate.ps1"
-        . "$PSScriptRoot/../Utility/Get-Token.ps1"
-        . "$PSScriptRoot/../Utility/Get-Config.ps1"
-        . "$PSScriptRoot/../Utility/Invoke-APIRequest.ps1"
+        . "$PSScriptRoot\Get-Evaluate.ps1"
+        . "$PSScriptRoot\..\Utility\Get-Token.ps1"
+        . "$PSScriptRoot\..\Utility\Get-Config.ps1"
+        . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
     }
 
     Describe "Get-Evaluate" {

@@ -5,7 +5,7 @@ function runTests() {
     param()
 
     BeforeAll {
-        . "$PSScriptRoot/Get-ApiSignatureHeaders.ps1"
+        . "$PSScriptRoot\Get-ApiSignatureHeaders.ps1"
     }
 
     Describe "Get-ApiSignatureHeaders" {

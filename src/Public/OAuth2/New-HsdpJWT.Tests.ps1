@@ -1,8 +1,8 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot/New-HsdpJWT.ps1"
-    . "$PSScriptRoot/../Utility/Get-Config.ps1"
+    . "$PSScriptRoot\New-HsdpJWT.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Config.ps1"
 }
 
 Describe "New-HsdpJWT" {

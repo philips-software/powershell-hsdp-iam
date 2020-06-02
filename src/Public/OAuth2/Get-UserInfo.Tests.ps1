@@ -1,10 +1,10 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot/Get-UserInfo.ps1"
-    . "$PSScriptRoot/../Utility/Get-Token.ps1"
-    . "$PSScriptRoot/../Utility/Get-Config.ps1"
-    . "$PSScriptRoot/../Utility/Invoke-ApiRequest.ps1"
+    . "$PSScriptRoot\Get-UserInfo.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Token.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Config.ps1"
+    . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
 Describe "Get-UserInfo" {

@@ -1,8 +1,8 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot/Get-TokenFromJWT.ps1"
-    . "$PSScriptRoot/../Utility/Get-Config.ps1"
+    . "$PSScriptRoot\Get-TokenFromJWT.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Config.ps1"
 }
 
 Describe "Get-TokenFromJWT" {

@@ -13,7 +13,7 @@ Install-ModuleVersion -Name "PesterMatchArray" -Version "0.3.1"
 Invoke-Pester -ExcludeTag 'Disabled' -Path "src/*" -OutputFile "./test-pester.xml" -OutputFormat NUnitXml
 
 # Determine all the cmdlets that do not have matching *.Tests.ps1 files
-$allFiles = Get-ChildItem src\public -Recurse | Where-Object { $_.name -like "*.ps1" }
+$allFiles = Get-ChildItem src/public/*.ps1 -Recurse
 $notTestFiles = $allFiles | Where-Object { $_.name -notlike "*.Tests.ps1"}
 $cmdletsFiles  = $notTestFiles | Select-Object @{Name="name";Expression={$_.Name -replace ".ps1",""}} | Sort-Object name
 $cmdletNames = $cmdletsFiles | Sort-Object name | select-object -ExpandProperty Name

@@ -1,10 +1,10 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot/Get-Introspect.ps1"
-    . "$PSScriptRoot/../Utility/Get-Token.ps1"
-    . "$PSScriptRoot/../Utility/Get-Config.ps1"
-    . "$PSScriptRoot/../Utility/Invoke-APIRequest.ps1"
+    . "$PSScriptRoot\Get-Introspect.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Token.ps1"
+    . "$PSScriptRoot\..\Utility\Get-Config.ps1"
+    . "$PSScriptRoot\..\Utility\Invoke-APIRequest.ps1"
 }
 
 Describe "Get-Introspect" {
