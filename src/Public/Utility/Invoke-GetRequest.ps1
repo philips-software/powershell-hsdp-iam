@@ -26,9 +26,11 @@ function Invoke-GetRequest {
         $Path,
 
         [String]
+        [ValidateNotNullOrEmpty()]
         $Version = "1",
 
         [int[]]
+        [ValidateNotNullOrEmpty()]
         $ValidStatusCodes = @(200)
     )
 

@@ -23,7 +23,7 @@ function Set-FileConfig  {
     [OutputType([hashtable])]
     param(
         [ValidateNotNullOrEmpty()]
-        [String]$Path = "./Config.xml",
+        [String]$Path = "./config.xml",
 
         [Parameter()]
         [switch]

@@ -14,13 +14,13 @@
 function Set-Config  {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Low')]
-    [OutputType([hashtable])]
+    [OutputType([HashTable])]
     param(
         [ValidateNotNullOrEmpty()]
-        [psobject]$config,
+        [PSObject]$Config,
 
         [Parameter()]
-        [switch]
+        [Switch]
         $Force
     )
 
@@ -40,7 +40,7 @@ function Set-Config  {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
-            $ConfirmPreference = 'None'
+            $ConfirmPreference = 'High'
             Set-Variable -Name _Config -Scope Script -Value $config
             $headers = Get-Headers -IamUrl $config.IamUrl -Credentials $config.Credentials -ClientCredentials $config.ClientCredentials
             Set-Variable -Name _headers -Scope Script -Value $headers

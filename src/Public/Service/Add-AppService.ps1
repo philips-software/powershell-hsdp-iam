@@ -77,7 +77,7 @@ function Add-AppService {
 
         $key = $service.privateKey
         $key = $key -replace "-----BEGIN RSA PRIVATE KEY-----", "-----BEGIN RSA PRIVATE KEY-----`n"
-        $key = $key -replace "-----END RSA PRIVATE KEY-----", "`n-----END RSA PRIVATE KEY-----`n"
+        $key = $key -replace "-----END RSA PRIVATE KEY-----", "`n-----END RSA PRIVATE KEY-----$key`n"
 
         Set-Content -Path $PrivateKeyPath -Value $key
 

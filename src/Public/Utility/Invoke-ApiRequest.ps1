@@ -61,7 +61,7 @@ function Invoke-ApiRequest {
         $Body,
 
         [Microsoft.PowerShell.Commands.WebRequestMethod]
-        $Method,
+        $Method = "Get",
 
         [int[]]
         $ValidStatusCodes = @(200,201,202,203,204,205,206,207,208,226),
@@ -107,17 +107,17 @@ function Invoke-ApiRequest {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         $headers = Get-Variable -Name _headers -Scope Script -ValueOnly
 
-        if (-Not $base) {
+        if (-Not $Base) {
             $config = Get-Config
-            $base = $config.IdmUrl
+            $Base = $config.IdmUrl
         }
-        $url = "$($base)$($Path)"
+        $url = "$($Base)$($Path)"
         Write-Debug "URL: $($url)"
 
         $HeaderCopy = @{}
         ($headers | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $HeaderCopy[$_.Name] = $_.Value }
         $HeaderCopy."api-version" = $Version
-        $HeaderCopy."content-type" = $ContentType
+        $HeaderCopy."Content-Type" = $ContentType
         if ($Authorization) {
             $HeaderCopy."Authorization" = $Authorization
         }
@@ -148,6 +148,9 @@ function Invoke-ApiRequest {
             Write-Debug "HTTP STATUS: $($response.StatusCode)"
             @{ status = $response.StatusCode; response = $response; headers = [System.Collections.Hashtable]::new($response.Headers) }
         } catch {
+            $e = $_.Exception
+            $line = $_.InvocationInfo.ScriptLineNumber
+            Write-Debug "caught exception: $e at $line"
             Write-Debug "HTTP STATUS: $($_.Exception.Response.StatusCode.value__)"
             Write-Debug $_
             @{ status = $_.Exception.Response.StatusCode.value__; response = $null; detail = $_ }
@@ -155,10 +158,10 @@ function Invoke-ApiRequest {
         if (($outcome.status -in $ValidStatusCodes)) {
             if ($null -ne $outcome.response) {
                 $content = $outcome.response.content
-                $objContent = $outcome.response.content | ConvertFrom-Json
+                $objContent = $outcome.response.content | ConvertFrom-Json -AsHashtable
                 Write-Debug "RESPONSE: $($content)"
                 # copy the eTag to the meta element on the resource
-                if ($null -eq $objContent.meta -and $null -eq $objContent.meta.version -and $outcome.headers.ETag) {
+                if ($objContent.PSObject.Properties -and $objContent.PSObject.Properties.Name -contains "meta" -and $objContent.meta.PSObject.Properties.Name -contains "version" -and $outcome.PSObject.Properties.Name -contains "ETag") {
                     Write-Debug "Adding meta.version tag from etag header $($outcome.headers.ETag)"
                     $objContent | Add-Member NoteProperty meta (New-Object PSObject -Property @{ version = $outcome.headers.ETag } )
                     $content = ($objContent | ConvertTo-Json)
