@@ -25,4 +25,5 @@ $testCmdLetNames = $testCmdLetFiles | Sort-Object name | select-object -ExpandPr
 $cmdLetsWithoutTests = Compare-Object -ReferenceObject $cmdletNames -DifferenceObject $testCmdLetNames
 if ($cmdLetsWithoutTests) {
     $cmdLetsWithoutTests | ForEach-Object { Write-Warning "$($_.InputObject) cmdlet does not have test file in the format '$($_.InputObject).Tests.ps1'" }
+    throw "All cmdlets must have matching tests files"
 }

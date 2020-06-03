@@ -62,46 +62,58 @@ function New-Config {
         [Bool]
         $Prompt = $true,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
+        [String]
         $CredentialsUserName,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $CredentialsPassword,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $ClientCredentialsUserName,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $ClientCredentialsPassword,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $AppCredentialsUserName,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $AppCredentialsPassword,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $OAuth2CredentialsUserName,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $OAuth2CredentialsPassword,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $IamUrl,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $IdmUrl,
 
-        [Parameter()]
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
         [String]
         $Path = "./config.xml",
 

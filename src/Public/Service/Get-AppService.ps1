@@ -66,6 +66,7 @@ function Get-AppService {
 
         $path = "/authorize/identity/Service"
 
+        # TODO: Support paging
         if ($PSCmdlet.ParameterSetName -eq "Id") {
             $path += "?_id=$($Id)&pageSize=99999"
         }

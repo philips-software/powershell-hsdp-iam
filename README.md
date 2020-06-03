@@ -173,11 +173,20 @@ get-orgs | get-users | get-user | Where-Object { $_.accountStatus.emailVerified 
 ```
 ## How to test the software
 
-Unit tests are written using Pester Version 5
+### Unit Tests
+Complete unit tests are written using Pester Version 5
 
 The ```hsdp-iam.tests.ps1``` will execute all unit tests. This is used as part of the CD/CD verification pipeline as well.
 
+### Sanity Tests
+A sanity test in ```Sanity.Tests.ps1``` will execute as part of the build verification.
+
+Sanity test can be run locally but all configuration must be passed to the script. (e.g. full HSDP IAM env configuration)
+
+### Integration Tests
 Integration tests are a WIP and will be eventually added to the verification pipeline.
+
+The work has started in ```Integration.Tests.ps1```
 
 ## Known issues
 
