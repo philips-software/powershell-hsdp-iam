@@ -79,8 +79,8 @@ function Remove-GroupMember {
             $path = "/authorize/identity/Group/$($Group.id)/`$remove-members"
             $response = (Invoke-ApiRequest -Path $path -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
 
-            # update the group version
-            $group.meta.version = $response.meta.version
+                        # update the group version
+                        $group.meta.version = $response.meta.version
 
             Write-Output $response
         }

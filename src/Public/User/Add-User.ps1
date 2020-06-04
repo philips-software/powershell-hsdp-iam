@@ -176,6 +176,7 @@ function Add-User {
         # if ($ContactUrl) {
         #     $telcom +=  @{"system"="url";"value"=$ContactUrl;}
         # }
+        Write-Debug $Org.id
         $body = @{
             "resourceType"= "Person";
             "loginId"= $LoginId;

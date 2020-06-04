@@ -46,15 +46,6 @@ Describe "Add-AppService" {
                 $Path -eq $PrivateKeyPath -and $Value -eq $response.privateKey
             }
         }
-        It "adds newlines to private key" {
-            $PrivateKey = "-----BEGIN RSA PRIVATE KEY-----xxxxx-----END RSA PRIVATE KEY-----"
-            [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
-            $response = @{ privateKey = $PrivateKey }
-            Add-AppService -Application $Application -Name $Name -PrivateKeyPath $PrivateKeyPath -Validity $Validity -Description $Description
-            Should -Invoke Set-Content -ParameterFilter {
-                ($Value | ConvertTo-Json) -eq "`"-----BEGIN RSA PRIVATE KEY-----\nxxxxx\n-----END RSA PRIVATE KEY----------BEGIN RSA PRIVATE KEY-----\nxxxxx-----END RSA PRIVATE KEY-----\n`""
-            }
-        }
     }
     Context "param" {
         It "value from pipeline " {

@@ -75,11 +75,11 @@ function Add-AppService {
 
         $service = (Invoke-ApiRequest -Path "/authorize/identity/Service" -Version 1 -Method Post -Body $body -ValidStatusCodes @(201) )
 
-        $key = $service.privateKey
-        $key = $key -replace "-----BEGIN RSA PRIVATE KEY-----", "-----BEGIN RSA PRIVATE KEY-----`n"
-        $key = $key -replace "-----END RSA PRIVATE KEY-----", "`n-----END RSA PRIVATE KEY-----$key`n"
+        # $key = $service.privateKey
+        # $key = $key -replace "-----BEGIN RSA PRIVATE KEY-----", "-----BEGIN RSA PRIVATE KEY-----`n"
+        # $key = $key -replace "-----END RSA PRIVATE KEY-----", "`n-----END RSA PRIVATE KEY-----$key`n"
 
-        Set-Content -Path $PrivateKeyPath -Value $key
+        Set-Content -Path $PrivateKeyPath -Value $service.privateKey
 
         Write-Output $service
     }
