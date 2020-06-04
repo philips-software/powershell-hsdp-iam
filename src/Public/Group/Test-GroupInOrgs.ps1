@@ -40,9 +40,9 @@ function Test-GroupInOrgs  {
         $orgs = Get-Orgs | Where-Object { $OrgIds.Contains( $_.id) }
 
         $orgs | ForEach-Object {
-            $group = (Get-Groups -OrgId $_.id) | Where-Object { $_.groupName -eq $GroupName }
+            $group = Get-Groups -Org $_ -Name $GroupName
             if (-not $group) {
-                $orgsWithOutGroup.Add($_.id)
+                $orgsWithOutGroup += $_.id
                 Write-Warning "'$($_.id)' ($($_.name)) org does not have a group named '$($GroupName)'"
             }
         }

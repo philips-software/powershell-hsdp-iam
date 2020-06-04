@@ -8,10 +8,12 @@ BeforeAll {
 Describe "Invoke-ApiRequest" {
     Context "test" {
         BeforeAll {
-            $content = [PSCustomObject]@{foo="bar"}
+            $content = [PSCustomObject]@{foo="bar"; "meta"=@{"version"="1234"}}
             $response = @{
                 StatusCode = 200;
-                Headers = @{}
+                Headers = @{
+                    "ETag"="1234"
+                }
                 Content = ($content | ConvertTo-Json)
             }
             Mock Invoke-WebRequest { $response }
@@ -31,7 +33,10 @@ Describe "Invoke-ApiRequest" {
                 $Body -eq $response.Content -and `
                 $ErrorAction -eq "Stop"
             }
-            ($response, $content | Test-Equality) | Should -BeTrue
+            Write-Debug ($response | ConvertTo-Json)
+            Write-Debug ($content | ConvertTo-Json)
+            $response.foo | Should -Be $content.foo
+            $response.meta.version | Should -Be $content.meta.version
         }
         It "uses config basepath -Base not specified" {
             $Base = "https://boop"
@@ -63,3 +68,4 @@ Describe "Invoke-ApiRequest" {
         }
     }
 }
+

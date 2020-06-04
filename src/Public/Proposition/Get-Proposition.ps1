@@ -18,7 +18,7 @@
     A proposition identifier
 
     .EXAMPLE
-    $proposition = Add-Proposition -Org $org -Name "My Proposition" -GlobalReferenceId "67fc0db4-ebce-4872-b522-e353d919200d"
+    $proposition = Get-Proposition -Id "303d50fd-557d-42c6-963d-6788c02d689a"
 
     .LINK
     https://www.hsdp.io/docume@ntation/identity-and-access-management-iam/api-documents/resource-reference-api/proposition-api#/Proposition/get_authorize_identity_Proposition
