@@ -42,7 +42,7 @@ param(
 
 Import-Module -Name ./src/hsdp-iam -Force
 
-
+gci $PSScriptRoot
 . "$PSScriptRoot/Test-ApplicationCmdlets.ps1"
 . "$PSScriptRoot/Test-AppServiceCmdlets.ps1"
 . "$PSScriptRoot/Test-CleanUpObjects.ps1"
