@@ -1,9 +1,9 @@
 function Test-UnCoveredCmdLets  {
-    $allFiles = Get-ChildItem ../src/Public/*.ps1 -Recurse
+    $allFiles = Get-ChildItem ./src/Public/*.ps1 -Recurse
     $notTestFiles = $allFiles | Where-Object { $_.name -notlike "*.Tests.ps1"}
     $cmdletsFiles  = $notTestFiles | Select-Object @{Name="name";Expression={$_.Name -replace ".ps1",""}} | Sort-Object name
-    $TestFiles = Get-ChildItem Test-*.ps1
-    $fileContents = $TestFiles | ForEach-Object { Get-Content $_.Name }
+    $TestFiles = Get-ChildItem ./Integration/Test-*.ps1
+    $fileContents = $TestFiles | ForEach-Object { Get-Content $_.FullName }
     $unCoveredCmdLets = $cmdletsFiles | ForEach-Object {
         $matchComment = "# CmdLet: $($_.Name)"
         if ($null -eq ($fileContents | Select-String $matchComment)) { $_.Name }
@@ -25,7 +25,7 @@ function Test-UnCoveredCmdLets  {
         "Read-Config",
         "Set-Config",
         "Set-FileConfig",
-        "Get-Evaulate",
+        "Get-Evaluate",
         "Import-UsersToOrgGroups","Set-UsersInGroup","Set-UsersToOrgGroups"
     )
     $thisFileShouldCover = (Compare-Object $unCoveredCmdLets $skipCover)
