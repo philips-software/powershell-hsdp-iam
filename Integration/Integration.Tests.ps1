@@ -48,7 +48,7 @@ gci $PSScriptRoot
 . "$PSScriptRoot/Test-CleanUpObjects.ps1"
 . "$PSScriptRoot/Test-ClientCmdlets.ps1"
 . "$PSScriptRoot/Test-GroupCmdlets.ps1"
-. "$PSScriptRoot/Test-MFAPolicyCmdlets.ps1"
+. "$PSScriptRoot/Test-MfaPolicyCmdlets.ps1"
 . "$PSScriptRoot/Test-OAuthCmdlets.ps1"
 . "$PSScriptRoot/Test-OrgCmdlets.ps1"
 . "$PSScriptRoot/Test-PropositionCmdlets.ps1"
@@ -83,7 +83,7 @@ function Test-Integration {
     $AppService = Test-AppServiceCmdlets -Application $Application
     Write-Debug ($AppService | ConvertTo-Json)
 
-    Test-MFAPolicyCmdLets -Org $Org
+    Test-MfaPolicyCmdLets -Org $Org
 
     $Group = Test-GroupCmdlets -Org $Org -User $User -AppService $AppService
     Write-Debug ($Group | ConvertTo-Json)
