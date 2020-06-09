@@ -1,4 +1,4 @@
-function Test-OAuthCmdLets {
+function Test-OAuthCmdlets {
     param()
     # CmdLet: Get-Introspect
     $introspect = Get-Introspect

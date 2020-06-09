@@ -40,24 +40,21 @@ param(
     $Scopes = @("profile","email","read_write")
 )
 
-$PSScriptRoot
-(Get-Location).Path
-
 Import-Module -Name ./src/hsdp-iam -Force
 
 
 . "$PSScriptRoot/Test-ApplicationCmdlets.ps1"
-. "$PSScriptRoot/Test-AppService.ps1"
+. "$PSScriptRoot/Test-AppServiceCmdlets.ps1"
 . "$PSScriptRoot/Test-CleanUpObjects.ps1"
-. "$PSScriptRoot/Test-ClientCmdLets.ps1"
-. "$PSScriptRoot/Test-GroupCmdLets.ps1"
-. "$PSScriptRoot/Test-MFAPolicyCmdLets.ps1"
-. "$PSScriptRoot/Test-OAuthCmdLets.ps1"
-. "$PSScriptRoot/Test-OrgCmdLets.ps1"
-. "$PSScriptRoot/Test-PropositionCmdLets.ps1"
-. "$PSScriptRoot/Test-RoleCmdLets.ps1"
-. "$PSScriptRoot/Test-UserCmdLets.ps1"
-. "$PSScriptRoot/Test-UnCoveredCmdLets.ps1"
+. "$PSScriptRoot/Test-ClientCmdlets.ps1"
+. "$PSScriptRoot/Test-GroupCmdlets.ps1"
+. "$PSScriptRoot/Test-MFAPolicyCmdlets.ps1"
+. "$PSScriptRoot/Test-OAuthCmdlets.ps1"
+. "$PSScriptRoot/Test-OrgCmdlets.ps1"
+. "$PSScriptRoot/Test-PropositionCmdlets.ps1"
+. "$PSScriptRoot/Test-RoleCmdlets.ps1"
+. "$PSScriptRoot/Test-UserCmdlets.ps1"
+. "$PSScriptRoot/Test-UnCoveredCmdlets.ps1"
 
 function Test-Integration {
     param([HashTable]$config)
@@ -83,7 +80,7 @@ function Test-Integration {
     $Client = Test-ClientCmdlets -Application $Application
     Write-Debug ($Client | ConvertTo-Json)
 
-    $AppService = Test-AppService -Application $Application
+    $AppService = Test-AppServiceCmdlets -Application $Application
     Write-Debug ($AppService | ConvertTo-Json)
 
     Test-MFAPolicyCmdLets -Org $Org

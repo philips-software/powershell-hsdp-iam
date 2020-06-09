@@ -1,4 +1,4 @@
-function Test-RoleCmdLets {
+function Test-RoleCmdlets {
     param($Org, $Group, $User)
 
     $roleName = "$(((new-guid).Guid).Substring(0,20))"

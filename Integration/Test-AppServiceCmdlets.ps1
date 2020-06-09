@@ -1,6 +1,4 @@
-
-
-function Test-AppService {
+function Test-AppServiceCmdlets {
     param($Application)
 
     $keyfile = "app1.key"
