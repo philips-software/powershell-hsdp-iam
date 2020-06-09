@@ -1,3 +1,13 @@
+<#
+    .SYNOPSIS
+    Sanity tests for powershell module
+
+    .DESCRIPTION
+    This is the main entry point to execute the sanity tests for the module.
+
+    .INPUTS
+    The configuration parameters for admin access to the IAM tenant
+#>
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification='needed to collect')]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
