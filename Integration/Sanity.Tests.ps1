@@ -30,7 +30,7 @@ param(
     $Scopes = @("profile","email","read_write")
 )
 
-Import-Module -Name .\src\hsdp-iam -Force
+Import-Module -Name ./src/hsdp-iam -Force
 
 $InformationPreference = "continue"
 $ErrorActionPreference = "stop"
