@@ -1,18 +1,18 @@
 <#
     .SYNOPSIS
-    Deletes a Group.
+    Removes a Group.
 
     .DESCRIPTION
     Deletes a Group. This operation is only allowed when there are no members in the group.
 
     .INPUTS
-    Accepts the group object
+    Accepts the group resource object
 
     .OUTPUTS
     An operation outcome in PSObject form
 
     .PARAMETER Group
-    The group object
+    The group resource object
 
     .EXAMPLE
     Get-Groups -OrgId $org.id | Select-Object -First 1 | Remove-Group

@@ -6,13 +6,13 @@
     Returns the delete status of a specified organization resource. A OAuth2.0 Bearer token of a subject with HSDP_IAM_ORGANIZATION.DELETE permission is required to perform only this operation.
 
     .INPUTS
-    The organization
+    The organization resource object
 
     .OUTPUTS
-    The status
+    The status of the deletion request for the organization
 
     .PARAMETER Org
-    The organization object
+    The organization resource object
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Organization/get_Organizations__id__deleteStatus

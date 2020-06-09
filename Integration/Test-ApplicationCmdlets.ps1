@@ -7,8 +7,8 @@ function Test-ApplicationCmdlets {
         Write-Warning "new application not created"
     }
 
-    # CmdLet: Get-Application
-    $getApplication = Get-Application -Id $addApplication.Id
+    # CmdLet: Get-Applications
+    $getApplication = Get-Applications -Id $addApplication.Id
     if ($getApplication.Id -ne $addApplication.Id) {
         Write-Warning "Cross check of Add-Application and Get-Application failed"
         Write-Warning "$($addApplication | ConvertTo-Json)"

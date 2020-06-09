@@ -1,4 +1,4 @@
-function Test-MFAPolicyCmdLets {
+function Test-MfaPolicyCmdlets {
     param($Org)
 
     # CmdLet: Add-MFAPolicy

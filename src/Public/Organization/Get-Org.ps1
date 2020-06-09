@@ -14,7 +14,7 @@
     The organization identifier
 
     .OUTPUTS
-    The organization as a PSObject
+    The organization resource object
 
     .PARAMETER Id
     The organization identifier

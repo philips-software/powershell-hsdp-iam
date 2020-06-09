@@ -7,13 +7,13 @@
     HSDP_IAM_MFA_POLICY.UPDATE permission is required to perform only this operation.
 
     .INPUTS
-    The MFA Policy object.
+    The MFA Policy resource object.
 
     .OUTPUTS
-    An updated MFA Policy PSObject
+    An updated MFA Policy resource object
 
     .PARAMETER MFAPolicy
-    The MFA Policy object
+    The MFA Policy resource object
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Authentication%20Policy/delete_MFAPolicies__id_

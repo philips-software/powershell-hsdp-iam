@@ -26,17 +26,14 @@
     .PARAMETER ClientCredentialsPassword
     IAM client secret
 
+    .PARAMETER Scopes
+    The scopes to use for the client
+
     .PARAMETER AppCredentialsUserName
     App shared key
 
     .PARAMETER AppCredentialsPassword
     App secret
-
-    .PARAMETER OAuth2CredentialsUserName
-    OAuth2 Client ID and password
-
-    .PARAMETER OAuth2CredentialsPassword
-    OAuth2  password
 
     .PARAMETER IamUrl
     The HSDP IAM URL. Example: https://iam-integration.us-east.philips-healthsuite.com
@@ -75,16 +72,6 @@ function New-Config {
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $ClientCredentialsUserName,
-
-        [Parameter(Mandatory=$false)]
-        [ValidateNotNullOrEmpty()]
-        [String]
-        $ClientCredentialsPassword,
-
-        [Parameter(Mandatory=$false)]
-        [ValidateNotNullOrEmpty()]
-        [String]
         $AppCredentialsUserName,
 
         [Parameter(Mandatory=$false)]
@@ -95,12 +82,17 @@ function New-Config {
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $OAuth2CredentialsUserName,
+        $ClientCredentialsUserName,
 
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $OAuth2CredentialsPassword,
+        $ClientCredentialsPassword,
+
+        [Parameter(Mandatory=$false)]
+        [ValidateNotNullOrEmpty()]
+        [String[]]
+        $Scopes = @("profile","email","read_write"),
 
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
@@ -148,9 +140,9 @@ function New-Config {
                     Credentials         = New-Object System.Management.Automation.PSCredential ($CredentialsUserName, (ConvertTo-SecureString -String $CredentialsPassword -AsPlainText -Force))
                     ClientCredentials   = New-Object System.Management.Automation.PSCredential ($ClientCredentialsUserName, (ConvertTo-SecureString -String $ClientCredentialsPassword -AsPlainText -Force))
                     AppCredentials      = New-Object System.Management.Automation.PSCredential ($AppCredentialsUserName, (ConvertTo-SecureString -String $AppCredentialsPassword -AsPlainText -Force))
-                    OAuth2Credentials   = New-Object System.Management.Automation.PSCredential ($OAuth2CredentialsUserName, (ConvertTo-SecureString -String $OAuth2CredentialsPassword -AsPlainText -Force))
                     IamUrl              = $IamUrl
                     IdmUrl              = $IdmUrl
+                    Scopes              = $Scopes
                 })
             }
             if ($Path) {

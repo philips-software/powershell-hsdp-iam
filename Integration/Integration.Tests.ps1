@@ -8,21 +8,52 @@
     .INPUTS
     The configuration parameters for admin access to the IAM tenant
 #>
-param($IamUrl,$IdmUrl,$CredentialsUserName,$CredentialsPassword,$ClientCredentialsUserName,$ClientCredentialsPassword,$AppCredentialsUserName,$AppCredentialsPassword,$OAuth2CredentialsUserName,$OAuth2CredentialsPassword)
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '', Justification='needed to collect')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
+param(
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $IamUrl,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $IdmUrl,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $CredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $CredentialsPassword,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $AppCredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $AppCredentialsPassword,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $ClientCredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $ClientCredentialsPassword,
+    [String[]]
+    $Scopes = @("profile","email","read_write")
+)
 
-Import-Module ..\src\hsdp-iam -Force
+Import-Module -Name ./src/hsdp-iam -Force
 
-. "$PSScriptRoot\Test-ApplicationCmdlets.ps1"
-. "$PSScriptRoot\Test-AppService.ps1"
-. "$PSScriptRoot\Test-CleanUpObjects.ps1"
-. "$PSScriptRoot\Test-GroupCmdLets.ps1"
-. "$PSScriptRoot\Test-MFAPolicyCmdLets.ps1"
-. "$PSScriptRoot\Test-OAuthCmdLets.ps1"
-. "$PSScriptRoot\Test-OrgCmdLets.ps1"
-. "$PSScriptRoot\Test-PropositionCmdLets.ps1"
-. "$PSScriptRoot\Test-RoleCmdLets.ps1"
-. "$PSScriptRoot\Test-UserCmdLets.ps1"
-. "$PSScriptRoot\Test-UnCoveredCmdLets.ps1"
+. "$PSScriptRoot/Test-ApplicationCmdlets.ps1"
+. "$PSScriptRoot/Test-AppServiceCmdlets.ps1"
+. "$PSScriptRoot/Test-CleanUpObjects.ps1"
+. "$PSScriptRoot/Test-ClientCmdlets.ps1"
+. "$PSScriptRoot/Test-GroupCmdlets.ps1"
+. "$PSScriptRoot/Test-MfaPolicyCmdlets.ps1"
+. "$PSScriptRoot/Test-OAuthCmdlets.ps1"
+. "$PSScriptRoot/Test-OrgCmdlets.ps1"
+. "$PSScriptRoot/Test-PropositionCmdlets.ps1"
+. "$PSScriptRoot/Test-RoleCmdlets.ps1"
+. "$PSScriptRoot/Test-UserCmdlets.ps1"
+. "$PSScriptRoot/Test-UnCoveredCmdlets.ps1"
 
 function Test-Integration {
     param([HashTable]$config)
@@ -32,7 +63,7 @@ function Test-Integration {
 
     Test-OAuthCmdLets
 
-    $rootOrgId = "e5550a19-b6d9-4a9b-ac3c-10ba817776d4"
+    $rootOrgId = "6618b09c-1c09-4887-a4d1-d8a4b285313c"
     $Org = Test-OrgCmdlets -RootOrgId $rootOrgId
     Write-Debug ($Org | ConvertTo-Json)
 
@@ -45,10 +76,13 @@ function Test-Integration {
     $Application = Test-ApplicationCmdlets -Proposition $Proposition
     Write-Debug ($Application | ConvertTo-Json)
 
-    $AppService = Test-AppService -Application $Application
+    $Client = Test-ClientCmdlets -Application $Application
+    Write-Debug ($Client | ConvertTo-Json)
+
+    $AppService = Test-AppServiceCmdlets -Application $Application
     Write-Debug ($AppService | ConvertTo-Json)
 
-    Test-MFAPolicyCmdLets -Org $Org
+    Test-MfaPolicyCmdLets -Org $Org
 
     $Group = Test-GroupCmdlets -Org $Org -User $User -AppService $AppService
     Write-Debug ($Group | ConvertTo-Json)
@@ -61,14 +95,13 @@ Test-UnCoveredCmdLets
 
 Test-Integration -Config @{
     Prompt = $false;
-    CredentialsUserName = $CredentialsUserName;
-    CredentialsPassword = $CredentialsPassword;
-    ClientCredentialsUserName = $ClientCredentialsUserName;
-    ClientCredentialsPassword = $ClientCredentialsPassword;
-    AppCredentialsUserName = $AppCredentialsUserName;
-    AppCredentialsPassword = $AppCredentialsPassword;
-    OAuth2CredentialsUserName = $OAuth2CredentialsUserName;
-    OAuth2CredentialsPassword = $OAuth2CredentialsPassword;
     IamUrl = $IamUrl;
     IdmUrl = $IdmUrl;
+    CredentialsUserName = $CredentialsUserName;
+    CredentialsPassword = $CredentialsPassword;
+    AppCredentialsUserName = $AppCredentialsUserName;
+    AppCredentialsPassword = $AppCredentialsPassword;
+    ClientCredentialsUserName = $ClientCredentialsUserName;
+    ClientCredentialsPassword = $ClientCredentialsPassword;
+    Scopes = $Scopes;
 }

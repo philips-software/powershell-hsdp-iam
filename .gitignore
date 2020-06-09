@@ -8,4 +8,6 @@ src/hsdp-iam.nuspec
 src/hsdp-iam.psd1
 local-*.tests.ps1
 Integration/local*.ps1
-Integration/*.key
+*.key
+*config.xml
+local-*.ps1

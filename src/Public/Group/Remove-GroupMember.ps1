@@ -6,16 +6,16 @@
     Given HSDP resource(s) shall be removed as members of the Group.
 
     .INPUTS
-    Accepts the group object
+    Accepts the group resource object
 
     .OUTPUTS
-    The updated group object. Must use this object for subsequent requests to meta.version is correct.
+    The updated group resource object. This object must be used for subsequent requests for the use of an updated meta.version.
 
     .PARAMETER Group
-    The group object
+    The group resource object
 
     .PARAMETER User
-    The user object
+    The user resource object
 
     .EXAMPLE
     $group = Remove-GroupMember -Group $group -User $user

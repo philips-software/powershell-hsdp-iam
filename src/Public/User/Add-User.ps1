@@ -21,13 +21,13 @@
     Minimum properties required to create a user are loginId, emailAddress, givenName and familyName.
 
     .INPUTS
-    An organization PSObject
+    An organization resource object
 
     .OUTPUTS
-    A user PSObject
+    A user resource object
 
     .PARAMETER Org
-    An organization PSObject
+    An organization resource object to associate the user
 
     .PARAMETER LoginId
     Unique login ID for the user.

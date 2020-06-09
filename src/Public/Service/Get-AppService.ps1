@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    List app services
+    Retrieve app services
 
     .DESCRIPTION
     Retrieves app services based on various query parameters supported.
@@ -9,7 +9,7 @@
     An app service identifier
 
     .OUTPUTS
-    An app service PSobject
+    An app service resource object
 
     .PARAMETER Id
     A app service identifier
@@ -18,10 +18,10 @@
     The name of the app service
 
     .PARAMETER Application
-    The application PSObject that is paried with the service
+    The application resource object that is paried with the service
 
     .PARAMETER Org
-    The organization PSObject that owns the service
+    The organization resource object that owns the service
 
     .PARAMETER PrivateKeyPath
     A path to the private key file to re-attach to the service object

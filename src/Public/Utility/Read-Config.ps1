@@ -26,23 +26,23 @@ function Read-Config {
         $IamUrl = Read-Host -Prompt "HSDP IAM URL (example: https://iam-integration.us-east.philips-healthsuite.com)"
         $IdmUrl = Read-Host -Prompt "HSDP IDM URL (example: https://idm-integration.us-east.philips-healthsuite.com)"
 
-        Write-Host "===== HSDP Username and Password ====="
+        Write-Host "===== HSDP Username and Password (org admin account)"
         $Credentials = Get-Credential
 
-        Write-Host "===== HSDP ClientId and Secret ====="
-        $ClientCredentials = Get-Credential
-
-        Write-Host "===== HSDP App Shared Key and Secret ====="
+        Write-Host "===== HSDP App Shared Key and Secret (as provied by during onboarding)"
         $AppCredentials = Get-Credential
 
-        Write-Host "===== HSDP OAuth2 ClientId and Secret ====="
-        $OAuth2Credentials = Get-Credential
+        Write-Host "===== HSDP OAuth2 ClientId and Secret (referenced as Client Name/Password in the SSUI)"
+        $ClientCredentials = Get-Credential
+
+        Write-Host "===== OAuth2 Client Scopes"
+        $Scopes = Read-Host -Prompt "Scopes: (example: profile email read_write):"
 
         Write-Output (New-Object PSObject -Property @{
             Credentials          = $Credentials
-            ClientCredentials    = $ClientCredentials
             AppCredentials       = $AppCredentials
-            OAuth2Credentials    = $OAuth2Credentials
+            ClientCredentials    = $ClientCredentials
+            Scopes               = $Scopes.Split(" ")
             IamUrl               = $IamUrl
             IdmUrl               = $IdmUrl
         })

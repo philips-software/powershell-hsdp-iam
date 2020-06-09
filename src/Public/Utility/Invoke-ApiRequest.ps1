@@ -159,9 +159,10 @@ function Invoke-ApiRequest {
             if ($null -ne $outcome.response) {
                 $content = $outcome.response.content
                 $objContent = $outcome.response.content | ConvertFrom-Json -AsHashtable
-                Write-Debug "RESPONSE: $($content)"
+                Write-Debug "RESPONSE BODY: $($content)"
+                Write-Debug "RESPONSE HEADERS: $($outcome.response.Headers | ConvertTo-Json)"
                 # copy the eTag header value to the meta element on the resource
-                if ([bool]($outcome.response.Headers.ETag) -eq $true) {
+                if ([bool]($outcome.response.Headers.ETag) -eq $true -and -not $ReturnResponseHeader) {
                     Write-Debug "Adding meta.version tag from etag header $($outcome.headers.ETag)"
                     $objContent | Add-Member NoteProperty meta (New-Object PSObject -Property @{ version = $outcome.response.Headers.ETag } )
                     $content = ($objContent | ConvertTo-Json)

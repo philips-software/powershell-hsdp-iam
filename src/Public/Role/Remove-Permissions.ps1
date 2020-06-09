@@ -8,13 +8,13 @@
     Note: A maximum of 10 permissions can be removed per request.
 
     .INPUTS
-    A role PSObject
+    A role resource object
 
     .OUTPUTS
     An Operation Outcome PSObject
 
     .PARAMETER Role
-    A role PSObject
+    A role resource object
 
     .PARAMETER Permissions
     An array of permission names

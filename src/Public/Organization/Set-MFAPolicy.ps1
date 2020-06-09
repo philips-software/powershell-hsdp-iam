@@ -10,13 +10,13 @@
     NOTE: The following readWrite attributes will NOT be allowed to update currently - resource.type, resource.value
 
     .INPUTS
-    The MFA Policy PSObject
+    The MFA Policy resource object
 
     .OUTPUTS
-    An updated MFA Policy PSObject
+    An updated MFA Policy resource object
 
     .PARAMETER Policy
-    The MFA Policy PSObject
+    The MFA Policy resource object
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Authentication%20Policy/put_MFAPolicies__id_

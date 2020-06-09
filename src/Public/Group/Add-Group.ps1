@@ -7,13 +7,13 @@
     in that organization. If a group with same name already exists in the organization, then the request will fail.
 
     .INPUTS
-    Accepts the managing organization object
+    The managing organization resource object
 
     .OUTPUTS
-    The new group object
+    The new group resource object
 
     .PARAMETER Org
-    The managing organization where the group will be created
+    The managing organization resource object where the group will be created
 
     .PARAMETER Name
     The name of the group

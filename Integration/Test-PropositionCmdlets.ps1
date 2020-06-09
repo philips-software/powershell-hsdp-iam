@@ -7,8 +7,8 @@ function Test-PropositionCmdlets {
         Write-Warning "new proposition not created"
     }
 
-    # CmdLet: Get-Proposition
-    $getProp = Get-Proposition -Id $newProposition.Id
+    # CmdLet: Get-Propositions
+    $getProp = Get-Propositions -Id $newProposition.Id
     if ($null -eq $getProp) {
         Write-Warning "Cross check of Add-Proposition and Get-Proposition failed"
         Write-Warning "$($newProposition | ConvertTo-Json)"

@@ -2,7 +2,7 @@ Set-StrictMode -Version Latest
 
 BeforeAll {
     . "$PSScriptRoot\Add-Proposition.ps1"
-    . "$PSScriptRoot\Get-Proposition.ps1"
+    . "$PSScriptRoot\Get-Propositions.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
@@ -26,7 +26,7 @@ Describe "Add-Proposition" {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $rootPath = "/authorize/identity/Proposition"
         Mock Invoke-ApiRequest { $response }
-        Mock Get-Proposition { $getProp }
+        Mock Get-Propositions { $getProp }
     }
     Context "api" {
         It "invokes request" {

@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Returns a requested role definition.
+    Get a requested role definition
 
     .DESCRIPTION
     This API returns a registered role given the role ID.
@@ -9,7 +9,7 @@
     A role identifier
 
     .OUTPUTS
-    A role PSObject
+    A role resource object
 
     .PARAMETER Id
     A role identifier

@@ -6,13 +6,13 @@
     Creates a app service
 
     .INPUTS
-    An application PSObject
+    An application resource object paired to this service
 
     .OUTPUTS
-    The new service PSObject
+    The new service resource object
 
     .PARAMETER Application
-    The application PSObject
+    The application resource object to pair to the service
 
     .PARAMETER Name
     Name of the service identity. Invalid Characters:- "[&+'";=?#|( )\[\]<>]"

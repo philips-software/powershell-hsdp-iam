@@ -3,16 +3,16 @@
     Add mutiple users to a group using ids
 
     .DESCRIPTION
-    This cmdlet batch assigns users by identifier to a group
+    Batch assigns users by identifier to a group
 
     .INPUTS
-    Accepts the organization object
+    Accepts the organization resource object
 
     .OUTPUTS
-    The updated group object. Must use this object for subsequent requests to meta.version is correct.
+    The updated resoure group object. This object must be used for subsequent requests for the use of an updated meta.version.
 
     .PARAMETER Org
-    The organization object
+    The organization resource object
 
     .PARAMETER GroupName
     The name of the group to assign users

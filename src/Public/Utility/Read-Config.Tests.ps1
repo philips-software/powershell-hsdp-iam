@@ -9,12 +9,11 @@ Describe "New-Config" {
             Mock Write-Host
             Mock Get-Credential { "foo" }
             $config = Read-Config
-            Should -Invoke Read-Host -Exactly 2
-            Should -Invoke Get-Credential -Exactly 4
+            Should -Invoke Read-Host -Exactly 3
+            Should -Invoke Get-Credential -Exactly 3
             $config.Credentials | Should -Be "foo"
             $config.ClientCredentials | Should -Be "foo"
             $config.AppCredentials | Should -Be "foo"
-            $config.OAuth2Credentials | Should -Be "foo"
             $config.IamUrl | Should -Be "url"
             $config.IdmUrl | Should -Be "url"
         }

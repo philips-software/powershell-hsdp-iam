@@ -3,19 +3,19 @@
     Retrieves user ids by specified page and size
 
     .DESCRIPTION
-    Retrieves multiple users for either an org or a group
+    Retrieves multiple users for either an organization or a group
 
     .INPUTS
-    The context of org or group and the page and size
+    The context of organization or group and the page and size
 
     .OUTPUTS
     An array of user ids
 
     .PARAMETER Org
-    The organization PSObject. Use either this parameter or the Group parameter but not both.
+    The organization resource object. Use either this parameter or the Group parameter but not both.
 
     .PARAMETER Group
-    The group PSObject. Use either this parameter or the Org parameter but not both.
+    The group resource object. Use either this parameter or the Org parameter but not both.
 
     .PARAMETER Page
     The page number to retrieve. Defaults to 1

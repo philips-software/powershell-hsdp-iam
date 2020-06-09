@@ -11,13 +11,13 @@
     NOTE: The following readWrite attributes will NOT be allowed to update currently - name, parent.value
 
     .INPUTS
-    The organization PSObject
+    The organization resource object to update
 
     .OUTPUTS
-    An updated organization PSObject
+    An updated organization resource object
 
     .PARAMETER Org
-    The organization PSObject
+    The organization resource object
 
     .PARAMETER Deactivate
     Will deactive the organization if specified
