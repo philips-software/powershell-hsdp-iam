@@ -38,7 +38,10 @@ function Get-Headers {
         [PSCredential]$Credentials = $null,
 
         [Parameter(Position = 2, Mandatory = $false)]
-        [PSCredential]$ClientCredentials = $null
+        [PSCredential]$ClientCredentials = $null,
+
+        [Parameter(Position = 3, Mandatory = $false)]
+        [String[]]$Scopes = @("profile","email","read_write")
     )
 
     begin {
@@ -71,7 +74,7 @@ function Get-Headers {
                 "grant_type" = "password"
                 "username"   = $config.Credentials.GetNetworkCredential().username
                 "password"   = $config.Credentials.GetNetworkCredential().password
-                "scope"      = "profile email READ_WRITE"
+                "scope"      = $config.Scopes -Join " "
             }
         }
         else {
@@ -79,7 +82,7 @@ function Get-Headers {
                 "grant_type" = "password"
                 "username"   = $Credentials.GetNetworkCredential().username
                 "password"   = $Credentials.GetNetworkCredential().password
-                "scope"      = "profile email READ_WRITE"
+                "scope"      = $Scopes -Join " "
             }
         }
 

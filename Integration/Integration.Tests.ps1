@@ -8,13 +8,41 @@
     .INPUTS
     The configuration parameters for admin access to the IAM tenant
 #>
-param($IamUrl,$IdmUrl,$CredentialsUserName,$CredentialsPassword,$ClientCredentialsUserName,$ClientCredentialsPassword,$AppCredentialsUserName,$AppCredentialsPassword,$OAuth2CredentialsUserName,$OAuth2CredentialsPassword)
+param(
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $IamUrl,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $IdmUrl,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $CredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $CredentialsPassword,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $AppCredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $AppCredentialsPassword,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $ClientCredentialsUserName,
+    [Parameter(Mandatory)]
+    [ValidateNotNullOrEmpty()]
+    $ClientCredentialsPassword,
+    [String[]]
+    $Scopes = @("profile","email","read_write")
+)
 
 Import-Module ..\src\hsdp-iam -Force
 
 . "$PSScriptRoot\Test-ApplicationCmdlets.ps1"
 . "$PSScriptRoot\Test-AppService.ps1"
 . "$PSScriptRoot\Test-CleanUpObjects.ps1"
+. "$PSScriptRoot\Test-ClientCmdLets.ps1"
 . "$PSScriptRoot\Test-GroupCmdLets.ps1"
 . "$PSScriptRoot\Test-MFAPolicyCmdLets.ps1"
 . "$PSScriptRoot\Test-OAuthCmdLets.ps1"
@@ -32,7 +60,7 @@ function Test-Integration {
 
     Test-OAuthCmdLets
 
-    $rootOrgId = "e5550a19-b6d9-4a9b-ac3c-10ba817776d4"
+    $rootOrgId = "6618b09c-1c09-4887-a4d1-d8a4b285313c"
     $Org = Test-OrgCmdlets -RootOrgId $rootOrgId
     Write-Debug ($Org | ConvertTo-Json)
 
@@ -44,6 +72,9 @@ function Test-Integration {
 
     $Application = Test-ApplicationCmdlets -Proposition $Proposition
     Write-Debug ($Application | ConvertTo-Json)
+
+    $Client = Test-ClientCmdlets -Application $Application
+    Write-Debug ($Client | ConvertTo-Json)
 
     $AppService = Test-AppService -Application $Application
     Write-Debug ($AppService | ConvertTo-Json)
@@ -61,14 +92,13 @@ Test-UnCoveredCmdLets
 
 Test-Integration -Config @{
     Prompt = $false;
-    CredentialsUserName = $CredentialsUserName;
-    CredentialsPassword = $CredentialsPassword;
-    ClientCredentialsUserName = $ClientCredentialsUserName;
-    ClientCredentialsPassword = $ClientCredentialsPassword;
-    AppCredentialsUserName = $AppCredentialsUserName;
-    AppCredentialsPassword = $AppCredentialsPassword;
-    OAuth2CredentialsUserName = $OAuth2CredentialsUserName;
-    OAuth2CredentialsPassword = $OAuth2CredentialsPassword;
     IamUrl = $IamUrl;
     IdmUrl = $IdmUrl;
+    CredentialsUserName = $CredentialsUserName;
+    CredentialsPassword = $CredentialsPassword;
+    AppCredentialsUserName = $AppCredentialsUserName;
+    AppCredentialsPassword = $AppCredentialsPassword;
+    ClientCredentialsUserName = $ClientCredentialsUserName;
+    ClientCredentialsPassword = $ClientCredentialsPassword;
+    Scopes = $Scopes;
 }

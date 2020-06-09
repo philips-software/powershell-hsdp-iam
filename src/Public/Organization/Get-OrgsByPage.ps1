@@ -12,19 +12,19 @@
     Search response will not contain policies and $ref for any of the references.
 
     .OUTPUTS
-    Array of organization PSObjects
+    Array of organization resource objects
 
     .PARAMETER MyOrgOnly
-    Specifies to retrieve the current user's org
+    Specifies to retrieve the current user's organization
 
     .PARAMETER Name
-    Returns only orgs matching this name
+    Returns only organizations matching this name
 
     .PARAMETER ParentOrg
-    Returns only orgs with the specified parent org
+    Returns only organizations with the specified parent organizations resource object
 
     .PARAMETER Inactive
-    Specifies to only return inactive orgs
+    Specifies to only return inactive organizations
 
     .PARAMETER Index
     The index number to start. Defaults to 1

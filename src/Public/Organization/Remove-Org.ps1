@@ -16,7 +16,7 @@
     None
 
     .PARAMETER Org
-    The organization object
+    The organization resource object
 
     .PARAMETER WaitComplete
     Indicates that the operation should wait until it has completed

@@ -25,7 +25,7 @@
     Returns an EvalResponse as a PSObject
 
     .PARAMETER Application
-    The application object to evaluate access
+    The application resource object to evaluate access
 
     .PARAMETER Resources
     An array of resource urls to evaulate
@@ -96,8 +96,8 @@ function Get-Evaluate {
 
         $config = Get-Config
 
-        $OAuth2ClientId = $config.OAuth2Credentials.GetNetworkCredential().username
-        $OAuth2ClientPassword = $config.OAuth2Credentials.GetNetworkCredential().password
+        $OAuth2ClientId = $config.ClientCredentials.GetNetworkCredential().username
+        $OAuth2ClientPassword = $config.ClientCredentials.GetNetworkCredential().password
 
         $auth = "Basic " + [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($OAuth2ClientId):$($OAuth2ClientPassword)"))
         Write-Output (Invoke-ApiRequest -Path "/authorize/policy/`$evaluate" -Version 3 -Method Post -Base $config.IamUrl -Body $body -ValidStatusCodes @(200) -Authorization $auth)

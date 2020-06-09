@@ -1,4 +1,4 @@
-## Powershell cmdlet API functionality coverage/status 
+## Powershell cmdlet API functionality coverage/status
 |topic|area|resource|version|Status|cmdlet(s)|Notes|
 |:----|:---|:-------|:-----:|:----:|:-----|:----|
 |Access management|Federation|GET /authorize/saml2/login|1|Future||
@@ -14,12 +14,12 @@
 |||GET /authorize/oauth2/endsession|2|Future||
 |||POST /authorize/oauth2/introspect|3|Supported|`Get-Introspect`|
 ||Application|POST /authorize/identity/Application|1|Supported|`Add-Application`|
-|||GET /authorize/identity/Application|1|Supported|`Get-Application`|Still need to implement by name| positionId and globalReferenceId
-||Client|POST /authorize/identity/Client|1|Future||
-|||GET /authorize/identity/Client|1|Future||
-|||DELETE /authorize/identity/Client/{id}|1|Future||
-|||PUT /authorize/identity/Client/{id}/$scopes|1|Future||
-|||PUT /authorize/identity/Client/{id}|1|Future||
+|||GET /authorize/identity/Application|1|Supported|`Get-Applications`|Supported|
+||Client|POST /authorize/identity/Client|1|`Add-Client`||
+|||GET /authorize/identity/Client|1|`Get-Clients`||
+|||DELETE /authorize/identity/Client/{id}|1|`Remove-Client`||
+|||PUT /authorize/identity/Client/{id}/$scopes|1|`Set-ClientScopes`||
+|||PUT /authorize/identity/Client/{id}|1|`Set-Client`||
 ||Device|POST /authorize/identity/Device|1|Future||
 |||GET /authorize/identity/Device|1|Future||
 |||PUT /authorize/identity/Device|1|Future||
@@ -32,7 +32,7 @@
 |||GET /authorize/identity/Group/{groupId}|1|Supported|`Get-Group`|
 |||POST /authorize/identity/Group/groupID/$remove|1|Supported|`Remove-GroupIdentity`|
 |||POST /authorize/identity/Group/{groupId}/$add-members|1|Supported|`Set-GroupMember`|
-|||POST /authorize/identity/Group/{groupId}/$remove-members|1|`Remove-GroupMember`||
+|||POST /authorize/identity/Group/{groupId}/$remove-members|1|Supported|`Remove-GroupMember`||
 |||POST /authorize/identity/Group/{groupId}/$assign-role|1|Supported|`Set-GroupRole`|
 |||POST /authorize/identity/Group/{groupId}/$remove-role|1|Supported|`Clear-GroupRole`|
 |||POST /authorize/identity/Group/{groupID}/$assign|1|Supported|`Set-GroupIdentity`|
@@ -50,7 +50,7 @@
 |||DELETE /authorize/scim/v2/Organizations/{id}|2|Supported|`Remove-Org`|
 |||DELETE /authorize/scim/v2/Organizations/{id}/deleteStatus|2|Supported|`Get-OrgRemoveStatus`|
 ||Proposition|POST /authorize/identity/Proposition|1|Supported|`Add-Proposition`|
-|||GET /authorize/identity/Proposition|1|Supported|`Get-Proposition`|
+|||GET /authorize/identity/Proposition|1|Supported|`Get-Propositions`|
 ||Role and Permission|POST /authorize/identity/Role|1|Supported|`Add-Role`|
 |||GET /authorize/identity/Role|1|Supported|`Get-Roles`|
 |||GET /authorize/identity/Role/{roleId}|1|Supported|`Get-Role`|

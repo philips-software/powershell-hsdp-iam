@@ -9,7 +9,7 @@
     A user identifier (either username or unique identifier)
 
     .OUTPUTS
-    A user PSObject
+    A user resource object
 
     .PARAMETER Id
     A user identifier

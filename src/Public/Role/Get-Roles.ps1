@@ -6,13 +6,13 @@
     This cmdlet returns all roles matching one of the criteria. Either Org, Group or Name may be specified.
 
     .OUTPUTS
-    An array of role PSObjects
+    An array of role resource objects
 
     .PARAMETER Org
-    An organization PSObject
+    An organization resource object to filter the roles
 
     .PARAMETER Group
-    A group PSObject
+    A group resource object to filter the roles
 
     .PARAMETER Name
     A role name

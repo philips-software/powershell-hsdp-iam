@@ -40,7 +40,6 @@ A new configuration file may be created using the New-Config cmdlet. The cmdlet 
 | HSDP Username and Password |  | Credentials with org administrative role | always required
 | HSDP ClientId and Secret | | IAM client key and secret | always required
 | HSDP App Shared Key and Secret | | App shared key and secret  | required for API Signature headers
-| HSDP OAuth2 ClientId and Secret | | OAuth2 Client ID and password | required for evaulate calls
 
 The configuration will be saved to a file named ```./config.xml``` The secrets provided will be encrypted the configuration when using the windows platform.
 
@@ -117,6 +116,8 @@ $VerbosePreference="continue"
 ## Cmdlet Categories
 - Configuration
 - Application
+- Client
+- OAuth2
 - Group
 - Organization
 - Proposition

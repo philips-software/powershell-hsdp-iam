@@ -27,7 +27,6 @@ Describe "New-Config" {
                 -CredentialsUserName "a" -CredentialsPassword "b" `
                 -ClientCredentialsUserName "c" -ClientCredentialsPassword "d" `
                 -AppCredentialsUserName "e" -AppCredentialsPassword "f" `
-                -OAuth2CredentialsUserName "g" -OAuth2CredentialsPassword "h" `
                 -IamUrl "i" -IdmUrl "j"
             Should -Invoke Export-Clixml -ParameterFilter {
                 $InputObject.Credentials.username -eq "a" -and `
@@ -36,8 +35,6 @@ Describe "New-Config" {
                 $InputObject.ClientCredentials.GetNetworkCredential().password -eq "d" -and `
                 $InputObject.AppCredentials.username -eq "e" -and `
                 $InputObject.AppCredentials.GetNetworkCredential().password -eq "f" -and `
-                $InputObject.OAuth2Credentials.username -eq "g" -and `
-                $InputObject.OAuth2Credentials.GetNetworkCredential().password -eq "h" -and `
                 $InputObject.IamUrl -eq "i" -and `
                 $InputObject.IdmUrl -eq "j"
             }

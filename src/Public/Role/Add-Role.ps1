@@ -8,13 +8,13 @@
     level instead of in a sub-organization.
 
     .INPUTS
-    A Org PSObject
+    An organization resource object
 
     .OUTPUTS
-    An Role PSObject
+    An role resource object
 
     .PARAMETER Org
-    A Org PSObject
+    An organization resource object
 
     .PARAMETER Name
     The role name

@@ -17,13 +17,13 @@
     MFA for any child organization(s), create a new MFA policy for the child organization by setting the active flag to false.
 
     .INPUTS
-    The organization object.
+    The organization resource object.
 
     .OUTPUTS
-    The new MFA Policy as a PSObject
+    The new MFA Policy resource object
 
     .PARAMETER Org
-    The Org object to apply the MFA Policy
+    The Org resource object to apply the MFA Policy
 
     .PARAMETER Name
     Name of the MFA policy

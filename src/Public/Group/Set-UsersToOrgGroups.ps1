@@ -3,13 +3,13 @@
     Add mutiple users to an existing group using names and ids strings
 
     .DESCRIPTION
-    This cmdlet is a utility to support batch assigns users to a group when only ids are available
+    A utility to support batch assigns users to a group when only ids are available
 
     .PARAMETER OrgIds
     An array of the organization identifiers
 
     .PARAMETER UserIds
-    An array of user ids to assign to the group
+    An array of user identiviers to assign to the group
 
     .PARAMETER GroupName
     The group name to assign the users. This group must exist.

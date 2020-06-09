@@ -3,7 +3,7 @@
     Tests if a group exists in an org
 
     .DESCRIPTION
-    This cmdlet is a utility to support checking if a a particular group by name exists in a set of organizations
+    A utility to support checking if a a particular group by name exists in a set of organizations
 
     .OUTPUTS
     An array of orgs that do not contain the group

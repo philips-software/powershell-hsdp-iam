@@ -10,7 +10,7 @@ function Test-GroupCmdlets {
     }
 
     # CmdLet: Test-GroupInOrgs
-    $invalidOrgs = @(Test-G./loroupInOrgs -OrgIds @($Org.Id) -GroupName $groupName)
+    $invalidOrgs = @(Test-GroupInOrgs -OrgIds @($Org.Id) -GroupName $groupName)
     if ($invalidOrgs.Count -gt 0) {
         Write-Warning "Test-GroupInOrgs should have not returned any orgs"
         Write-Warning ($invalidOrgs | ConvertTo-Json)

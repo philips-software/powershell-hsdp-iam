@@ -8,16 +8,16 @@
     refer to the Role management API. Roles can be removed from a Group one at a time.
 
     .INPUTS
-    Accepts the group to remove the role
+    Accepts the group resource object to remove the role
 
     .OUTPUTS
     An operation outcome in PSObject form
 
     .PARAMETER Group
-    The HSDP group object to clear the role
+    The HSDP group resource object to clear the role
 
     .PARAMETER Role
-    The HSDP role object to remove from the group
+    The HSDP role resource object to remove from the group
 
     .EXAMPLE
     $group | Clear-GroupRole $role

@@ -12,13 +12,13 @@
         - Any unknown parameters shall be ignored.
 
     .INPUTS
-    Accepts the organization object
+    Accepts the organization resource object
 
     .OUTPUTS
-    An array of organization objects
+    An array of group resource objects
 
     .PARAMETER Org
-    The organization object
+    The organization resource object
 
     .PARAMETER Name
     An optional group name to use as filter

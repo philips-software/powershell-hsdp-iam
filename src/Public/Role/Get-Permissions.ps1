@@ -6,13 +6,13 @@
     This cmdlet returns a set of registered permission definitions based on query filters.
 
     .INPUTS
-    A role PSObject
+    A role resource object
 
     .OUTPUTS
-    An array of permission PSObjects
+    An array of permission resource objects
 
     .PARAMETER Role
-    A role PSObject
+    A role resource object
 
     .EXAMPLE
     $permissions = Get-Permissions -Role $role

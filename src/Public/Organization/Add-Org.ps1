@@ -15,13 +15,13 @@
     X	                    As CHILD of requester organization
 
     .INPUTS
-    The Parent organization PSObject
+    The Parent organization resource object
 
     .OUTPUTS
-    The added Organization as a PSObject
+    The added organization resource object
 
     .PARAMETER ParentOrg
-    The parent org object to associate
+    The parent organization resource object to associate this organization
 
     .PARAMETER Name
     The name of the organization

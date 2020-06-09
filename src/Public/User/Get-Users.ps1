@@ -6,16 +6,16 @@
     Retrieves multiple users for either an org or a group
 
     .INPUTS
-    The org or group to retrieve users
+    The organiation or group resource object to retrieve users
 
     .OUTPUTS
     An array of user ids
 
     .PARAMETER Org
-    The organization PSObject. Use either this parameter or the Group parameter but not both.
+    The organization resource object. Use either this parameter or the Group parameter but not both.
 
     .PARAMETER Group
-    The group PSObject. Use either this parameter or the Org parameter but not both.
+    The group resource object. Use either this parameter or the Org parameter but not both.
 
     .EXAMPLE
     $org = Get-Org "e69d1807-6376-4f03-be84-8373acd27e24"

@@ -2,7 +2,7 @@ Set-StrictMode -Version Latest
 
 BeforeAll {
     . "$PSScriptRoot\Add-Application.ps1"
-    . "$PSScriptRoot\Get-Application.ps1"
+    . "$PSScriptRoot\Get-Applications.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-ApiRequest.ps1"
 }
 
@@ -18,7 +18,7 @@ Describe "Add-Application" {
         }) | ConvertTo-Json
         $app = @{}
         Mock Invoke-ApiRequest { $response }
-        Mock Get-Application { $app }
+        Mock Get-Applications { $app }
     }
     Context "api" {
         It "invoke request" {
@@ -33,7 +33,7 @@ Describe "Add-Application" {
                 $Body.name -eq "foo" -and
                 $Body.description -eq "bar"
             }
-            Should -Invoke Get-Application -ParameterFilter { $Id -eq $appId }
+            Should -Invoke Get-Applications -ParameterFilter { $Id -eq $appId }
         }
     }
     Context "param" {

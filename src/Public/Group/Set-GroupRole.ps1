@@ -10,16 +10,16 @@
     Note: Roles can be assigned to a Group one at a time. The maximum number of roles that can be assigned to a group is 10.
 
     .INPUTS
-    Accepts the group object
+    Accepts the group resource object
 
     .OUTPUTS
-    The updated group object. Must use this object for subsequent requests to meta.version is correct.
+    The updated group resource object. This object must be used for subsequent requests for the use of an updated meta.version.
 
     .PARAMETER Group
-    The group object
+    The group resource object
 
     .PARAMETER Role
-    The role object
+    The role resource object
 
     .EXAMPLE
     $group = $group | Set-GroupRole $role

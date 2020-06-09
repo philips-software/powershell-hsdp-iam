@@ -12,7 +12,7 @@
     Accepts the group identifier
 
     .OUTPUTS
-    A HSDP group object
+    A group resource object
 
     The group object returned has following methods with corresponding cmdlet pass through:
 

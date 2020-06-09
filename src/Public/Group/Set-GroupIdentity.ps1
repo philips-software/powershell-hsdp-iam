@@ -10,13 +10,13 @@
     Note: Maximum of 10 members can be assigned using this resource in one call.
 
     .INPUTS
-    Accepts the group object
+    Accepts the group resource object
 
     .OUTPUTS
-    The updated group object. Must use this object for subsequent requests to meta.version is correct.
+    The updated group resource object. This object must be used for subsequent requests for the use of an updated meta.version.
 
     .PARAMETER Group
-    The group object
+    The group resource object
 
     .PARAMETER Ids
     An array of identifiers to add to the group

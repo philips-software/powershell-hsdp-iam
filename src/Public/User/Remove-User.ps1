@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Delete a user account
+    Remove a user account
 
     .DESCRIPTION
     Removes a user account from an organization. Any user with USER.DELETE or USER.WRITE permission
@@ -8,10 +8,10 @@
     For this operation to be successful, the user should not have any memberships attached to it.
 
     .INPUTS
-    An user PSObject
+    An user resource object
 
     .PARAMETER User
-    The user object to remove
+    The user resource object to remove
 
     .EXAMPLE
     Remove-User -User $user

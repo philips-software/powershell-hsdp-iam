@@ -9,3 +9,5 @@ src/hsdp-iam.psd1
 local-*.tests.ps1
 Integration/local*.ps1
 Integration/*.key
+*config.xml
+local-*.ps1

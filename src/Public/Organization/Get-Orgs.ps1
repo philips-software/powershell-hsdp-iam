@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Search organizations based on filter criteria.
+    Retrieve organizations based on filter criteria.
 
     .DESCRIPTION
     Retrieves all organizations registered under a specific parent organization. The parent organization can be passed as filter parameter.
@@ -8,19 +8,19 @@
     a subject with HSDP_IAM_ORGANIZATION.READ permission is required to perform only this operation.
 
     .OUTPUTS
-    Array of organization PSObjects
+    Array of organization resource objects
 
     .PARAMETER MyOrgOnly
-    Specifies to retrieve the current user's org
+    Specifies to retrieve the current user's organization
 
     .PARAMETER Name
-    Returns only orgs matching this name
+    Returns only organizations matching this name
 
     .PARAMETER ParentOrg
-    Returns only orgs with the specified parent org
+    Returns only organizations with the specified parent org resource object
 
     .PARAMETER Inactive
-    Specifies to only return inactive orgs
+    Specifies to only return inactive organizations
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/organization-api-v2#/Organization/get_Organizations

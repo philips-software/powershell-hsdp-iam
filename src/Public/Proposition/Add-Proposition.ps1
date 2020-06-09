@@ -1,19 +1,19 @@
 <#
     .SYNOPSIS
-    Creates a new Proposition.
+    Adds a new Proposition
 
     .DESCRIPTION
     Create a new proposition. A user with PROPOSITION.WRITE permissions assigned to the organization role
     can create the proposition under the organization.
 
     .INPUTS
-    An organization PSObject
+    An organization resource object
 
     .OUTPUTS
-    An Proposition PSObject
+    An proposition resource object
 
     .PARAMETER Org
-    An organization PSObject
+    An organization resource object
 
     .PARAMETER Name
     The proposition name
@@ -72,7 +72,7 @@ function Add-Proposition {
         # Use the location header to determine the new object id and retrieve the complete object using the get method
         $location = ($headers | ConvertFrom-Json -Depth 20).Location[0]
         if ($location -match "([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})") {
-            Write-Output (Get-Proposition -Id $matches[0])
+            Write-Output (Get-Propositions -Id $matches[0])
         }
     }
 

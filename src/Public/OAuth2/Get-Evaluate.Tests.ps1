@@ -21,7 +21,7 @@ function runTests() {
                 $password = "password"
                 $securePassword = ConvertTo-SecureString -String $password -AsPlainText -Force
                 $config = @{
-                    OAuth2Credentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+                    ClientCredentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
                     IamUrl = "http://localhost/"
                 }
                 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]

@@ -10,13 +10,13 @@
     Note: A maximum of 10 permissions can be assigned per request. A maximum of 100 permissions can be assigned to a role.
 
     .INPUTS
-    A role PSObject
+    A role resource object
 
     .OUTPUTS
     An Operation Outcome PSObject
 
     .PARAMETER Role
-    A role PSObject
+    A role resource object
 
     .PARAMETER Permissions
     An array of Permission names

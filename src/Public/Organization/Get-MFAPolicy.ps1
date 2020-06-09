@@ -10,7 +10,7 @@
     The policy id
 
     .OUTPUTS
-    And MFA Policy as a PSObject
+    And MFA Policy resource object
 
     .PARAMETER Id
     The MFA Policy identifier

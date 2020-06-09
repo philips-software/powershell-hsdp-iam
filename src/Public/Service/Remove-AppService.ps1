@@ -8,13 +8,13 @@
     Any user with SERVICE.DELETE permission within the organization can also delete a service from an organization.
 
     .INPUTS
-    A service PSObject
+    An app service resource object
 
     .OUTPUTS
     An OperationOutcome PSObject
 
     .PARAMETER Service
-    A service PSObject
+    An app service resource object
 
     .EXAMPLE
     Remove-Service $service

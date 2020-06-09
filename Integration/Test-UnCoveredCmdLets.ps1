@@ -11,10 +11,13 @@ function Test-UnCoveredCmdLets  {
     $skipCover = @(
         "Wait-Action",
         "Get-ApiSignatureHeaders",
+        "Get-ApplicationsByPage",
+        "Get-PropositionsByPage",
         "Get-Config",
         "Get-Headers",
         "Get-UsersByPage",
         "Get-OrgsByPage",
+        "Get-ClientsByPage",
         "Invoke-ApiRequest",
         "Invoke-GetRequest",
         "Invoke-Retry",
@@ -22,6 +25,7 @@ function Test-UnCoveredCmdLets  {
         "Read-Config",
         "Set-Config",
         "Set-FileConfig",
+        "Get-Evaulate",
         "Import-UsersToOrgGroups","Set-UsersInGroup","Set-UsersToOrgGroups"
     )
     $thisFileShouldCover = (Compare-Object $unCoveredCmdLets $skipCover)

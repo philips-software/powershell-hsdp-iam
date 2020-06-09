@@ -1,19 +1,19 @@
 <#
     .SYNOPSIS
-    Create a new application.
+    Create a new application
 
     .DESCRIPTION
     Creates a new Application. A user with APPLICATION.WRITE permissions assigned to the organization role can create
     applications under the proposition.
 
     .INPUTS
-    Accepts a proposition object
+    Accepts a proposition resource object
 
     .OUTPUTS
-    A new application object.
+    A new application resource object.
 
     .PARAMETER Proposition
-    The proposition object
+    The proposition resource object
 
     .PARAMETER Name
     The name of the application
@@ -73,7 +73,7 @@ function Add-Application {
         # The created application does not return a response so use the location header to determine the new object id
         $location = ($headers | ConvertFrom-Json -Depth 20).Location[0]
         if ($location -match "([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})") {
-            Write-Output (Get-Application -Id $matches[0])
+            Write-Output (Get-Applications -Id $matches[0])
         }
     }
 
