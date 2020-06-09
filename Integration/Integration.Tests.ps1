@@ -37,7 +37,7 @@ param(
     $Scopes = @("profile","email","read_write")
 )
 
-Import-Module ..\src\hsdp-iam -Force
+Import-Module -Name .\src\hsdp-iam -Force
 
 . "$PSScriptRoot\Test-ApplicationCmdlets.ps1"
 . "$PSScriptRoot\Test-AppService.ps1"
