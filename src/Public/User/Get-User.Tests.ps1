@@ -30,6 +30,12 @@ Describe "Get-User" {
             }
             $result | Should -Be $user
         }
+        It "encodes characters" {
+            $result = Get-User -Id "user+foo@here.com"
+            Should -Invoke Invoke-GetRequest -ParameterFilter { $Path -eq "$($rootPath)?userId=user%2bfoo%40here.com&profileType=all" }
+            $result | Should -Be $user
+        }
+
     }
     Context "param" {
         It "accept value from pipeline " {

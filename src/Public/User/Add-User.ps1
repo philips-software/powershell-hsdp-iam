@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Register a user account.
+    Add a user account.
 
     .DESCRIPTION
     Creates a new user within an organization. A user can be registered in the system in two ways

@@ -34,9 +34,9 @@ function Test-GroupCmdlets {
     }
     # CmdLet: Set-GroupMember
     Set-GroupMember -Group $addGroup -User $User | Out-Null
-    $usersInGroup = Get-Users -Org $Org -Group $addGroup | Select-Object -First 1
+    $usersInGroup = Get-UserIds -Org $Org -Group $addGroup | Select-Object -First 1
     if ($null -eq $usersInGroup -or $User.Id -ne $User.Id) {
-        Write-Warning "Cross check of Set-GroupMember/Get-Users failed"
+        Write-Warning "Cross check of Set-GroupMember/Get-UserIds failed"
         Write-Warning ($usersInGroup | ConvertTo-Json -Depth 20)
     }
     # The Group but be retrieved to get the correct eTag in the version or Set-GroupIdentity will fail

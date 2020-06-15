@@ -14,12 +14,12 @@
 |||GET /authorize/oauth2/endsession|2|Future||
 |||POST /authorize/oauth2/introspect|3|Supported|`Get-Introspect`|
 ||Application|POST /authorize/identity/Application|1|Supported|`Add-Application`|
-|||GET /authorize/identity/Application|1|Supported|`Get-Applications`|Supported|
-||Client|POST /authorize/identity/Client|1|`Add-Client`||
-|||GET /authorize/identity/Client|1|`Get-Clients`||
-|||DELETE /authorize/identity/Client/{id}|1|`Remove-Client`||
-|||PUT /authorize/identity/Client/{id}/$scopes|1|`Set-ClientScopes`||
-|||PUT /authorize/identity/Client/{id}|1|`Set-Client`||
+|||GET /authorize/identity/Application|1|Supported|`Get-Applications`||
+||Client|POST /authorize/identity/Client|1|Supported|`Add-Client`|
+|||GET /authorize/identity/Client|1|Supported|`Get-Clients`|
+|||DELETE /authorize/identity/Client/{id}|1|Supported|`Remove-Client`|
+|||PUT /authorize/identity/Client/{id}/$scopes|1|Supported|`Set-ClientScopes`|
+|||PUT /authorize/identity/Client/{id}|1|Supported|`Set-Client`|
 ||Device|POST /authorize/identity/Device|1|Future||
 |||GET /authorize/identity/Device|1|Future||
 |||PUT /authorize/identity/Device|1|Future||
@@ -43,9 +43,9 @@
 |||GET /authorize/scim/v2/Organizations/{id}|2|Supported|`Get-Org`|
 |||GET /authorize/scim/v2/Organizations|2|Supported|`Get-Orgs`|
 |||POST /authorize/scim/v2/MFAPolicies|2|Supported|`Add-MFAPolicy`|
-|||PUT /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Set-MFAPolicy`|
-|||GET /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Get-MFAPolicy`|
-|||DELETE /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Remove-MFAPolicy`|
+|||PUT /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Set-MfaPolicy`|
+|||GET /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Get-MfaPolicy`|
+|||DELETE /authorize/scim/v2/MFAPolicies/{id}|2|Supported|`Remove-MfaPolicy`|
 |||POST /authorize/scim/v2/Organizations/{id}/status|2|Supported|`Set-Org`|
 |||DELETE /authorize/scim/v2/Organizations/{id}|2|Supported|`Remove-Org`|
 |||DELETE /authorize/scim/v2/Organizations/{id}/deleteStatus|2|Supported|`Get-OrgRemoveStatus`|
@@ -62,23 +62,23 @@
 |||DELETE /authorize/identity/Service/{id}|1|Supported|`Remove-Service`|
 |||PUT /authorize/identity/Service/{id}/$scopes|1|Future||
 ||User|POST /authorize/identity/User/$set-password|1|No Support|-|no plans to support old API|
-|||POST /authorize/identity/User/$set-password|2|Future||
-|||POST /authorize/identity/User/$change-password|1|Future||
+|||POST /authorize/identity/User/$set-password|2|Supported|`Set-UserPassword`|
+|||POST /authorize/identity/User/$change-password|1|Supported|`New-UserPassword`|
 |||POST /authorize/identity/User|1|No Support|-|no plans to support old API|
-|||POST /authorize/identity/User|2|Supported|Add-User|
+|||POST /authorize/identity/User|2|Supported|`Add-User`|
 |||POST /authorize/identity/User/$resend-activation|1|No Support|-|no plans to support old API|
-|||POST /authorize/identity/User/$resend-activation|2|Future||
+|||POST /authorize/identity/User/$resend-activation|2|Supported|`New-UserResendActivation`|
 |||POST /authorize/identity/User/{id}/$mfa|1|Future||
-|||POST /authorize/identity/User/{id}/$unlock|1|Future||
-|||DELETE /authorize/identity/User/{id}|1|No Suppprt|no plans to support old API|
+|||POST /authorize/identity/User/{id}/$unlock|1|Supported|`Set-UserUnlock`|
+|||DELETE /authorize/identity/User/{id}|1|No Suppprt|-|no plans to support old API|
 |||DELETE /authorize/identity/User/{id}|2|Supported|`Remove-User`|
-|||POST /authorize/identity/User/{id}/$kba|1|Future||
+|||POST /authorize/identity/User/{id}/$kba|1|`Set-UserKba`||
 |||GET /authorize/identity/User/$kba|1|Future||
 |||POST /authorize/identity/User/$reset-password|1|Future||
 |||GET /authorize/identity/User/{id}/$password-policy|1|Future||
-|||GET /authorize/identity/User|2|Supported|Get-User,Get-Users|
-|||POST /authorize/identity/User/{id}/$change-loginid|2|Future||
-|||POST /authorize/identity/User/{id}/$mfa-reset|2|Future||
+|||GET /authorize/identity/User|2|Supported|`Get-UserIds`|
+|||POST /authorize/identity/User/{id}/$change-loginid|2|Supported|`Set-UserNewLoginId`|
+|||POST /authorize/identity/User/{id}/$mfa-reset|2|Supported|`Reset-UserMfa`|
 ||Email template|POST /authorize/identity/EmailTemplate|1|Future||
 |||GET /authorize/identity/EmailTemplate|1|Future||
 |||DELETE /authorize/identity/EmailTemplate/{id}|1|Future||
@@ -95,4 +95,3 @@
 |||GET authorize/access/policy|1|Future||
 |||GET authorize/access/policy/{id}|1|Future||
 |||DELETE authorize/access/policy/{id}|1|Future||
-

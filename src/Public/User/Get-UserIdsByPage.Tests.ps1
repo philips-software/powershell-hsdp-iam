@@ -1,11 +1,11 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot\Get-UsersByPage.ps1"
+    . "$PSScriptRoot\Get-UserIdsByPage.ps1"
     . "$PSScriptRoot\..\Utility\Invoke-GetRequest.ps1"
 }
 
-Describe "Get-UserByPage" {
+Describe "Get-UserIdsByPage" {
     BeforeAll {
         Mock Invoke-GetRequest { $response }
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
@@ -25,7 +25,7 @@ Describe "Get-UserByPage" {
     }
     Context "api" {
         It "invokes request" {
-            $result = Get-UsersByPage -Org $org -Page 2 -Size 2
+            $result = Get-UserIdsByPage -Org $org -Page 2 -Size 2
             Should -Invoke Invoke-GetRequest -ParameterFilter {
                 $Path -eq "$($rootPath)?organizationId=$($org.Id)&pageSize=2&pageNumber=2" -and `
                 $Version -eq 1 -and `
@@ -36,12 +36,12 @@ Describe "Get-UserByPage" {
     }
     Context "param" {
         It "accept value from pipeline " {
-            $result = $org | Get-UsersByPage
+            $result = $org | Get-UserIdsByPage
             Should -Invoke Invoke-GetRequest
             $result | Should -Be $response
         }
         It "uses defaults for -Page and -Size" {
-            Get-UsersByPage -Org $org
+            Get-UserIdsByPage -Org $org
             Should -Invoke Invoke-GetRequest -ParameterFilter {
                 $Path -eq "$($rootPath)?organizationId=$($org.Id)&pageSize=100&pageNumber=1"
             }

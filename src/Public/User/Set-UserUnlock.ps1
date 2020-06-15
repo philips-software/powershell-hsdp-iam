@@ -1,36 +1,37 @@
-<#
+﻿<#
     .SYNOPSIS
-    Remove a user account
+    Unlocks a locked user account
 
     .DESCRIPTION
-    Removes a user account from an organization. Any user with USER.DELETE or USER.WRITE permission
-    can do this operation. Users can also delete their own accounts without these permissions.
-    For this operation to be successful, the user should not have any memberships attached to it.
+    Allows an administrator to unlock a user account if the user account is locked due to invalid login attempts.
+    USER.WRITE permission is required to do this operation.
 
     .INPUTS
-    An user resource object
+    The user resource object
+
+    .OUTPUTS
+    Nothing
 
     .PARAMETER User
-    The user resource object to remove
-
-    .EXAMPLE
-    Remove-User -User $user
-
-    .EXAMPLE
-    Get-UserIds | Get-User | Where-Object {$_.loginId.StartsWith('test')} | Remove-User
+    The user resource object
 
     .LINK
-    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api-v2#/User%20Identity/delete_authorize_identity_User__id_
+    https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/user-api#/User%20Management/post_authorize_identity_User__id___unlock
+
+    .EXAMPLE
+    (Get-User -Id "04cc5c04-e67b-46ce-8957-79ecfc66e248") | Set-UserUnlock
 
     .NOTES
-    DELETE: /authorize/identity/User v2
+    POST: /authorize/identity/User/{id}/$unlock v1
 #>
-function Remove-User {
+function Set-UserUnlock {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
     [OutputType([PSObject])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
     param(
-        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]$User,
 
@@ -56,7 +57,7 @@ function Remove-User {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
-            Write-Output @(Invoke-ApiRequest -Path "/authorize/identity/User/$($User.id)" -Version 2 -Method Delete -ValidStatusCodes @(204))
+            Invoke-ApiRequest -Path "/authorize/identity/User/$($User.Id)/`$unlock" -Version 1 -Method "Post" -ValidStatusCodes @(204) | Out-Null
         }
     }
 
