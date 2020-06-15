@@ -3,7 +3,8 @@
     Retrieves user ids by specified page and size
 
     .DESCRIPTION
-    Retrieves multiple users for either an organization or a group
+    This API lists all users under the given organization or group. The caller can specify organization ID, group ID,
+    or both in query parameters. To invoke this API, the caller should be authenticated.
 
     .INPUTS
     The context of organization or group and the page and size
@@ -25,7 +26,7 @@
 
     .EXAMPLE
     $org = Get-Org "10cd23a9-f111-4fe4-9eec-716b05361565"
-    $tenUsers = Get-UsersByPage -Org org -Page 1 -Size 10
+    $tenUsers = Get-UserIdsByPage -Org org -Page 1 -Size 10
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/legacy-api#/User%20Management/get_security_users
@@ -33,7 +34,7 @@
     .NOTES
     GET: /security/users v1
 #>
-function Get-UsersByPage {
+function Get-UserIdsByPage {
     [CmdletBinding()]
     [OutputType([PSObject])]
     param(
@@ -58,7 +59,7 @@ function Get-UsersByPage {
         $path = "/security/users"
 
         $path += "?organizationId=$($Org.id)"
-        if ($Group) {
+        if ($PSBoundParameters.ContainsKey('Group')) {
             $path += "&groupID=$($Group.id)"
         }
 

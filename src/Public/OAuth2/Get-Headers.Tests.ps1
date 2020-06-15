@@ -68,7 +68,8 @@ function runTests() {
                 $config = @{
                     Credentials = $Credentials;
                     ClientCredentials = $ClientCredentials;
-                    IamUrl = $url
+                    IamUrl = $url;
+                    Scopes = @("profile","email", "READ_WRITE")
                 }
                 Mock Get-Config { $config }
                 $result = Get-Headers

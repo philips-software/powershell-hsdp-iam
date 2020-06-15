@@ -13,15 +13,15 @@ function Test-CleanUpObjects {
     if ($PSBoundParameters.ContainsKey('Group')) {
         # CmdLet: Remove-GroupMember
         Remove-GroupMember -Group $Group -User $User | Out-Null
-        if (-not (Get-Users -Org $Org -Group $Group) -eq $null) {
-            Write-Warning "Cross check of Remove-GroupMember/Get-Users failed"
+        if (-not (Get-UserIds -Org $Org -Group $Group) -eq $null) {
+            Write-Warning "Cross check of Remove-GroupMember/Get-UserIds failed"
         }
     }
 
     if ($PSBoundParameters.ContainsKey('User')) {
         # CmdLet: Remove-User
         Remove-User $User | Out-Null
-        if (-not (Get-Users -Org $Org) -eq $null) {
+        if (-not (Get-UserIds -Org $Org) -eq $null) {
             Write-Warning "Remove-User should not return any users"
         }
     }
@@ -33,7 +33,7 @@ function Test-CleanUpObjects {
         # CmdLet: Get-OrgRemoveStatus
         $status = Get-OrgRemoveStatus $Org
         if ($status -ne "IN_PROGRESS") {
-            Write-Warning "Get-OrgRemoveStatus should return 'IN PROGRESS'"
+            Write-Warning "Get-OrgRemoveStatus should return 'IN PROGRESS' but returned '$($status)'"
         }
     }
 

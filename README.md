@@ -101,7 +101,7 @@ Cmdlets that perform updates will leverage the $object.meta.version property to 
 Many cmdlets use ValueFromPipeline allowing composition such as in the following example to remove all users from an org:
 
 ```
-Get-Users $org | Remove-User
+Get-UserIds $org | Remove-User
 ```
 
 ### Debugging and Tracing
@@ -163,14 +163,14 @@ Set-UsersInGroup -Org $Org -GroupName "My Group" -UserIds @("user1@mailinator.co
 ### Find a user by email address in an org and display all the permissions for all the roles
 
 ```
-$user = (Get-Users -Org $org | Get-User | Where-Object { $_.emailAddress -eq "user1@mailinator.com" })
+$user = (Get-UserIds -Org $org | Get-User | Where-Object { $_.emailAddress -eq "user1@mailinator.com" })
 $user.memberships.roles | % { get-roles -Name $_ } | get-permissions
 ```
 
 ### Display all the email addresses of users who have never verified their email across all organizations
 
 ```
-get-orgs | get-users | get-user | Where-Object { $_.accountStatus.emailVerified -ne "True" } | Select-Object -ExpandProperty emailAddress
+Get-Orgs | Get-UserIds | Get-User | Where-Object { $_.accountStatus.emailVerified -ne "True" } | Select-Object -ExpandProperty emailAddress
 ```
 ## How to test the software
 
@@ -185,9 +185,7 @@ A sanity test in ```Sanity.Tests.ps1``` will execute as part of the build verifi
 Sanity test can be run locally but all configuration must be passed to the script. (e.g. full HSDP IAM env configuration)
 
 ### Integration Tests
-Integration tests are a WIP and will be eventually added to the verification pipeline.
-
-The work has started in ```Integration.Tests.ps1```
+Integration tests are integrated into the build pipeline and must all pass on pull requests.
 
 ## Known issues
 

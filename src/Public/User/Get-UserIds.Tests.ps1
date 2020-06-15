@@ -1,11 +1,11 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot\Get-Users.ps1"
-    . "$PSScriptRoot\Get-UsersByPage.ps1"
+    . "$PSScriptRoot\Get-UserIds.ps1"
+    . "$PSScriptRoot\Get-UserIdsByPage.ps1"
 }
 
-Describe "Get-Users" {
+Describe "Get-UserIds" {
     BeforeAll {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $objOrg = [PSCustomObject]@{ Id = "1" }
@@ -14,7 +14,7 @@ Describe "Get-Users" {
     }
     Context "get" {
         It "returns 1 page" {
-            Mock Get-UsersByPage { @{
+            Mock Get-UserIdsByPage { @{
                     "exchange" = @{
                         "users"          = @(
                             @{ "userUUID" = "06695589-af39-4928-b6db-33e52d28067f" }
@@ -23,15 +23,15 @@ Describe "Get-Users" {
                     }
                 }
             }
-            $result = Get-Users -Org $objOrg
-            Should -Invoke Get-UsersByPage -ParameterFilter {
+            $result = Get-UserIds -Org $objOrg
+            Should -Invoke Get-UserIdsByPage -ParameterFilter {
                 $Org -eq $objOrg -and
                 $Page -eq 1
             }
             $result | Should -Be "06695589-af39-4928-b6db-33e52d28067f"
         }
         It "supports paging" {
-            Mock Get-UsersByPage {
+            Mock Get-UserIdsByPage {
                 if ($Page -eq 1) {
                     @{
                         "exchange" = @{
@@ -49,13 +49,13 @@ Describe "Get-Users" {
                     }
                 }
             }
-            Get-Users -Org $objOrg
-            Should -Invoke Get-UsersByPage -Exactly 2
+            Get-UserIds -Org $objOrg
+            Should -Invoke Get-UserIdsByPage -Exactly 2
         }
     }
     Context "parameters" {
         It "support org from pipeline " {
-            Mock Get-UsersByPage { @{
+            Mock Get-UserIdsByPage { @{
                     "exchange" = @{
                         "users"          = @(
                             @{ "userUUID" = "06695589-af39-4928-b6db-33e52d28067f" }
@@ -63,8 +63,8 @@ Describe "Get-Users" {
                         "nextPageExists" = $false
                     }
                 } }
-            $objOrg | Get-Users
-            Assert-MockCalled Get-UsersByPage
+            $objOrg | Get-UserIds
+            Assert-MockCalled Get-UserIdsByPage
         }
     }
 }

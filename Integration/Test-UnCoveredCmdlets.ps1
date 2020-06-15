@@ -15,7 +15,7 @@ function Test-UnCoveredCmdlets  {
         "Get-PropositionsByPage",
         "Get-Config",
         "Get-Headers",
-        "Get-UsersByPage",
+        "Get-UserIdsByPage",
         "Get-OrgsByPage",
         "Get-ClientsByPage",
         "Invoke-ApiRequest",
@@ -26,7 +26,15 @@ function Test-UnCoveredCmdlets  {
         "Set-Config",
         "Set-FileConfig",
         "Get-Evaluate",
-        "Import-UsersToOrgGroups","Set-UsersInGroup","Set-UsersToOrgGroups"
+        "Import-UsersToOrgGroups",
+        "Set-UsersInGroup",
+        "Set-UsersToOrgGroups",
+        "New-UserPassword", # required email activation: manually tested
+        "Reset-UserMfa",
+        "Set-UserKba",
+        "Set-UserNewLoginId", # required email activation: manually tested
+        "Set-UserPassword", # required email activation: manually tested
+        "Set-UserUnlock" # required email activation: manually tested
     )
     $thisFileShouldCover = (Compare-Object $unCoveredCmdLets $skipCover)
     if ($thisFileShouldCover) {

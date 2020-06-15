@@ -3,7 +3,8 @@
     Retrieves multiple user ids for either an org or a group
 
     .DESCRIPTION
-    Retrieves multiple users for either an org or a group
+    This API lists all users under the given organization or group. The caller can specify organization ID, group ID, or both in query parameters.
+    To invoke this API, the caller should be authenticated.
 
     .INPUTS
     The organiation or group resource object to retrieve users
@@ -19,12 +20,12 @@
 
     .EXAMPLE
     $org = Get-Org "e69d1807-6376-4f03-be84-8373acd27e24"
-    $userIds = Get-Users -Org org
+    $userIds = Get-UserIds -Org org
 
     .EXAMPLE
     $org = $org = Get-Org "e69d1807-6376-4f03-be84-8373acd27e24"
     $group = $org | Get-Groups | select -First
-    $userIds = Get-Users -Group $group
+    $userIds = Get-UserIds -Group $group
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/legacy-api#/User%20Management/get_security_users
@@ -32,7 +33,7 @@
     .NOTES
     GET: /security/users v1
 #>
-function Get-Users {
+function Get-UserIds {
 
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -53,12 +54,12 @@ function Get-Users {
 
         $p = @{ Page = 1; Size = 100}
         $p.Org = $Org
-        if ($Group) {
+        if ($PSBoundParameters.ContainsKey('Group')) {
             $p.Group = $Group
         }
         do {
             Write-Verbose "Page # $($p.Page)"
-            $response = (Get-UsersByPage @p)
+            $response = (Get-UserIdsByPage @p)
             Write-Output ($response.exchange.users | Select-Object -ExpandProperty userUUID)
             $p.Page += 1
         } while (($response.exchange.nextPageExists -eq "true"))

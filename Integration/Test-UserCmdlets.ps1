@@ -18,10 +18,13 @@ function Test-UserCmdlets {
         Write-Warning "$($getUser | ConvertTo-Json)"
     }
 
-    # CmdLet: Get-Users
-    $users = Get-Users -Org $Org
+    # CmdLet: New-UserResendActivation
+    New-UserResendActivation -User $newUser
+
+    # CmdLet: Get-UserIds
+    $users = Get-UserIds -Org $Org
     if ($users -ne $newUser.Id) {
-        Write-Warning "Cross check of New-User/Get-Users failed"
+        Write-Warning "Cross check of New-User/Get-UserIds failed"
         Write-Warning "$($newUser | ConvertTo-Json)"
         Write-Warning "$($users | ConvertTo-Json)"
     }

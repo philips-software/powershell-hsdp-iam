@@ -1,3 +1,16 @@
+## 0.1.22 - Added more user cmdlets
+
+Renamed ``Get-Users`` cmdlet to ``Get-UserIds`` for clarity. Get-UserIds now support paging
+
+New Cmdlets added:
+* `New-UserPassword`
+* `New-UserResendActivation`
+* `Reset-UserMfa`
+* `Set-UserKba`
+* `Set-UserNewLoginId`
+* `Set-UserPassword`
+* `Set-UserUnlock`
+
 ## 0.1.21 - Added new cmdlets for OAuth2 Client API.
 
 Configuration changes:

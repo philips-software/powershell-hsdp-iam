@@ -12,7 +12,8 @@
     A user resource object
 
     .PARAMETER Id
-    A user identifier
+    A string that uniquely identifies a user in the IAM system. The account matching is performed using this parameter which takes either
+    login id or a unique id of a user account.
 
     .PARAMETER ProfileType
     A profile type of either "membership","accountStatus","passwordStatus", "consentedApps", "all"
@@ -46,7 +47,8 @@ function Get-User {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Write-Output @((Invoke-GetRequest "/authorize/identity/User?userId=$($Id)&profileType=$($profileType)" -Version 2 -ValidStatusCodes @(200,400,401,403,406,500)).entry[0])
+        $encodedId = [System.Web.HTTPUtility]::UrlEncode($Id)
+        Write-Output @((Invoke-GetRequest "/authorize/identity/User?userId=$($encodedId)&profileType=$($ProfileType)" -Version 2 -ValidStatusCodes @(200,400,401,403,406,500)).entry[0])
     }
 
     end {
