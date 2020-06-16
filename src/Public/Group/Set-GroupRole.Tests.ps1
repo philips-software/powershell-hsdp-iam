@@ -15,14 +15,17 @@ Describe "Set-GroupRole" {
         })
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
         $expectedPath = "/authorize/identity/Group/$($group.id)/`$assign-role"
-        $role = [PSCustomObject]@{id="2"}
+        $role1 = [PSCustomObject]@{id="1"}
+        $role2 = [PSCustomObject]@{id="2"}
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
-        $expectedBody = @{ "roles" = @($role.id) }
+        $roles = @($role1, $role2)
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
+        $expectedBody = @{ "roles" = @("1","2") }
         Mock Invoke-ApiRequest
     }
     Context "api" {
         It "invoke request" {
-            Set-GroupRole -Group $group -Role $role
+            Set-GroupRole -Group $group -Roles $roles
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 ($Path -eq $expectedPath) -and `
                     ($Method -eq "Post") -and `
@@ -34,14 +37,18 @@ Describe "Set-GroupRole" {
     }
     Context "params" {
         It "accepts value from pipeline" {
-            $group | Set-GroupRole -Role $role
+            $group | Set-GroupRole -Roles $roles
             Should -Invoke Invoke-ApiRequest
         }
         It "ensures -Group not null" {
-            {Set-GroupRole -Group $null -Role $role} | Should -Throw "*'Group'. The argument is null or empty*"
+            {Set-GroupRole -Group $null -Roles $roles} | Should -Throw "*'Group'. The argument is null or empty*"
         }
-        It "ensures -User not null" {
-            {Set-GroupRole -Group $group -Role $null} | Should -Throw "*'Role'. The argument is null or empty*"
+        It "ensures -Roles not null" {
+            {Set-GroupRole -Group $group -Roles $null} | Should -Throw "*'Roles'. The argument is null or empty*"
+        }
+        It "ensures -Roles does not contain more than 100 roles" {
+            $roles = 1..101 | ForEach-Object { New-Object PSObject -Property @{ Id = $_ } }
+            {Set-GroupRole -Group $group -Roles $roles} | Should -Throw "*Maximum number of roles per request is 100*"
         }
     }
 }

@@ -7,7 +7,7 @@
     one in the platform. If any permission passed for assignment is unknown, the request will fail.
     User can retrieve all registered permissions in the platform using the GET /authorize/identity/Permission API.
 
-    Note: A maximum of 10 permissions can be assigned per request. A maximum of 100 permissions can be assigned to a role.
+    Note: A maximum of 100 permissions can be assigned per request. A maximum of 1000 permissions can be assigned to a role.
 
     .INPUTS
     A role resource object
@@ -52,6 +52,9 @@ function Add-Permissions {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
+        if ($Permissions.Length -gt 100) {
+            throw "Maximum number of permission per request is 100"
+        }
         $body = @{ "permissions" = $Permissions; }
         $response = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.Id)/`$assign-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
         Write-Output @($response)

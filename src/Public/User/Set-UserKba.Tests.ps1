@@ -17,8 +17,8 @@ Describe "Set-UserKba" {
         It "invokes request" {
             $ExpectedBody = @{
                 challenges = @(
-                    @{ challenge="color"; response="blue"},
-                    @{ challenge="pet"; response="fido"}
+                    @{ challenge="pet"; response="fido"},
+                    @{ challenge="color"; response="blue"}
                 )
             }
             Set-UserKba -User $user -ChallengeResponses @{"color"="blue"; "pet"="fido"}  -Force
