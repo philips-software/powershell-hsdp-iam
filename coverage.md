@@ -72,9 +72,9 @@
 |||POST /authorize/identity/User/{id}/$unlock|1|Supported|`Set-UserUnlock`|
 |||DELETE /authorize/identity/User/{id}|1|No Suppprt|-|no plans to support old API|
 |||DELETE /authorize/identity/User/{id}|2|Supported|`Remove-User`|
-|||POST /authorize/identity/User/{id}/$kba|1|`Set-UserKba`||
-|||GET /authorize/identity/User/$kba|1|Future||
-|||POST /authorize/identity/User/$reset-password|1|Future||
+|||POST /authorize/identity/User/{id}/$kba|1|Supported|`Set-UserKba`|
+|||GET /authorize/identity/User/$kba|1|Supported|`Get-UserKba`|
+|||POST /authorize/identity/User/$reset-password|1|Supported|`Reset-UserPassword`|
 |||GET /authorize/identity/User/{id}/$password-policy|1|Future||
 |||GET /authorize/identity/User|2|Supported|`Get-UserIds`|
 |||POST /authorize/identity/User/{id}/$change-loginid|2|Supported|`Set-UserNewLoginId`|
@@ -82,14 +82,14 @@
 ||Email template|POST /authorize/identity/EmailTemplate|1|Future||
 |||GET /authorize/identity/EmailTemplate|1|Future||
 |||DELETE /authorize/identity/EmailTemplate/{id}|1|Future||
-||Password policy|POST /authorize/identity/PasswordPolicy|1|Future||
-|||GET /authorize/identity/PasswordPolicy|1|Future||
-|||DELETE /authorize/identity/PasswordPolicy/{id}|1|Future||
-|||PUT /authorize/identity/PasswordPolicy/{id}|1|Future||
-|||GET /authorize/identity/PasswordPolicy/{id}|1|Future||
-||legacy paths|GET /security/users/{userUUID}|1|Future||
-|||PUT /security/users/{userUUID}|1|Future||
-|||GET /security/users|1|Future||
+||Password policy|POST /authorize/identity/PasswordPolicy|1|Supported|`Add-PasswordPolicy`||
+|||GET /authorize/identity/PasswordPolicy|1|Supported|`Get-PasswordPolicies`|
+|||DELETE /authorize/identity/PasswordPolicy/{id}|1|Supported|`Remove-PasswordPolicy`|
+|||PUT /authorize/identity/PasswordPolicy/{id}|1|Supported|`Set-PasswordPolicy`|
+|||GET /authorize/identity/PasswordPolicy/{id}|1|Supported|`Get-PasswordPolicy`|
+||legacy paths|GET /security/users/{userUUID}|1|No Support||no plans to support old API
+|||PUT /security/users/{userUUID}|1|Future|No Support|no plans to support old API
+|||GET /security/users|1|Future|No Support|no plans to support old API
 |Policy management|Policy evaluation|POST /authorize/policy/$evaluate|3|Supported|`Get-Evaluate`|
 ||Policy provisioning|POST authorize/access/policy|1|Future||
 |||GET authorize/access/policy|1|Future||

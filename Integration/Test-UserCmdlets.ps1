@@ -1,5 +1,5 @@
 function Test-UserCmdlets {
-    param($Org)
+    param($Org, $PasswordPolicy)
 
     # CmdLet: Add-User
     $loginId = "test$((new-guid).Guid)"
@@ -17,6 +17,12 @@ function Test-UserCmdlets {
         Write-Warning "$($newUser | ConvertTo-Json)"
         Write-Warning "$($getUser | ConvertTo-Json)"
     }
+
+    $kbaUser = Get-User -Id "46271c0b-dde0-4b28-9e26-d76dcb1fd86e"
+
+    #Set-UserKba -User $kbaUser -ChallengeResponses @{color="blue"}
+
+    #Get-UserKba -User $kbaUser
 
     # CmdLet: New-UserResendActivation
     New-UserResendActivation -User $newUser
