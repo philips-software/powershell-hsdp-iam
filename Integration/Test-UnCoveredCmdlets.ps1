@@ -32,9 +32,11 @@ function Test-UnCoveredCmdlets  {
         "New-UserPassword", # required email activation: manually tested
         "Reset-UserMfa",
         "Set-UserKba",
+        "Get-UserKba",
         "Set-UserNewLoginId", # required email activation: manually tested
         "Set-UserPassword", # required email activation: manually tested
-        "Set-UserUnlock" # required email activation: manually tested
+        "Set-UserUnlock", # required email activation: manually tested
+        "Reset-UserPassword" # required email activation: manually tested
     )
     $thisFileShouldCover = (Compare-Object $unCoveredCmdLets $skipCover)
     if ($thisFileShouldCover) {

@@ -50,6 +50,7 @@ Import-Module -Name ./src/hsdp-iam -Force
 . "$PSScriptRoot/Test-MfaPolicyCmdlets.ps1"
 . "$PSScriptRoot/Test-OAuthCmdlets.ps1"
 . "$PSScriptRoot/Test-OrgCmdlets.ps1"
+. "$PSScriptRoot/Test-PasswordPolicyCmdlets.ps1"
 . "$PSScriptRoot/Test-PropositionCmdlets.ps1"
 . "$PSScriptRoot/Test-RoleCmdlets.ps1"
 . "$PSScriptRoot/Test-UserCmdlets.ps1"
@@ -67,7 +68,10 @@ function Test-Integration {
     $Org = Test-OrgCmdlets -RootOrgId $rootOrgId
     Write-Debug ($Org | ConvertTo-Json)
 
-    $User = Test-UserCmdlets -Org $Org
+    $PasswordPolicyWithKBA = Test-PasswordPolicyCmdlets -Org $org
+    Write-Debug ($PasswordPolicyWithKBA | ConvertTo-Json)
+
+    $User = Test-UserCmdlets -Org $Org -PasswordPolicy $PasswordPolicyWithKBA
     Write-Debug ($User | ConvertTo-Json)
 
     $Proposition = Test-PropositionCmdlets -Org $Org

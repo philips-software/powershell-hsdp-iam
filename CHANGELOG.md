@@ -1,3 +1,14 @@
+## 0.1.24 - Add Cmdlets for PasswordPolicy
+
+Added Cmdlets:
+* `Add-PasswordPolicy`
+* `Get-PasswordPolicies`
+* `Get-PasswordPolicy`
+* `Set-PasswordPolicy`
+* `Remove-PasswordPolicy`
+* `Get-UserKba`
+* `Reset-UserPassword`
+
 ## 0.1.23 - Updates for HSDP May 2020 release
 
 Changed documentation and params to support batches of 100 for:
