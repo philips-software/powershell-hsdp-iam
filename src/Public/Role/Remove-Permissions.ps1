@@ -5,7 +5,7 @@
     .DESCRIPTION
     Removes permission(s) from a role. The operation will fail if the permission(s) are not the
     assigned ones for the requested role.
-    Note: A maximum of 10 permissions can be removed per request.
+    Note: A maximum of 100 permissions can be removed per request.
 
     .INPUTS
     A role resource object
@@ -40,11 +40,11 @@ function Remove-Permissions {
 
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [string[]]
+        [String[]]
         $Permissions,
 
         [Parameter()]
-        [switch]
+        [Switch]
         $Force
     )
 
@@ -66,6 +66,9 @@ function Remove-Permissions {
 
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'None'
+            if ($Permissions.Length -gt 100) {
+                throw "Maximum number of permission per request is 100"
+            }
             $body = @{ "permissions"= $Permissions; }
             $response  = (Invoke-ApiRequest -Path "/authorize/identity/Role/$($Role.id)/`$remove-permission" -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
             Write-Output @($response)

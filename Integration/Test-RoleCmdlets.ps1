@@ -1,15 +1,18 @@
 function Test-RoleCmdlets {
     param($Org, $Group, $User)
 
-    $roleName = "$(((new-guid).Guid).Substring(0,20))"
+    $roleName1 = "$(((new-guid).Guid).Substring(0,20))"
+    $roleName2 = "$(((new-guid).Guid).Substring(0,20))"
     # CmdLet: Add-Role
-    $newRole = Add-Role -Org $Org -Name $roleName -Description "role for org $($Org.Id)"
+    $newRole1 = Add-Role -Org $Org -Name $roleName1 -Description "role for org $($Org.Id)"
+    $newRole2 = Add-Role -Org $Org -Name $roleName2 -Description "role for org $($Org.Id)"
+    $roles = @($newRole1, $newRole2)
 
     # CmdLet: Get-Role
-    $getRole = Get-Role -Id $newRole.Id
-    if ($newRole.Id -ne $getRole.Id) {
+    $getRole = Get-Role -Id $newRole1.Id
+    if ($newRole1.Id -ne $getRole.Id) {
         Write-Warning "Cross check of Add-Role and Get-Role failed"
-        Write-Warning "$($newRole | ConvertTo-Json)"
+        Write-Warning "$($newRole1 | ConvertTo-Json)"
         Write-Warning "$($getRole | ConvertTo-Json)"
     }
 
@@ -22,7 +25,7 @@ function Test-RoleCmdlets {
     }
 
     # CmdLet: Set-GroupRole
-    Set-GroupRole -Group $Group -Role $newRole | Out-Null
+    Set-GroupRole -Group $Group -Roles $getRoles | Out-Null
 
     $rolesForGroup = Get-Roles -Group $group
     if ($rolesForGroup.Id -ne $newRole.Id) {
@@ -41,7 +44,7 @@ function Test-RoleCmdlets {
     }
 
     # CmdLet: Set-GroupRole
-    Set-GroupRole -Group $Group -Role $newRole | Out-Null
+    Set-GroupRole -Group $Group -Roles @($newRole) | Out-Null
 
     # CmdLet: Set-GroupMember
     Set-GroupMember -Group $Group -User $User

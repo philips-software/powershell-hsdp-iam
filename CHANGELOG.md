@@ -1,3 +1,12 @@
+## 0.1.23 - Updates for HSDP May 2020 release
+
+Changed documentation and params to support batches of 100 for:
+* `Add-Group`
+* `Set-GroupRole`
+* `Add-Permissions`
+
+Changed `Add-Permissions` param -Role to -Roles to support multiple
+
 ## 0.1.22 - Added more user cmdlets
 
 Renamed ``Get-Users`` cmdlet to ``Get-UserIds`` for clarity. Get-UserIds now support paging
@@ -32,3 +41,4 @@ Improvements:
 ## 0.1.1 - Version build & published from github action
 
 ## 0.0.1 - Inital release
+

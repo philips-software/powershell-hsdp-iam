@@ -60,7 +60,7 @@ function Get-Group {
         $group = @($response)
         $group | Add-Member -MemberType ScriptMethod -Name "SetIdentity" -Value { param($Ids) $this | Set-GroupIdentity -Ids $Ids }
         $group | Add-Member -MemberType ScriptMethod -Name "RemoveIdentity" -Value { param($Ids) $this | Remove-GroupIdentity -Ids $Ids }
-        $group | Add-Member -MemberType ScriptMethod -Name "SetRole" -Value { param($Role) $this | Set-GroupRole -Role $Role }
+        $group | Add-Member -MemberType ScriptMethod -Name "SetRole" -Value { param($Role) $this | Set-GroupRole -Roles @($Role) }
         $group | Add-Member -MemberType ScriptMethod -Name "RemoveRole" -Value { param($Role) $this | Remove-GroupRole -Role $Role }
         $group | Add-Member -MemberType ScriptMethod -Name "SetMember" -Value { param($User) $this | Set-GroupMember -User $User }
         $group | Add-Member -MemberType ScriptMethod -Name "RemoveMember" -Value { param($User) $this | Remove-GroupMember -User $User }
