@@ -1,3 +1,10 @@
+## 0.1.25
+
+* Added support to use refresh token to retrieve new access token if the access token expires
+* Re-worked how authentication value is stored between cmdlets
+* Renamed `Get-Headers` to `Get-AuthenticationHeader` - changed return value to string that just contains value for the authenticate header  rather than a hashtable of a subset of header values.
+* `Set-Config` now clears cached authentication and re-authenticates
+
 ## 0.1.24 - Add Cmdlets for PasswordPolicy
 
 Added Cmdlets:

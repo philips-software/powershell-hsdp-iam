@@ -32,8 +32,7 @@ function Get-ApiSignatureHeaders {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
-        $config = Get-Variable -Name _Config -Scope Script -ValueOnly
-
+        $config = Get-Config
         $sharedKey = $config.AppCredentials.GetNetworkCredential().username
         $secretKey = $config.AppCredentials.GetNetworkCredential().password
 

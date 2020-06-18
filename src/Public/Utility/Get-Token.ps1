@@ -23,7 +23,7 @@ function Get-Token {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        (Get-Variable -Name _token -Scope Script).Value
+        Write-Output (Get-Variable -Name __auth -Scope Script -ValueOnly).access_token
     }
 
     end {

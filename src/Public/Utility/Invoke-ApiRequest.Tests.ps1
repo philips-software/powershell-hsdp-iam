@@ -3,6 +3,7 @@ Set-StrictMode -Version Latest
 BeforeAll {
     . "$PSScriptRoot\Invoke-ApiRequest.ps1"
     . "$PSScriptRoot\Get-Config.ps1"
+    . "$PSScriptRoot\..\OAuth2\Get-AuthorizationHeader.ps1"
 }
 
 Describe "Invoke-ApiRequest" {
@@ -22,6 +23,7 @@ Describe "Invoke-ApiRequest" {
             $Base = "http://localhost"
             [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignment', '', Justification='pester supported')]
             $Path = "/foo"
+            Mock Get-AuthorizationHeader { "12345" }
         }
         It "calls Invoke-WebRequest with minial parameters" {
             $response = Invoke-ApiRequest -Base $Base -Path $Path
