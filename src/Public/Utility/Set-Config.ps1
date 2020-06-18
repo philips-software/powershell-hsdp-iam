@@ -41,9 +41,18 @@ function Set-Config  {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
         if ($Force -or $PSCmdlet.ShouldProcess("ShouldProcess?")) {
             $ConfirmPreference = 'High'
-            Set-Variable -Name _Config -Scope Script -Value $config
-            $headers = Get-Headers -IamUrl $config.IamUrl -Credentials $config.Credentials -ClientCredentials $config.ClientCredentials
-            Set-Variable -Name _headers -Scope Script -Value $headers
+            Set-Variable -Name __config -Scope Script -Value $config
+            # Clear the cached values so future requests re-authenticate
+            if (Get-Variable -Scope Script -ErrorAction Ignore -Name __authorization_header_value) {
+                Remove-Variable -Name __authorization_header_value -Scope script
+            }
+            if (Get-Variable -Scope Script -ErrorAction Ignore -Name __access_token_expires_at) {
+                Remove-Variable -Name __access_token_expires_at -Scope script
+            }
+            if (Get-Variable -Scope Script -ErrorAction Ignore -Name __auth) {
+                Remove-Variable -Name __auth -Scope script
+            }
+            Get-AuthorizationHeader | Out-Null
         }
     }
 

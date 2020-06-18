@@ -5,7 +5,7 @@
 |||GET /authorize/saml2/logout|1|Future||
 |||GET /authorize/oidc/login|1|Future||
 |||GET /authorize/social/login|1|Future||
-||OAuth2|POST /authorize/oauth2/token|2|Supported|`Get-Headers`, `Get-TokenFromJWT`|
+||OAuth2|POST /authorize/oauth2/token|2|Supported|`Get-AuthorizationHeader`, `Get-TokenFromJWT`|
 |||GET /authorize/oauth2/authorize|2|Future||
 |||GET /authorize/oauth2/userinfo|2|Supported|`Get-UserInfo`|
 |||POST /authorize/oauth2/revoke|2|Future||

@@ -11,7 +11,7 @@ Describe "Get-User" {
             Mock Get-Variable { $config }
             $result = Get-Config
             Should -Invoke Get-Variable -ParameterFilter {
-                $Name -eq "_Config" -and `
+                $Name -eq "__config" -and `
                 $Scope -eq "Script" -and `
                 $ValueOnly -eq $true
             }

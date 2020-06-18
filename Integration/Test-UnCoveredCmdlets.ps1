@@ -14,7 +14,7 @@ function Test-UnCoveredCmdlets  {
         "Get-ApplicationsByPage",
         "Get-PropositionsByPage",
         "Get-Config",
-        "Get-Headers",
+        "Get-AuthorizationHeader",
         "Get-UserIdsByPage",
         "Get-OrgsByPage",
         "Get-ClientsByPage",

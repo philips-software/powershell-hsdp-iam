@@ -42,7 +42,8 @@ function Get-Introspect {
             $Token = Get-Token
         }
         $config = Get-Config
-        $authForToken = "Basic $(Get-Variable -Name "_authForToken" -Scope Script -ValueOnly)"
+        $auth = Get-Variable -Name __authForToken -Scope Script -ValueOnly
+        $authForToken = "Basic $($auth)"
         Write-Output (Invoke-ApiRequest -Path "/authorize/oauth2/introspect" -Version 3 -Authorization $authForToken -Method Post -Base $config.IamUrl -ContentType "application/x-www-form-urlencoded" -Body "token=$($Token)")
     }
 

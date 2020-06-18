@@ -23,7 +23,7 @@ function Get-Config  {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        Get-Variable -Name _Config -Scope Script -ValueOnly
+        Get-Variable -Name __config -Scope Script -ValueOnly
     }
 
     end {

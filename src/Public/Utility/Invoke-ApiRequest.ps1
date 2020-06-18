@@ -105,7 +105,6 @@ function Invoke-ApiRequest {
 
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
-        $headers = Get-Variable -Name _headers -Scope Script -ValueOnly
 
         if (-Not $Base) {
             $config = Get-Config
@@ -114,36 +113,46 @@ function Invoke-ApiRequest {
         $url = "$($Base)$($Path)"
         Write-Debug "URL: $($url)"
 
-        $HeaderCopy = @{}
-        ($headers | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $HeaderCopy[$_.Name] = $_.Value }
-        $HeaderCopy."api-version" = $Version
-        $HeaderCopy."Content-Type" = $ContentType
-        if ($Authorization) {
-            $HeaderCopy."Authorization" = $Authorization
+        $GetAuthorization = {
+            if ($Authorization) {
+                $Authorization
+            } else {
+                Get-AuthorizationHeader
+            }
         }
+
+        # base headers
+        $Headers = @{
+            "api-version" = $Version;
+            "Content-Type" = $ContentType;
+            "Accept" = "application/json";
+            "Connection" = "keep-alive";
+            "Authorization" = & $GetAuthorization;
+        }
+
         if ($AddHsdpApiSignature) {
-            $addHeaders = Get-ApiSignatureHeaders
-            $addHeaders.keys | Where-Object {$_ -notin $HeaderCopy.keys} | ForEach-Object { $HeaderCopy[$_] = $addHeaders[$_] }
+            $Headers += Get-ApiSignatureHeaders
         }
         if ($AddIfMatch -and $Body.meta -and $Body.meta.version ) {
-            $HeaderCopy."If-Match" = $Body.meta.version
+            $Headers."If-Match" = $Body.meta.version
             $Body = $Body | Select-Object -Property * -Exclude meta
         }
-        $HeaderCopy = $HeaderCopy + $AdditionalHeaders
+        $Headers = $Headers + $AdditionalHeaders
 
-        Write-Debug "HEADERS: $($HeaderCopy | ConvertTo-Json)"
+        Write-Debug "HEADERS: $($Headers | ConvertTo-Json)"
 
         $outcome = try {
             if ($Body) {
-                if ($HeaderCopy."Content-Type" -eq "application/json") {
+                Write-Debug "INVOKING REQUEST..."
+                if ($Headers."Content-Type" -eq "application/json") {
                     Write-Debug "REQUEST BODY: $($Body | ConvertTo-Json -Depth 99)"
-                    Write-Debug "INVOKING REQUEST..."
-                    $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -Body ($Body | ConvertTo-Json -Depth 99) -ErrorAction Stop
+                    $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $Headers -Body ($Body | ConvertTo-Json -Depth 99) -ErrorAction Stop
                 } else {
-                    $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -Body $Body -ErrorAction Stop
+                    Write-Debug "REQUEST BODY: $($Body)"
+                    $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $Headers -Body $Body -ErrorAction Stop
                 }
             } else {
-                $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $HeaderCopy -ErrorAction Stop
+                $response = Invoke-WebRequest -Uri $url -Method $Method -Headers $Headers -ErrorAction Stop
             }
             Write-Debug "HTTP STATUS: $($response.StatusCode)"
             @{ status = $response.StatusCode; response = $response; headers = [System.Collections.Hashtable]::new($response.Headers) }

@@ -6,16 +6,16 @@ function runTests() {
 
     BeforeAll {
         . "$PSScriptRoot\Get-ApiSignatureHeaders.ps1"
+        . "$PSScriptRoot\..\Utility\Get-Config.ps1"
     }
 
     Describe "Get-ApiSignatureHeaders" {
         BeforeAll {
             $password = ConvertTo-SecureString -String "password" -AsPlainText -Force
-
             $config = @{
                 AppCredentials = New-Object System.Management.Automation.PSCredential ("username", $password)
             }
-            Mock Get-Variable { $config }
+            Mock Get-Config{ $config }
         }
         Context "creates header" {
             It "generates correctly formatted signeddate" {
