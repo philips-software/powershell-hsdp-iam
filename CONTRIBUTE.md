@@ -44,6 +44,7 @@ If your issue appears to be a bug, and hasn't been reported, open a new issue. H
 
 ### Submitting a Merge Request
 Before you submit your merge request consider the following guidelines:
+* Follow code best practice, style and layout and style from [PowerShellPracticeAndStyle](https://github.com/PoshCode/PowerShellPracticeAndStyle)
 
 * Make your changes in a new git branch:
 

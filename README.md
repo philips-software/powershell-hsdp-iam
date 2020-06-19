@@ -191,6 +191,10 @@ Integration tests are integrated into the build pipeline and must all pass on pu
 
 None
 
+## Contributing
+See [CONTRIBUTE.md](CONTRIBUTE.md)
+
+
 ## Contact / Getting help
 
 mark.lindell@philips.com
@@ -198,7 +202,6 @@ mark.lindell@philips.com
 ## License
 
 Link to [LICENSE.md](LICENSE.md)
-
 
 ## Credits and references
 

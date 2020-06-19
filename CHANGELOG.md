@@ -1,3 +1,8 @@
+## 0.1.27
+
+* Added cmdlet Set-AppServiceScope
+* Update contribute for coding style and best practices reference
+
 ## 0.1.26
 
 * Added cmdlets to support Device API

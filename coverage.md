@@ -60,7 +60,7 @@
 ||Service|POST /authorize/identity/Service|1|Supported|`Add-Service`|
 |||GET /authorize/identity/Service|1|Supported|`Get-Service`|
 |||DELETE /authorize/identity/Service/{id}|1|Supported|`Remove-Service`|
-|||PUT /authorize/identity/Service/{id}/$scopes|1|Future||
+|||PUT /authorize/identity/Service/{id}/$scopes|1|Supported|`Set-AppServiceScope`|
 ||User|POST /authorize/identity/User/$set-password|1|No Support|-|no plans to support old API|
 |||POST /authorize/identity/User/$set-password|2|Supported|`Set-UserPassword`|
 |||POST /authorize/identity/User/$change-password|1|Supported|`New-UserPassword`|
