@@ -60,42 +60,58 @@ Import-Module -Name ./src/hsdp-iam -Force
 function Test-Integration {
     param([HashTable]$config)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 0
+
     # Configure the library
     Set-Config (New-Config @config)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 5
     Test-OAuthCmdLets
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 10
     $rootOrgId = "6618b09c-1c09-4887-a4d1-d8a4b285313c"
     $Org = Test-OrgCmdlets -RootOrgId $rootOrgId
     Write-Debug ($Org | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 15
     $PasswordPolicyWithKBA = Test-PasswordPolicyCmdlets -Org $org
     Write-Debug ($PasswordPolicyWithKBA | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 20
     $User = Test-UserCmdlets -Org $Org -PasswordPolicy $PasswordPolicyWithKBA
     Write-Debug ($User | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 30
     $Proposition = Test-PropositionCmdlets -Org $Org
     Write-Debug ($Proposition | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 40
     $Application = Test-ApplicationCmdlets -Proposition $Proposition
     Write-Debug ($Application | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 50
     $Device = Test-DeviceCmdlets -Org $Org -Application $Application
     Write-Debug ($Device | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 60
     $Client = Test-ClientCmdlets -Application $Application
     Write-Debug ($Client | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 70
     $AppService = Test-AppServiceCmdlets -Application $Application
     Write-Debug ($AppService | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 75
     Test-MfaPolicyCmdLets -Org $Org
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 80
     $Group = Test-GroupCmdlets -Org $Org -User $User -AppService $AppService
     Write-Debug ($Group | ConvertTo-Json)
 
+    Write-Progress -Activity "Integration Tests" -PercentComplete 90
     Test-CleanUpObjects -Org $Org -User $User -Group $Group -AppService $AppService
+
+    Write-Progress -Activity "Integration Tests" -PercentComplete 100
 }
 
 # Output warning for cmdlets not specifically mentioned a comment for coverage
