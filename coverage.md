@@ -88,8 +88,8 @@
 |||PUT /authorize/identity/PasswordPolicy/{id}|1|Supported|`Set-PasswordPolicy`|
 |||GET /authorize/identity/PasswordPolicy/{id}|1|Supported|`Get-PasswordPolicy`|
 ||legacy paths|GET /security/users/{userUUID}|1|No Support||no plans to support old API
-|||PUT /security/users/{userUUID}|1|Future|No Support|no plans to support old API
-|||GET /security/users|1|Future|No Support|no plans to support old API
+|||PUT /security/users/{userUUID}|1|No Support||no plans to support old API
+|||GET /security/users|1|Supported|`Get-UserIds`|
 |Policy management|Policy evaluation|POST /authorize/policy/$evaluate|3|Supported|`Get-Evaluate`|
 ||Policy provisioning|POST authorize/access/policy|1|Future||
 |||GET authorize/access/policy|1|Future||
