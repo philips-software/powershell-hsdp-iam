@@ -20,11 +20,11 @@
 |||DELETE /authorize/identity/Client/{id}|1|Supported|`Remove-Client`|
 |||PUT /authorize/identity/Client/{id}/$scopes|1|Supported|`Set-ClientScopes`|
 |||PUT /authorize/identity/Client/{id}|1|Supported|`Set-Client`|
-||Device|POST /authorize/identity/Device|1|Future||
-|||GET /authorize/identity/Device|1|Future||
-|||PUT /authorize/identity/Device|1|Future||
-|||DELETE /authorize/identity/Device/deviceid|1|Future||
-|||POST /authorize/identity/Device/{id}/$change-password|1|Future||
+||Device|POST /authorize/identity/Device|1|Supported|`Add-Device`|
+|||GET /authorize/identity/Device|1|Supported|`Get-Device`|
+|||PUT /authorize/identity/Device|1|Supported|`Set-Device`|
+|||DELETE /authorize/identity/Device/deviceid|1|Supported|`Remove-Device`|
+|||POST /authorize/identity/Device/{id}/$change-password|1|Supported|`New-DevicePassword`|
 ||Group|POST /authorize/identity/Group|1|Supported|`Add-Group`|
 |||GET /authorize/identity/Group|1|Supported|`Get-Groups`|
 |||PUT /authorize/identity/Group/{groupId}|1|Future||

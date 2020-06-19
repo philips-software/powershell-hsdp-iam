@@ -18,14 +18,16 @@ Describe "Reset-UserPassword" {
             $ExpectedBody = @{
                 loginId = $user.loginId;
                 challenges = @(
-                    @{ challenge="pet"; response="fido"},
                     @{ challenge="color"; response="blue"}
                 )
             }
-            Reset-UserPassword -User $user -ChallengeResponses @{"color"="blue"; "pet"="fido"} -Force
+            Reset-UserPassword -User $user -ChallengeResponses @{"color"="blue"} -Force
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 Write-Debug ($Body | ConvertTo-Json)
                 Write-Debug ($ExpectedBody | ConvertTo-Json)
+                Write-Debug $Path
+                Write-Debug $rootpath
+                Write-Debug ($ValidStatusCodes | ConvertTo-Json)
                 $Path -eq "$($rootpath)" -and `
                 $Version -eq 1 -and `
                 $Method -eq "Post" -and `

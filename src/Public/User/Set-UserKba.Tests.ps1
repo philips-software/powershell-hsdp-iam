@@ -17,11 +17,10 @@ Describe "Set-UserKba" {
         It "invokes request" {
             $ExpectedBody = @{
                 challenges = @(
-                    @{ challenge="pet"; response="fido"},
                     @{ challenge="color"; response="blue"}
                 )
             }
-            Set-UserKba -User $user -ChallengeResponses @{"color"="blue"; "pet"="fido"}  -Force
+            Set-UserKba -User $user -ChallengeResponses @{"color"="blue"}  -Force
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Path -eq "$($rootpath)/$($user.id)/`$kba" -and `
                 $Version -eq 1 -and `
