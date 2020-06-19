@@ -1,3 +1,7 @@
+## 0.1.26
+
+* Added cmdlets to support Device API
+
 ## 0.1.25
 
 * Added support to use refresh token to retrieve new access token if the access token expires

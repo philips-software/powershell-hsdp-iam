@@ -20,11 +20,11 @@
 |||DELETE /authorize/identity/Client/{id}|1|Supported|`Remove-Client`|
 |||PUT /authorize/identity/Client/{id}/$scopes|1|Supported|`Set-ClientScopes`|
 |||PUT /authorize/identity/Client/{id}|1|Supported|`Set-Client`|
-||Device|POST /authorize/identity/Device|1|Future||
-|||GET /authorize/identity/Device|1|Future||
-|||PUT /authorize/identity/Device|1|Future||
-|||DELETE /authorize/identity/Device/deviceid|1|Future||
-|||POST /authorize/identity/Device/{id}/$change-password|1|Future||
+||Device|POST /authorize/identity/Device|1|Supported|`Add-Device`|
+|||GET /authorize/identity/Device|1|Supported|`Get-Device`|
+|||PUT /authorize/identity/Device|1|Supported|`Set-Device`|
+|||DELETE /authorize/identity/Device/deviceid|1|Supported|`Remove-Device`|
+|||POST /authorize/identity/Device/{id}/$change-password|1|Supported|`New-DevicePassword`|
 ||Group|POST /authorize/identity/Group|1|Supported|`Add-Group`|
 |||GET /authorize/identity/Group|1|Supported|`Get-Groups`|
 |||PUT /authorize/identity/Group/{groupId}|1|Future||
@@ -88,8 +88,8 @@
 |||PUT /authorize/identity/PasswordPolicy/{id}|1|Supported|`Set-PasswordPolicy`|
 |||GET /authorize/identity/PasswordPolicy/{id}|1|Supported|`Get-PasswordPolicy`|
 ||legacy paths|GET /security/users/{userUUID}|1|No Support||no plans to support old API
-|||PUT /security/users/{userUUID}|1|Future|No Support|no plans to support old API
-|||GET /security/users|1|Future|No Support|no plans to support old API
+|||PUT /security/users/{userUUID}|1|No Support||no plans to support old API
+|||GET /security/users|1|Supported|`Get-UserIds`|
 |Policy management|Policy evaluation|POST /authorize/policy/$evaluate|3|Supported|`Get-Evaluate`|
 ||Policy provisioning|POST authorize/access/policy|1|Future||
 |||GET authorize/access/policy|1|Future||

@@ -13,6 +13,7 @@ function Test-UnCoveredCmdlets  {
         "Get-ApiSignatureHeaders",
         "Get-ApplicationsByPage",
         "Get-PropositionsByPage",
+        "Get-DevicesByPage",
         "Get-Config",
         "Get-AuthorizationHeader",
         "Get-UserIdsByPage",

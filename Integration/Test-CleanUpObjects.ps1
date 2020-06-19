@@ -32,8 +32,8 @@ function Test-CleanUpObjects {
 
         # CmdLet: Get-OrgRemoveStatus
         $status = Get-OrgRemoveStatus $Org
-        if ($status -ne "IN_PROGRESS") {
-            Write-Warning "Get-OrgRemoveStatus should return 'IN PROGRESS' but returned '$($status)'"
+        if ($status -ne "IN_PROGRESS" -or $status -ne "QUEUED") {
+            Write-Warning "Get-OrgRemoveStatus should return 'IN PROGRESS' or 'QUEUED' but returned '$($status)'"
         }
     }
 

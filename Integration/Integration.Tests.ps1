@@ -46,6 +46,7 @@ Import-Module -Name ./src/hsdp-iam -Force
 . "$PSScriptRoot/Test-AppServiceCmdlets.ps1"
 . "$PSScriptRoot/Test-CleanUpObjects.ps1"
 . "$PSScriptRoot/Test-ClientCmdlets.ps1"
+. "$PSScriptRoot/Test-DeviceCmdlets.ps1"
 . "$PSScriptRoot/Test-GroupCmdlets.ps1"
 . "$PSScriptRoot/Test-MfaPolicyCmdlets.ps1"
 . "$PSScriptRoot/Test-OAuthCmdlets.ps1"
@@ -79,6 +80,9 @@ function Test-Integration {
 
     $Application = Test-ApplicationCmdlets -Proposition $Proposition
     Write-Debug ($Application | ConvertTo-Json)
+
+    $Device = Test-DeviceCmdlets -Org $Org -Application $Application
+    Write-Debug ($Device | ConvertTo-Json)
 
     $Client = Test-ClientCmdlets -Application $Application
     Write-Debug ($Client | ConvertTo-Json)
