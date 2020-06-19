@@ -20,6 +20,20 @@ function Test-AppServiceCmdlets {
         Write-Warning "$($getApplication | ConvertTo-Json)"
     }
 
+    # CmdLet: Set-AppServiceScope
+    Set-AppServiceScope -AppService $addAppService -Action add -Scopes @('add-1','add-2') -DefaultScopes @('add-1','add-2')
+    $getAppService = Get-AppService -Id $addAppService.Id
+    if (-not $getAppService.scopes.Contains('add-1') -or -not $getAppService.scopes.Contains('add-2')) {
+        Write-Warning "Set-AppServiceScope did not add scopes"
+        Write-Warning "$($getAppService | ConvertTo-Json)"
+    }
+    Set-AppServiceScope -AppService $addAppService -Action remove -Scopes @('add-1') -DefaultScopes @('add-1')
+    $getAppService = Get-AppService -Id $addAppService.Id
+    if ($getAppService.scopes.Contains('add-1')) {
+        Write-Warning "Set-AppServiceScope did not remove scopes"
+        Write-Warning "$($getAppService | ConvertTo-Json)"
+    }
+
     # CmdLet: New-HsdpJWT
     $jwt = New-HsdpJWT -Service $addAppService -KeyFile $keyfile
     if ($null -eq $jwt) {
