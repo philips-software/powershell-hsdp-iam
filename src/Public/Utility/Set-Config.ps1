@@ -14,7 +14,6 @@
 function Set-Config  {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Low')]
-    [OutputType([HashTable])]
     param(
         [ValidateNotNullOrEmpty()]
         [PSObject]$Config,

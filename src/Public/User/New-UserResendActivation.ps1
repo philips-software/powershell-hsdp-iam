@@ -38,7 +38,6 @@
 function New-UserResendActivation {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
-    [OutputType([PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingUsernameAndPasswordParams', '', Justification='needed to collect')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPlainTextForPassword', '', Justification='needed to collect')]
     param(

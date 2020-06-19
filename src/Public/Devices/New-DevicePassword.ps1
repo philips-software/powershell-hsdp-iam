@@ -28,7 +28,6 @@
 function New-DevicePassword {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Medium')]
-    [OutputType([PSObject])]
     param(
         [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNull()]
