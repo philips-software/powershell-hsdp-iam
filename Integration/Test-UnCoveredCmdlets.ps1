@@ -1,5 +1,5 @@
 function Test-UnCoveredCmdlets  {
-    $allFiles = Get-ChildItem ./src/Public/*.ps1 -Recurse
+    $allFiles = Get-ChildItem ./hsdp-iam/Public/*.ps1 -Recurse
     $notTestFiles = $allFiles | Where-Object { $_.name -notlike "*.Tests.ps1"}
     $cmdletsFiles  = $notTestFiles | Select-Object @{Name="name";Expression={$_.Name -replace ".ps1",""}} | Sort-Object name
     $TestFiles = Get-ChildItem ./Integration/Test-*.ps1

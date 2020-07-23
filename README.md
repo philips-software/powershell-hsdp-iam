@@ -2,7 +2,7 @@
 
 [![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
 [![CI](https://github.com/philips-software/powershell-hsdp-iam/workflows/CI/badge.svg)](https://github.com/philips-software/powershell-hsdp-iam/actions?query=workflow%3ACI)
-[![Nuget](https://img.shields.io/nuget/v/hsdp-iam)](https://www.nuget.org/packages/hsdp-iam/)
+[![powershellgallery](https://img.shields.io/powershellgallery/v/hsdp-iam.svg)](https://www.powershellgallery.com/packages/hsdp-iam)
 
 **Description**: This powershell module contains cmdlets to work against the HSDP IAM APIs using a powershell approach.
 
@@ -18,16 +18,16 @@ The coverage is tracked in [coverage.md](coverage.md)
 
 ## Dependencies
 
-* Powershell 7/Core recommend
+* Powershell 7/Core
 * Pester for unit tests
 
 ## Installation
 
-This package is available on [nuget.org](https://www.nuget.org/packages/hsdp-iam)
+This package is available on [the powershell gallery](https://www.powershellgallery.com/packages/hsdp-iam)
 
 ```
-nuget install hsdp-iam-{version}
-Import-Module hsdp-iam-{version}/hsdp-iam.psm1 -Scope Local
+Install-Module hsdp-iam
+Import-Module hsdp-iam
 ```
 
 ## Configuration
@@ -46,7 +46,7 @@ The configuration will be saved to a file named ```./config.xml``` The secrets p
 ## Import configuration
 To authenticate using the configuration execute the following cmdlet:
 
-```
+```powershell
 Set-FileConfig
 ```
 
@@ -58,14 +58,14 @@ These powershell cmdlets have been designed to follow common powershell patterns
 
 The cmdlets all contain online help which can be obtains by using the Get-Help cmdlet. For instance:
 
-```
+```powershell
 Get-Help Get-Org
 ```
 
 ### Objects
 The cmdlets in this module return PSObjects from most functions that match the HSDP models. So for example:
 
-```
+```powershell
 $org = Get-Org "02bdfa45-db4b-4450-a77e-b59ab9df9472"
 ```
 
@@ -87,7 +87,7 @@ meta              : @{resourceType=Organization; created=2/17/2020 6:05:25 PM; l
 
 The PSObjects are used by other CmdLets to simplify parameter passing. For instance:
 
-```
+```powershell
 $groups = Get-Groups -Org $org
 ```
 
@@ -100,7 +100,7 @@ Cmdlets that perform updates will leverage the $object.meta.version property to 
 
 Many cmdlets use ValueFromPipeline allowing composition such as in the following example to remove all users from an org:
 
-```
+```powershell
 Get-UserIds $org | Remove-User
 ```
 
@@ -108,7 +108,7 @@ Get-UserIds $org | Remove-User
 
 The cmdlets have all be instrumented with Debug and Verbose information. This can be enabled using:
 
-```
+```powershell
 $DebugPreference="continue"
 $VerbosePreference="continue"
 ```
@@ -130,7 +130,7 @@ $VerbosePreference="continue"
 
 ### Add Org and User
 
-```
+```powershell
 $parentOrg = Get-Org "02bdfa45-db4b-4450-a77e-b59ab9df9472"
 $org = Add-Org -ParentOrg $parentOrg -Name "MyNewOrg"
 $user = Add-User -LoginId "test01" -Email "asdfasdf@mailinator.com" -MobilePhone "1234512345" -FamilyName "FAMILY" -GivenName "GIVEN" -Org $org
@@ -138,7 +138,7 @@ $user = Add-User -LoginId "test01" -Email "asdfasdf@mailinator.com" -MobilePhone
 
 ### Create Proposition, Application, Service Identity and generate a JWT
 
-```
+```powershell
 $org = Get-Org "02bdfa45-db4b-4450-a77e-b59ab9df9472"
 $propId = ([GUID]::NewGuid().ToString('D'))
 $prop = Add-Proposition -Org $org -Name "My Proposition" -GlobalReferenceId $propId
@@ -155,21 +155,21 @@ $jwt = New-HsdpJWT -Service $service -KeyFile $keyFile
 
 ### Assign multiple users into group
 
-```
+```powershell
 $org = Get-Org "02bdfa45-db4b-4450-a77e-b59ab9df9472"
 Set-UsersInGroup -Org $Org -GroupName "My Group" -UserIds @("user1@mailinator.com", "user2@mailinator.com")
 ```
 
 ### Find a user by email address in an org and display all the permissions for all the roles
 
-```
+```powershell
 $user = (Get-UserIds -Org $org | Get-User | Where-Object { $_.emailAddress -eq "user1@mailinator.com" })
 $user.memberships.roles | % { get-roles -Name $_ } | get-permissions
 ```
 
 ### Display all the email addresses of users who have never verified their email across all organizations
 
-```
+```powershell
 Get-Orgs | Get-UserIds | Get-User | Where-Object { $_.accountStatus.emailVerified -ne "True" } | Select-Object -ExpandProperty emailAddress
 ```
 ## How to test the software

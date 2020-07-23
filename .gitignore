@@ -3,9 +3,8 @@ config.xml
 scratch/*
 test-pester.xml
 hsdp-iam.*.nupkg
-target/*
-src/hsdp-iam.nuspec
-src/hsdp-iam.psd1
+hsdp-iam/hsdp-iam.nuspec
+hsdp-iam/hsdp-iam.psd1
 local-*.tests.ps1
 Integration/local*.ps1
 *.key
