@@ -17,7 +17,6 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
     - name: Checkout
@@ -50,9 +49,7 @@ jobs:
     - name: Download latest NuGet (cross-platform)
       uses: olegtarasov/download-nuget@v1
 
-    - name: Make Nuget package (Non-Windows)
-      run: mono $NUGET_EXE pack src/hsdp-iam.nuspec -OutputDirectory target
-
-    - name: push to nuget
+    - name: publish module to powershell gallary
+      run: Publish-Module -Path ./hsdp-iam -NugetAPIKey ${{ secrets.NUGET_APIKEY }}
+      shell: pwsh
       if: github.event_name != 'pull_request'
-      run: mono $NUGET_EXE push target/hsdp-iam.${{ steps.gitversion.outputs.major }}.${{ steps.gitversion.outputs.minor }}.${{ steps.gitversion.outputs.patch }}.nupkg ${{ secrets.NUGET_APIKEY }} -Source https://api.nuget.org/v3/index.json

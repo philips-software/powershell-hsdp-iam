@@ -1,3 +1,7 @@
+## 0.1.29
+
+* Move distribution to Powershell Gallary.
+
 ## 0.1.27
 
 * Added cmdlet Set-AppServiceScope
