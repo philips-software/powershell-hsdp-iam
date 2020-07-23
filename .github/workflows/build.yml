@@ -52,3 +52,4 @@ jobs:
     - name: publish module to powershell gallary
       run: Publish-Module -Path ./hsdp-iam -NugetAPIKey ${{ secrets.NUGET_APIKEY }}
       shell: pwsh
+      if: github.event_name != 'pull_request'
