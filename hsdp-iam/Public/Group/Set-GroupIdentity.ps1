@@ -83,7 +83,7 @@ function Set-GroupIdentity {
             }
             $path = "/authorize/identity/Group/$($Group.id)/`$assign"
 
-            $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" = $Group.meta.version[0] } -Path $path -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
+            $response = (Invoke-ApiRequest -AdditionalHeaders @{"If-Match" =$Group.meta.version[0] } -Path $path -Version 1 -Method Post -Body $body -ValidStatusCodes @(200))
 
             # update the group version
             $group.meta.version = $response.meta.version

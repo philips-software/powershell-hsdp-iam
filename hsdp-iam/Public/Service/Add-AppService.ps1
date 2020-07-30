@@ -54,7 +54,7 @@ function Add-AppService {
 
         [Parameter(Mandatory = $false, Position = 3)]
         [ValidateNotNullOrEmpty()]
-        [int]$Validity = 12,
+        [int]$Validity = 600,
 
         [Parameter(Mandatory = $false, Position = 4)]
         [String]$Description = ""

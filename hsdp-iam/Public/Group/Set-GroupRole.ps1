@@ -42,7 +42,7 @@ function Set-GroupRole {
 
         [Parameter(Mandatory, Position = 1)]
         [ValidateNotNullOrEmpty()]
-        [String[]]
+        [PSobject[]]
         $Roles,
 
         [Parameter()]
@@ -71,9 +71,9 @@ function Set-GroupRole {
             if ($Roles.Length -gt 100) {
                 throw "Maximum number of roles per request is 100"
             }
-            $RoleIds = $Roles | Select-Object Id
-            $body = @{ "roles" = @($RoleIds) }
-            $path = "/authorize/identity/Group/$($Group.id)/`$assign-role"
+            $RoleIds = @($Roles | Select-Object Id -ExpandProperty Id)
+            $body = [PSObject]@{ "roles" = [String[]]$RoleIds }
+            $path = "/authorize/identity/Group/$($group.Id)/`$assign-role"
             Write-Output @(Invoke-ApiRequest -Path $path -Method Post -Version 1 -Body $body -ValidStatusCodes @(200))
         }
     }
