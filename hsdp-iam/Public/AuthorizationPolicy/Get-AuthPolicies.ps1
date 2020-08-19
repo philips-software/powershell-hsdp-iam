@@ -48,6 +48,7 @@ function Get-AuthPolicies {
     process {
         Write-Debug "[$($MyInvocation.MyCommand.Name)] PSBoundParameters: $($PSBoundParameters | Out-String)"
 
+        $params = ""
         if ($Org) {
             $params = "organizationId=$($Org.id)"
         }

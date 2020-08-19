@@ -1,9 +1,11 @@
 Set-StrictMode -Version Latest
 
 BeforeAll {
-    . "$PSScriptRoot\Set-UsersInGroup.ps1"
+
     . "$PSScriptRoot\Get-Groups.ps1"
     . "$PSScriptRoot\..\User\Get-User.ps1"
+    . "$PSScriptRoot\Set-UsersInGroup.ps1"
+    . "$PSScriptRoot\Set-GroupMember.ps1"
 }
 
 Describe "Set-UsersInGroup" {
