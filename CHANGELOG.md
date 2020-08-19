@@ -1,3 +1,11 @@
+## 0.1.31
+
+Added  support for ​/authorize​/access​/Policy API:
+* `Add-AuthPolicy`
+* `Get-AuthPolicy`
+* `Get-AuthPolicies`
+* `Remove-AuthPolicy`
+
 ## 0.1.29
 
 * Move distribution to Powershell Gallary.
