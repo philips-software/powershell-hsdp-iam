@@ -90,8 +90,8 @@
 ||legacy paths|GET /security/users/{userUUID}|1|No Support||no plans to support old API
 |||PUT /security/users/{userUUID}|1|No Support||no plans to support old API
 |||GET /security/users|1|Supported|`Get-UserIds`|
+||Policy provisioning|POST /authorize/access/policy|1|Add-AuthPolicy||
+|||GET /authorize/access/policy|1|Get-AuthPolicies||
+|||GET /authorize/access/policy/{id}|1|Get-AuthPolicy||
+|||DELETE /authorize/access/policy/{id}|1|Remove-AuthPolicy||
 |Policy management|Policy evaluation|POST /authorize/policy/$evaluate|3|Supported|`Get-Evaluate`|
-||Policy provisioning|POST authorize/access/policy|1|Future||
-|||GET authorize/access/policy|1|Future||
-|||GET authorize/access/policy/{id}|1|Future||
-|||DELETE authorize/access/policy/{id}|1|Future||

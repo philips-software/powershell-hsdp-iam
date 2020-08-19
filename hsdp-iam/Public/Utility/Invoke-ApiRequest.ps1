@@ -174,10 +174,10 @@ function Invoke-ApiRequest {
                 if ([bool]($outcome.response.Headers.ETag) -eq $true -and -not $ReturnResponseHeader) {
                     Write-Debug "Adding meta.version tag from etag header $($outcome.headers.ETag)"
                     $objContent | Add-Member NoteProperty meta (New-Object PSObject -Property @{ version = $outcome.response.Headers.ETag } )
-                    $content = ($objContent | ConvertTo-Json)
+                    $content = ($objContent | ConvertTo-Json -Depth 100)
                 }
                 if ($ReturnResponseHeader) {
-                    Write-Output ($outcome.headers | ConvertTo-Json)
+                    Write-Output ($outcome.headers | ConvertTo-Json -Depth 100)
                 } else {
                     if ($ProcessHeader) {
                         Write-Debug "Processing Header Callback"
@@ -187,7 +187,7 @@ function Invoke-ApiRequest {
                         $ErrorActionPreference = $PreviousPreference
                         Write-Output $objContent
                     } else {
-                        Write-Output ($content | ConvertFrom-Json)
+                        Write-Output ($content | ConvertFrom-Json -Depth 100)
                     }
                 }
             }

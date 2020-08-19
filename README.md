@@ -1,8 +1,9 @@
 # powershell-hsdp-iam
 
-[![Slack](https://philips-software-slackin.now.sh/badge.svg)](https://philips-software-slackin.now.sh)
 [![CI](https://github.com/philips-software/powershell-hsdp-iam/workflows/CI/badge.svg)](https://github.com/philips-software/powershell-hsdp-iam/actions?query=workflow%3ACI)
 [![powershellgallery](https://img.shields.io/powershellgallery/v/hsdp-iam.svg)](https://www.powershellgallery.com/packages/hsdp-iam)
+
+[Visit HSDP Slack Support](https://hsdp.slack.com)
 
 **Description**: This powershell module contains cmdlets to work against the HSDP IAM APIs using a powershell approach.
 
