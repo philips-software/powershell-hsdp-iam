@@ -137,10 +137,10 @@ function Add-AuthPolicy {
         [ValidateSet("AuthenticatedUsers", "AuthenticatedPermissions", "Permission", "Group")]
         [String]$SubjectType,
 
-        [Parameter(Mandatory = $true, Position = 6)]
+        [Parameter(Mandatory = $false, Position = 6)]
         [String[]]$Subjects,
 
-        [Parameter(Mandatory = $true, Position = 7)]
+        [Parameter(Mandatory = $false, Position = 7)]
         [ValidateNotNullOrEmpty()]
         [String[]]$Conditions
     )
@@ -161,16 +161,18 @@ function Add-AuthPolicy {
             "subject" =  @{
                 type = $SubjectType
             }
-            "condition" = @{
-                type = "Scope"
-                value = @{
-                    allOf = $Conditions
-                }
-            }
         }
         # Per the documentation the value is only required for these subject types
         if ($SubjectType -eq "Group" -or $SubjectType -eq "Permission") {
             $body.subject.Add("value", @{ anyOf = $Subjects })
+        }
+        if ($Conditions) {
+            $body.Add("condition", @{
+                type = "Scope"
+                value = @{
+                    allOf = $Conditions
+                }
+            })
         }
         Write-Output (Invoke-ApiRequest -Path "/authorize/access/Policy" -Version 1 -Method Post -Body $body -ValidStatusCodes @(201) )
     }

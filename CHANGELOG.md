@@ -1,3 +1,7 @@
+## 0.1.32
+
+Fixed bug with `Add-AuthPolicy`
+
 ## 0.1.31
 
 Added  support for ​/authorize​/access​/Policy API:
