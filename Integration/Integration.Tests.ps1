@@ -55,6 +55,8 @@ Import-Module -Name ./hsdp-iam/hsdp-iam -Force
 . "$PSScriptRoot/Test-PropositionCmdlets.ps1"
 . "$PSScriptRoot/Test-RoleCmdlets.ps1"
 . "$PSScriptRoot/Test-UserCmdlets.ps1"
+. "$PSScriptRoot/Test-UserCmdlets.ps1"
+. "$PSScriptRoot/Test-AuthPolicyCmdlets.ps1"
 . "$PSScriptRoot/Test-UnCoveredCmdlets.ps1"
 
 function Test-Integration {
@@ -73,43 +75,46 @@ function Test-Integration {
     $Org = Test-OrgCmdlets -RootOrgId $rootOrgId
     Write-Debug ($Org | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 15
-    $PasswordPolicyWithKBA = Test-PasswordPolicyCmdlets -Org $org
-    Write-Debug ($PasswordPolicyWithKBA | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 15
+    # $PasswordPolicyWithKBA = Test-PasswordPolicyCmdlets -Org $org
+    # Write-Debug ($PasswordPolicyWithKBA | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 20
-    $User = Test-UserCmdlets -Org $Org -PasswordPolicy $PasswordPolicyWithKBA
-    Write-Debug ($User | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 20
+    # $User = Test-UserCmdlets -Org $Org -PasswordPolicy $PasswordPolicyWithKBA
+    # Write-Debug ($User | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 30
-    $Proposition = Test-PropositionCmdlets -Org $Org
-    Write-Debug ($Proposition | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 30
+    # $Proposition = Test-PropositionCmdlets -Org $Org
+    # Write-Debug ($Proposition | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 40
-    $Application = Test-ApplicationCmdlets -Proposition $Proposition
-    Write-Debug ($Application | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 40
+    # $Application = Test-ApplicationCmdlets -Proposition $Proposition
+    # Write-Debug ($Application | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 50
-    $Device = Test-DeviceCmdlets -Org $Org -Application $Application
-    Write-Debug ($Device | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 50
+    # $Device = Test-DeviceCmdlets -Org $Org -Application $Application
+    # Write-Debug ($Device | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 60
-    $Client = Test-ClientCmdlets -Application $Application
-    Write-Debug ($Client | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 60
+    # $Client = Test-ClientCmdlets -Application $Application
+    # Write-Debug ($Client | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 70
-    $AppService = Test-AppServiceCmdlets -Application $Application
-    Write-Debug ($AppService | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 70
+    # $AppService = Test-AppServiceCmdlets -Application $Application
+    # Write-Debug ($AppService | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 75
-    Test-MfaPolicyCmdLets -Org $Org
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 75
+    # Test-MfaPolicyCmdLets -Org $Org
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 80
-    $Group = Test-GroupCmdlets -Org $Org -User $User -AppService $AppService
-    Write-Debug ($Group | ConvertTo-Json)
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 80
+    # $Group = Test-GroupCmdlets -Org $Org -User $User -AppService $AppService
+    # Write-Debug ($Group | ConvertTo-Json)
 
-    Write-Progress -Activity "Integration Tests" -PercentComplete 90
-    Test-CleanUpObjects -Org $Org -User $User -Group $Group -AppService $AppService
+    # Write-Progress -Activity "Integration Tests" -PercentComplete 90
+    # Test-CleanUpObjects -Org $Org -User $User -Group $Group -AppService $AppService
+
+    Write-Progress -Activity "Integration Tests" -PercentComplete 95
+    Test-AuthPolicyCmdlets -Org $Org
 
     Write-Progress -Activity "Integration Tests" -PercentComplete 100
 }
