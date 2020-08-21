@@ -1,3 +1,23 @@
+## 0.1.33
+
+* Added support for v2 API in `Get-Evaulate`
+* Updated `New-Config` to support not creating a configuration file. Allows scripts to define and configure inline do scripts can be self contained.
+
+``` powershell
+$p = @{
+    IamUrl = ""
+    IdmUrl = ""
+    CredentialsUserName = ""
+    CredentialsPassword = ""
+    ClientCredentialsUserName = ""
+    ClientCredentialsPassword = ""
+    AppCredentialsUserName = ""
+    AppCredentialsPassword = ""
+}
+Set-Config (New-Config @p -Prompt $false -Path $null)
+```
+*NOTE: Using this approach will put your passwords/secrets in plain text in a script file. Use with caution!*
+
 ## 0.1.32
 
 Fixed bug with `Add-AuthPolicy`

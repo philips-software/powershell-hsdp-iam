@@ -94,4 +94,4 @@
 |||GET /authorize/access/policy|1|Get-AuthPolicies||
 |||GET /authorize/access/policy/{id}|1|Get-AuthPolicy||
 |||DELETE /authorize/access/policy/{id}|1|Remove-AuthPolicy||
-|Policy management|Policy evaluation|POST /authorize/policy/$evaluate|3|Supported|`Get-Evaluate`|
+|Policy management|Policy evaluation|POST /authorize/policy/$evaluate|2&3|Supported|`Get-Evaluate`|
