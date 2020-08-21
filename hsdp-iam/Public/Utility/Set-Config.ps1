@@ -15,6 +15,7 @@ function Set-Config  {
 
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact='Low')]
     param(
+        [Parameter(Mandatory, Position = 0, ValueFromPipeline)]
         [ValidateNotNullOrEmpty()]
         [PSObject]$Config,
 

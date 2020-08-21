@@ -1,3 +1,11 @@
+## 0.1.34
+
+* ``New-Config`` now supports value from pipeline
+
+``` powershell
+New-Config @p -Prompt $false -Path $null | Set-Config
+```
+
 ## 0.1.33
 
 * Added support for v2 API in `Get-Evaulate`
