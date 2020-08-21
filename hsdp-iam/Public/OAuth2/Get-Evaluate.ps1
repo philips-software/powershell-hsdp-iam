@@ -25,7 +25,7 @@
     Returns an EvalResponse as a PSObject
 
     .PARAMETER Application
-    The application resource object to evaluate access
+    The application otherwise known as the policySetId
 
     .PARAMETER Resources
     An array of resource urls to evaulate
@@ -36,16 +36,20 @@
     .PARAMETER TokenType
     One of the following token types: "ACCESS_TOKEN","SSO_TOKEN". The default is access.
 
-    .PARAMETER Org
-    An optional organization object for condition based evaluation
+    .PARAMETER Environment
+    An optional hashtable containing environment configuration.
+
+    .PARAMETER V2
+    A switch to use version 2 of the /authorize/policy/$evaluate API.
 
     .EXAMPLE
+    $eval = Get-Evaluate -application $policySetId  -Resources @($resource) -Environment @{"organizationId" = $Org.Id}
 
     .LINK
     https://www.hsdp.io/documentation/identity-and-access-management-iam/api-documents/resource-reference-api/policy-api-v3#/Policy%20evaluation/post_authorize_policy__evaluate
 
     .NOTES
-    POST: /authorize/policy/$evaluate v3
+    POST: /authorize/policy/$evaluate v3 (optional v2 usage)
 #>
 function Get-Evaluate {
 
@@ -53,7 +57,7 @@ function Get-Evaluate {
     [OutputType([PSObject])]
     param(
         [Parameter(Position = 0, Mandatory = $true)]
-        [PSObject]$Application,
+        [String]$Application,
 
         [Parameter(Position = 1, Mandatory = $true)]
         [Array]$Resources,
@@ -66,7 +70,10 @@ function Get-Evaluate {
         [String]$TokenType = "ACCESS_TOKEN",
 
         [Parameter(Position = 4, Mandatory = $false)]
-        [Array]$Org
+        [Hashtable]$Environment,
+
+        [Parameter(Position = 5, Mandatory = $false)]
+        [Switch]$V2
     )
 
     begin {
@@ -82,7 +89,7 @@ function Get-Evaluate {
         }
 
         $body =  @{
-            "application" = $Application.id;
+            "application" = $Application;
             "resources" = $Resources;
             "subject" = @{
               "type"= $TokenType;
@@ -90,17 +97,19 @@ function Get-Evaluate {
             };
         }
 
-        if ($Org) {
-            $body.Add("environment", @{ "organizationId" = $Org._id });
+        if ($Environment) {
+            $body.Add("environment", $Environment);
         }
 
         $config = Get-Config
-
-        $OAuth2ClientId = $config.ClientCredentials.GetNetworkCredential().username
-        $OAuth2ClientPassword = $config.ClientCredentials.GetNetworkCredential().password
-
-        $auth = "Basic " + [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($OAuth2ClientId):$($OAuth2ClientPassword)"))
-        Write-Output (Invoke-ApiRequest -Path "/authorize/policy/`$evaluate" -Version 3 -Method Post -Base $config.IamUrl -Body $body -ValidStatusCodes @(200) -Authorization $auth)
+        if ($V2) {
+            Write-Output (Invoke-ApiRequest -Path "/authorize/policy/`$evaluate" -Version 2 -AddHsdpApiSignature -Method Post -Base $config.IamUrl -Body $body -ValidStatusCodes @(200))
+        } else {
+            $OAuth2ClientId = $config.ClientCredentials.GetNetworkCredential().username
+            $OAuth2ClientPassword = $config.ClientCredentials.GetNetworkCredential().password
+            $auth = "Basic " + [convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($OAuth2ClientId):$($OAuth2ClientPassword)"))
+            Write-Output (Invoke-ApiRequest -Path "/authorize/policy/`$evaluate" -Version 3 -Method Post -Base $config.IamUrl -Body $body -ValidStatusCodes @(200) -Authorization $auth)
+        }
     }
 
     end {

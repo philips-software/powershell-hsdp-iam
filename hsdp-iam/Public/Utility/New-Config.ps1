@@ -42,7 +42,7 @@
     The HSDP IDM URL. Example: https://idm-integration.us-east.philips-healthsuite.com
 
     .PARAMETER Path
-    The path to store the configuration xml file. defaults to "./config.xml"
+    The path to store the configuration xml file. defaults to "./config.xml". If $null is passed then no configuration is written to a file.
 
     .EXAMPLE
     New-Config
@@ -105,7 +105,6 @@ function New-Config {
         $IdmUrl,
 
         [Parameter(Mandatory=$false)]
-        [ValidateNotNullOrEmpty()]
         [String]
         $Path = "./config.xml",
 
