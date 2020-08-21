@@ -39,6 +39,17 @@ function runTests() {
                 Get-Variable -Scope Script -ErrorAction Ignore -Name __auth | Should -BeFalse
                 Should -Invoke AuthorizationHeader
             }
+            It "accepts value from pipeline" {
+                $script:__authorization_header_value = "x"
+                $script:__access_token_expires_at = "x"
+                $script:__auth = "x"
+                $config | Set-Config
+                Should -Invoke Get-AuthorizationHeader -Exactly 1
+                Get-Variable -Scope Script -ErrorAction Ignore -Name __authorization_header_value | Should -BeFalse
+                Get-Variable -Scope Script -ErrorAction Ignore -Name __access_token_expires_at | Should -BeFalse
+                Get-Variable -Scope Script -ErrorAction Ignore -Name __auth | Should -BeFalse
+                Should -Invoke AuthorizationHeader
+            }
 
         }
     }
