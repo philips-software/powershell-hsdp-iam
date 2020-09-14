@@ -43,7 +43,7 @@ Describe "Add-User" {
             Should -Invoke Invoke-ApiRequest -ParameterFilter {
                 $Path -eq $rootpath -and `
                 $AddHsdpApiSignature -and `
-                (Compare-Object $ValidStatusCodes @(200,201)) -eq $null -and
+                (Compare-Object $ValidStatusCodes @(201)) -eq $null -and
                 $ProcessHeader -and `
                 ($Body,$MatchBody | Test-Equality)
             }

@@ -207,7 +207,7 @@ function Add-User {
 
         $response = (Invoke-ApiRequest -Path "/authorize/identity/User" -Version 2 -Method Post -Body $body `
             -AddHsdpApiSignature `
-            -ValidStatusCodes @(200,201) `
+            -ValidStatusCodes @(201) `
             -ProcessHeader { # Used to parse the user id from the end of the location header
                 $segments = ([System.Uri]"http://localhost$($args[0].Location[0])").segments
                 $body.Id = $segments[$segments.Count-1]
