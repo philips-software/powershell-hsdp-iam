@@ -1,3 +1,7 @@
+## 0.1.35
+
+* Add-User: Throws exception on anything but 201 response (previously did not throw on 200)
+
 ## 0.1.34
 
 * ``New-Config`` now supports value from pipeline
